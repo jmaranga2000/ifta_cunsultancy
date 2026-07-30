@@ -1,0 +1,28 @@
+import Link from "next/link";
+import { redirect } from "next/navigation";
+import { ArrowLeft, CreditCard, Download, FileText } from "lucide-react";
+import { fiscalMoney, fiscalStatus, fiscalTone } from "@/components/dashboard/finance/fiscal-invoice-register";
+import { Badge } from "@/components/ui/badge";
+import { buttonClassName } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { requireUser } from "@/features/auth/server";
+import { listAdjustmentNotes } from "@/repositories/adjustment-note-repository";
+import { getClientFiscalInvoiceByWorkflow } from "@/repositories/fiscal-invoice-repository";
+
+function detail(label: string, value: string) {
+  return <div className="border-b border-border py-3 last:border-0"><dt className="text-xs font-semibold text-muted-foreground">{label}</dt><dd className="mt-1 break-words font-medium text-foreground">{value || "Not recorded"}</dd></div>;
+}
+
+export default async function ClientInvoiceDetailPage({ params }: { params: Promise<{ workflowId: string }> }) {
+  const [principal, { workflowId }] = await Promise.all([requireUser(), params]);
+  const invoice = await getClientFiscalInvoiceByWorkflow(principal, workflowId);
+  if (!invoice) redirect("/access-blocked");
+  const notes = await listAdjustmentNotes(principal, invoice.id);
+  const canPay = invoice.balanceDue > 0;
+  return <div className="grid max-w-5xl gap-5">
+    <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center"><Link className={buttonClassName({ variant: "secondary", size: "sm", className: "w-fit" })} href="/client/invoices"><ArrowLeft className="h-4 w-4" />Invoices</Link><div className="flex flex-wrap gap-2"><Link className={buttonClassName({ variant: "secondary", size: "sm" })} href={`/api/finance/invoices/${invoice.id}/pdf`}><Download className="h-4 w-4" />View PDF</Link>{canPay ? <Link className={buttonClassName({ size: "sm" })} href="/client/payments/new"><CreditCard className="h-4 w-4" />Submit payment</Link> : null}</div></div>
+    <Card><CardHeader className="flex flex-col justify-between gap-4 border-b border-border md:flex-row md:items-start"><div><div className="flex flex-wrap items-center gap-2"><Badge tone="teal">{invoice.invoiceNumber}</Badge><Badge tone={fiscalTone(invoice.status)}>{fiscalStatus(invoice.status)}</Badge></div><CardTitle className="mt-3">{invoice.serviceName}</CardTitle><CardDescription>{invoice.engagementReference}</CardDescription></div><p className="text-2xl font-bold text-foreground">{fiscalMoney(invoice.netAmount, invoice.currency)}</p></CardHeader><CardContent className="grid gap-6 p-5 lg:grid-cols-2"><dl>{detail("Client", invoice.clientName)}{detail("Invoice date", new Intl.DateTimeFormat("en-KE", { dateStyle: "medium" }).format(new Date(invoice.issueDate)))}{detail("Due date", new Intl.DateTimeFormat("en-KE", { dateStyle: "medium" }).format(new Date(invoice.dueDate)))}{detail("Balance due", fiscalMoney(invoice.balanceDue, invoice.currency))}</dl><dl>{detail("KRA invoice reference", invoice.etims.kraInvoiceNumber)}{detail("Receipt number", invoice.etims.receiptNumber)}{detail("Control unit", invoice.etims.controlUnitId)}{detail("Accepted by KRA", invoice.etims.acceptedAt ? new Intl.DateTimeFormat("en-KE", { dateStyle: "medium", timeStyle: "short" }).format(new Date(invoice.etims.acceptedAt)) : "Not recorded")}</dl></CardContent></Card>
+    <Card><CardHeader><CardTitle>Invoice breakdown</CardTitle><CardDescription>Services, taxes, and total accepted by KRA eTIMS.</CardDescription></CardHeader><CardContent className="grid gap-3">{invoice.lines.map((line) => <div className="flex flex-col justify-between gap-3 border-t border-border py-4 first:border-0 first:pt-0 sm:flex-row sm:items-center" key={line.lineId}><div><p className="font-semibold text-foreground">{line.description}</p><p className="mt-1 text-sm text-muted-foreground">{line.quantity} {line.quantityUnitCode} · Tax {line.taxRate}%</p></div><p className="font-semibold text-foreground">{fiscalMoney(line.totalAmount, invoice.currency)}</p></div>)}<div className="ml-auto grid w-full max-w-sm gap-2 border-t border-border pt-4 text-sm"><div className="flex justify-between"><span>Before tax</span><span>{fiscalMoney(invoice.subtotal, invoice.currency)}</span></div><div className="flex justify-between"><span>Tax</span><span>{fiscalMoney(invoice.taxAmount, invoice.currency)}</span></div><div className="flex justify-between text-base font-bold"><span>Total</span><span>{fiscalMoney(invoice.totalAmount, invoice.currency)}</span></div></div></CardContent></Card>
+    <Card><CardHeader><CardTitle>Credit and debit notes</CardTitle><CardDescription>Any accepted adjustment to this invoice appears here.</CardDescription></CardHeader><CardContent className="grid gap-3">{notes.length ? notes.map((note) => <div className="flex flex-col justify-between gap-3 rounded-md border border-border p-4 sm:flex-row sm:items-center" key={note.id}><div><p className="font-semibold text-foreground">{note.noteNumber}</p><p className="mt-1 text-sm text-muted-foreground">{note.reasonDescription}</p></div><div className="flex flex-wrap items-center gap-3"><Badge tone="green">KRA accepted</Badge><p className="font-semibold">{fiscalMoney(note.totalAmount, note.currency)}</p><Link className={buttonClassName({ variant: "secondary", size: "sm" })} href={`/api/finance/adjustments/${note.id}/pdf`}><FileText className="h-4 w-4" />View</Link></div></div>) : <p className="rounded-md border border-dashed border-border p-5 text-sm text-muted-foreground">No adjustment notes have been issued for this invoice.</p>}</CardContent></Card>
+  </div>;
+}
