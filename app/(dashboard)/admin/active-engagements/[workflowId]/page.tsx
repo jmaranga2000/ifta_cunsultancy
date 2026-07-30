@@ -5,6 +5,7 @@ import {
 } from "@/components/dashboard/engagements/engagement-execution-workspace";
 import { EngagementUnavailable } from "@/components/dashboard/engagements/engagement-unavailable";
 import { requirePermission } from "@/features/auth/server";
+import { canManageEngagementTeam } from "@/features/engagements/team-access";
 import { listEngagementTeamCandidates } from "@/repositories/engagement-management-repository";
 import { getEngagementExecutionData } from "@/repositories/engagement-execution-repository";
 
@@ -23,9 +24,15 @@ export default async function AdminActiveEngagementPage({
 }) {
   const principal = await requirePermission("engagements.read_all");
   const [{ workflowId }, query] = await Promise.all([params, searchParams]);
+  const canAssignTeam = canManageEngagementTeam(principal);
   const [data, candidates] = await Promise.all([
     getEngagementExecutionData(principal, workflowId),
-    listEngagementTeamCandidates(principal),
+    canAssignTeam
+      ? listEngagementTeamCandidates(principal).catch((error) => {
+          console.error("Unable to load engagement team candidates.", error);
+          return [];
+        })
+      : Promise.resolve([]),
   ]);
   if (!data) return <EngagementUnavailable backHref="/admin/active-engagements" />;
 
