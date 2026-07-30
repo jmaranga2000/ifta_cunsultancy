@@ -674,18 +674,21 @@ function serializeWorkflow(workflow: RawWorkflowInstance, clientView = false): W
     .filter((task) => !clientView || task.clientVisible)
     .map((task) => ({
       ...task,
+      dependencies: Array.isArray(task.dependencies) ? task.dependencies : [],
+      reviewHistory: Array.isArray(task.reviewHistory)
+        ? task.reviewHistory.map((review) => ({
+            decision: review.decision,
+            comments: review.comments,
+            reviewerUserId: review.reviewerUserId?.toString() ?? "",
+            reviewerName: review.reviewerName,
+            reviewedAt: serializeDate(review.reviewedAt) ?? "",
+          }))
+        : [],
       assignedUserId: task.assignedUserId?.toString() ?? null,
       startDate: serializeDate(task.startDate),
       dueDate: serializeDate(task.dueDate),
       blockerReason: task.blockerReason ?? null,
       createdByUserId: task.createdByUserId?.toString() ?? null,
-      reviewHistory: (task.reviewHistory ?? []).map((review) => ({
-        decision: review.decision,
-        comments: review.comments,
-        reviewerUserId: review.reviewerUserId?.toString() ?? "",
-        reviewerName: review.reviewerName,
-        reviewedAt: serializeDate(review.reviewedAt) ?? "",
-      })),
     }));
   const progress = calculateProgress({
     stages: workflow.stages,
