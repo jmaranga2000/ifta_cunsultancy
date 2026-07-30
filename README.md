@@ -173,6 +173,17 @@ Seed foundation data:
 npm run seed
 ```
 
+After deploying the signed job route, configure the production eTIMS worker:
+
+```bash
+npm run qstash:setup
+```
+
+This creates or updates a QStash schedule that calls the signed
+`/api/jobs/process-etims` endpoint every five minutes. Add `QSTASH_URL`,
+`QSTASH_TOKEN`, `QSTASH_CURRENT_SIGNING_KEY`, and
+`QSTASH_NEXT_SIGNING_KEY` to the production environment before running it.
+
 Seeded portal users share `SEED_USER_PASSWORD` when set, otherwise `ChangeMe!12345`:
 
 - Admin: `admin@ifta.test`
