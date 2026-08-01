@@ -54,13 +54,11 @@ import {
   sendEngagementMessageAction,
 } from "@/features/engagements/execution-actions";
 import { reviewEngagementDocumentAction, updateEngagementTaskAction, uploadEngagementDocumentAction } from "@/features/engagement-workspace/actions";
+import type { EngagementWorkspaceTab } from "@/features/engagements/workspace-tabs";
 import type { Permission } from "@/features/authorization/permissions";
 import type { AppRole } from "@/features/authorization/roles";
 import type { EngagementExecutionData } from "@/repositories/engagement-execution-repository";
 import type { EngagementTeamCandidate, EngagementTeamRole } from "@/repositories/engagement-management-repository";
-
-export const ENGAGEMENT_WORKSPACE_TABS = ["overview", "tasks", "documents", "deliverables", "messages", "finance", "timeline", "completion"] as const;
-export type EngagementWorkspaceTab = (typeof ENGAGEMENT_WORKSPACE_TABS)[number];
 
 const tabMeta: Array<{ key: EngagementWorkspaceTab; label: string; icon: typeof BriefcaseBusiness }> = [
   { key: "overview", label: "Overview", icon: BriefcaseBusiness },

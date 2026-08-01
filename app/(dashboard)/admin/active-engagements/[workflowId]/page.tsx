@@ -1,8 +1,5 @@
-import {
-  ENGAGEMENT_WORKSPACE_TABS,
-  EngagementExecutionWorkspace,
-  type EngagementWorkspaceTab,
-} from "@/components/dashboard/engagements/engagement-execution-workspace";
+import { EngagementExecutionWorkspace } from "@/components/dashboard/engagements/engagement-execution-workspace";
+import { isEngagementWorkspaceTab, type EngagementWorkspaceTab } from "@/features/engagements/workspace-tabs";
 import { EngagementUnavailable } from "@/components/dashboard/engagements/engagement-unavailable";
 import { requirePermission } from "@/features/auth/server";
 import { canManageEngagementTeam } from "@/features/engagements/team-access";
@@ -10,9 +7,7 @@ import { listEngagementTeamCandidates } from "@/repositories/engagement-manageme
 import { getEngagementExecutionData } from "@/repositories/engagement-execution-repository";
 
 function workspaceTab(value?: string): EngagementWorkspaceTab {
-  return ENGAGEMENT_WORKSPACE_TABS.includes(value as EngagementWorkspaceTab)
-    ? value as EngagementWorkspaceTab
-    : "overview";
+  return isEngagementWorkspaceTab(value) ? value : "overview";
 }
 
 export default async function AdminActiveEngagementPage({

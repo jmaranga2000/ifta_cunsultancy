@@ -1,16 +1,11 @@
-import {
-  ENGAGEMENT_WORKSPACE_TABS,
-  EngagementExecutionWorkspace,
-  type EngagementWorkspaceTab,
-} from "@/components/dashboard/engagements/engagement-execution-workspace";
+import { EngagementExecutionWorkspace } from "@/components/dashboard/engagements/engagement-execution-workspace";
+import { isEngagementWorkspaceTab, type EngagementWorkspaceTab } from "@/features/engagements/workspace-tabs";
 import { redirect } from "next/navigation";
 import { requireUser } from "@/features/auth/server";
 import { getEngagementExecutionData } from "@/repositories/engagement-execution-repository";
 
 function workspaceTab(value?: string): EngagementWorkspaceTab {
-  return ENGAGEMENT_WORKSPACE_TABS.includes(value as EngagementWorkspaceTab)
-    ? value as EngagementWorkspaceTab
-    : "overview";
+  return isEngagementWorkspaceTab(value) ? value : "overview";
 }
 
 export default async function ClientEngagementDetailPage({
