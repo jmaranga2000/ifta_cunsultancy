@@ -45,6 +45,7 @@ describe("access-control", () => {
     expect(ROLE_PERMISSION_MATRIX.admin).toContain("invoices.approve");
     expect(ROLE_PERMISSION_MATRIX.admin).toContain("payments.reconcile");
   });
+
   it("prevents clients from reading staff-only documents without a document permission", () => {
     expect(() =>
       assertDocumentAccess(
