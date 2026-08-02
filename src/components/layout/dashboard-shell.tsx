@@ -30,7 +30,6 @@ import {
   LockKeyhole,
   LogOut,
   Mail,
-  Menu,
   MessageSquareText,
   PanelLeftClose,
   PanelLeftOpen,
@@ -435,16 +434,7 @@ export function DashboardShell({
       <div className="dashboard-shell-main min-w-0 max-w-full">
         <header className="dashboard-topbar sticky top-0 z-50 border-b border-border bg-card/95 backdrop-blur-md">
           <div className="flex min-h-[68px] min-w-0 max-w-full items-center justify-between gap-3 px-4 lg:px-6">
-            <button
-              aria-label="Open navigation"
-              className="grid h-10 w-10 shrink-0 place-items-center rounded-md border border-border bg-secondary text-secondary-foreground lg:hidden"
-              onClick={() => setMobileOpen(true)}
-              type="button"
-            >
-              <Menu aria-hidden="true" className="h-5 w-5" />
-            </button>
-
-            <div className="min-w-0">
+            <div className="hidden min-w-0 sm:flex">
               <div className="flex min-w-0 items-center gap-1.5 text-xs font-medium text-muted-foreground">
                 <span className="truncate">{roleLabel}</span>
                 {activeTrail.length > 1 ? (
@@ -487,46 +477,37 @@ export function DashboardShell({
               )}
             </div>
 
-            <div className="flex shrink-0 items-center gap-2">
-              <div className="relative">
-                <button
-                  aria-expanded={quickCreateOpen}
-                  className={buttonClassName({ size: "sm" })}
-                  onClick={() => {
-                    setQuickCreateOpen((current) => !current);
-                    setProfileOpen(false);
-                  }}
-                  type="button"
-                >
-                  <Plus aria-hidden="true" className="h-4 w-4" />
-                  <span className="hidden sm:inline">Create</span>
-                </button>
-                {quickCreateOpen ? (
-                  <div className="absolute right-0 top-11 z-40 w-60 rounded-md border border-border bg-card p-2 shadow-xl">
-                    {quickCreateItems.map((item) => (
-                      <Link
-                        className="flex items-center gap-2 rounded-md px-3 py-2.5 text-sm font-medium text-foreground hover:bg-muted"
-                        href={item.href}
-                        key={item.label}
-                      >
-                        <Plus aria-hidden="true" className="h-4 w-4 text-primary" />
-                        {item.label}
-                      </Link>
-                    ))}
-                  </div>
-                ) : null}
+            <div className="ml-auto flex shrink-0 items-center gap-2">
+              <div className="hidden lg:flex lg:items-center lg:gap-2">
+                <div className="relative">
+                  <button
+                    aria-expanded={quickCreateOpen}
+                    className={buttonClassName({ size: "sm" })}
+                    onClick={() => {
+                      setQuickCreateOpen((current) => !current);
+                      setProfileOpen(false);
+                    }}
+                    type="button"
+                  >
+                    <Plus aria-hidden="true" className="h-4 w-4" />
+                    <span className="hidden sm:inline">Create</span>
+                  </button>
+                  {quickCreateOpen ? (
+                    <div className="absolute right-0 top-11 z-40 w-60 rounded-md border border-border bg-card p-2 shadow-xl">
+                      {quickCreateItems.map((item) => (
+                        <Link
+                          className="flex items-center gap-2 rounded-md px-3 py-2.5 text-sm font-medium text-foreground hover:bg-muted"
+                          href={item.href}
+                          key={item.label}
+                        >
+                          <Plus aria-hidden="true" className="h-4 w-4 text-primary" />
+                          {item.label}
+                        </Link>
+                      ))}
+                    </div>
+                  ) : null}
+                </div>
               </div>
-
-              <LiveNotificationBell notificationsHref={notificationsHref} />
-
-              <ThemeToggle className="hidden lg:inline-flex" />
-              <Link
-                aria-label="Help"
-                className="hidden h-10 w-10 place-items-center rounded-md border border-border bg-secondary text-secondary-foreground hover:bg-muted xl:grid"
-                href="/contact"
-              >
-                <HelpCircle aria-hidden="true" className="h-4 w-4" />
-              </Link>
 
               <div className="relative">
                 <button
@@ -568,9 +549,13 @@ export function DashboardShell({
                   </div>
                 ) : null}
               </div>
+
+              <ThemeToggle className="inline-flex" />
+              <LiveNotificationBell notificationsHref={notificationsHref} />
             </div>
           </div>
-          <div className="border-t border-border px-4 py-2 text-xs text-muted-foreground xl:hidden">
+
+          <div className="hidden border-t border-border px-4 py-2 text-xs text-muted-foreground sm:block xl:hidden">
             <p className="truncate">{subtitle}</p>
           </div>
         </header>
