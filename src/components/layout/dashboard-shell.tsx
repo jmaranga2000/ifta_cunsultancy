@@ -434,6 +434,15 @@ export function DashboardShell({
       <div className="dashboard-shell-main min-w-0 max-w-full">
         <header className="dashboard-topbar sticky top-0 z-50 border-b border-border bg-card/95 backdrop-blur-md">
           <div className="flex min-h-[68px] min-w-0 max-w-full items-center justify-between gap-3 px-4 lg:px-6">
+            <button
+              aria-label="Open navigation"
+              className="flex h-10 w-10 items-center justify-center rounded-md border border-border bg-background text-foreground hover:bg-muted lg:hidden"
+              onClick={() => setMobileOpen(true)}
+              type="button"
+            >
+              <PanelLeftOpen aria-hidden="true" className="h-4 w-4" />
+            </button>
+
             <div className="hidden min-w-0 sm:flex">
               <div className="flex min-w-0 items-center gap-1.5 text-xs font-medium text-muted-foreground">
                 <span className="truncate">{roleLabel}</span>
