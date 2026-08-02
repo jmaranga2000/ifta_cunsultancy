@@ -29,4 +29,11 @@ describe("client KYC questionnaire", () => {
       ]),
     );
   });
+
+  it("treats the customer image field as a real image upload field", () => {
+    const customerImageQuestion = CLIENT_KYC_QUESTIONS.find((question) => question.id === "customer_image");
+
+    expect(customerImageQuestion).toBeDefined();
+    expect(customerImageQuestion?.kind).toBe("file");
+  });
 });

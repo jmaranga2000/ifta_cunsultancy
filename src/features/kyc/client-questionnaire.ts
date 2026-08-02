@@ -3,7 +3,7 @@ export type ClientKycQuestion = {
   section: string;
   label: string;
   helpText: string;
-  kind: "text" | "textarea" | "select" | "repeatable-group";
+  kind: "text" | "textarea" | "select" | "file" | "repeatable-group";
   required: boolean;
   options?: readonly string[];
   subFields?: Array<{
@@ -165,7 +165,7 @@ export const CLIENT_KYC_QUESTIONS: readonly ClientKycQuestion[] = [
     section: "Section B - Individual customer details",
     label: "Customer image",
     helpText: "Upload a recent passport-size photo or selfie when available.",
-    kind: "text",
+    kind: "file",
     required: false,
   },
   {

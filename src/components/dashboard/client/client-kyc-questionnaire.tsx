@@ -59,7 +59,7 @@ function QuestionField({ question, value }: { question: ClientKycQuestion; value
         <div className="grid gap-2">
           <Label htmlFor={fieldId}>
             {question.label}
-            {question.required ? <span className="text-destructive"> *</span> : null}
+            {question.required ? <span className="text-red-600"> *</span> : null}
           </Label>
           <p className="text-sm leading-6 text-muted-foreground">{question.helpText}</p>
         </div>
@@ -109,7 +109,7 @@ function QuestionField({ question, value }: { question: ClientKycQuestion; value
     <div className="grid gap-2" key={question.id}>
       <Label htmlFor={fieldId}>
         {question.label}
-        {question.required ? <span className="text-destructive"> *</span> : null}
+        {question.required ? <span className="text-red-600"> *</span> : null}
       </Label>
       <p className="text-sm leading-6 text-muted-foreground">{question.helpText}</p>
       {question.kind === "textarea" ? (
@@ -127,6 +127,9 @@ function QuestionField({ question, value }: { question: ClientKycQuestion; value
       ) : null}
       {question.kind === "text" ? (
         <Input defaultValue={value} id={fieldId} name={question.id} required={question.required} />
+      ) : null}
+      {question.kind === "file" ? (
+        <Input accept="image/*" id={fieldId} name={question.id} required={question.required} type="file" />
       ) : null}
     </div>
   );
