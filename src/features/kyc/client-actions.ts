@@ -128,7 +128,19 @@ export async function uploadClientKycReplacementAction(formData: FormData) {
   const inputs: Array<{ field: string; type: ClientKycDocumentType; required: boolean }> = [
     { field: "identityDocument", type: "identity_card", required: true },
     { field: "taxPinDocument", type: "tax_pin", required: true },
-    { field: "locationDocument", type: "proof_of_location", required: false },
+    { field: "addressDocument", type: "proof_of_address", required: true },
+    { field: "passportPhotoDocument", type: "passport_photo", required: false },
+    { field: "passportBioPageDocument", type: "passport_bio_page", required: false },
+    { field: "businessRegistrationDocument", type: "business_registration_documents", required: false },
+    { field: "ownershipDocument", type: "ownership_documents", required: false },
+    { field: "authorisationDocument", type: "authorisation_documents", required: false },
+    { field: "incorporationDocument", type: "certificate_of_incorporation", required: false },
+    { field: "cr12Document", type: "cr12_or_ownership_record", required: false },
+    { field: "businessLicenceDocument", type: "business_licence", required: false },
+    { field: "boardResolutionDocument", type: "board_resolution", required: false },
+    { field: "annualReturnDocument", type: "latest_annual_return", required: false },
+    { field: "financialStatementsDocument", type: "financial_statements", required: false },
+    { field: "businessAddressDocument", type: "business_address_proof", required: false },
   ];
   const uploads = inputs.flatMap((input) => {
     const value = formData.get(input.field);
