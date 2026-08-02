@@ -28,6 +28,7 @@ import {
   permanentlyDeleteArchiveAction,
   requestArchiveRestoreAction,
 } from "@/features/archive/actions";
+import { formatArchiveTableValue } from "@/features/archive/format-archive-table-value";
 import type { ArchiveDetailData } from "@/repositories/archive-repository";
 
 function formatDate(value: string | null) {
@@ -59,7 +60,7 @@ function DataTable({
 }: {
   title: string;
   description: string;
-  rows: Array<Record<string, string | number>>;
+  rows: Array<Record<string, unknown>>;
 }) {
   const columns = rows[0] ? Object.keys(rows[0]) : [];
 
@@ -84,7 +85,7 @@ function DataTable({
                 {rows.map((row, index) => (
                   <TableRow key={index}>
                     {columns.map((column) => (
-                      <TableCell key={column}>{row[column]}</TableCell>
+                      <TableCell className="whitespace-pre-wrap" key={column}>{formatArchiveTableValue(row[column])}</TableCell>
                     ))}
                   </TableRow>
                 ))}

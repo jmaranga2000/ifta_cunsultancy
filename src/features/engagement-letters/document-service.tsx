@@ -21,6 +21,7 @@ import {
   TextRun,
   WidthType,
 } from "docx";
+import { getSignatureDisplayState } from "@/features/engagement-letters/signature-state";
 import type { EngagementLetterRecord } from "@/repositories/engagement-letter-repository";
 
 const BRAND_DEEP = "03363D";
@@ -84,21 +85,21 @@ const pdfStyles = StyleSheet.create({
 });
 
 function PdfSignature({ letter, role }: { letter: EngagementLetterRecord; role: "ifta" | "client" }) {
-  const signer = signerStatus(letter, role);
+  const signer = getSignatureDisplayState(letter).find((entry) => entry.role === role);
   return (
     <View style={pdfStyles.signatureBox}>
-      <Text style={pdfStyles.signatureRole}>{role === "ifta" ? "For IFTA Consulting" : "For the client"}</Text>
-      {signer?.status === "signed" ? (
+      <Text style={pdfStyles.signatureRole}>{signer?.label ?? (role === "ifta" ? "For IFTA Consulting" : "For the client")}</Text>
+      {signer?.signed ? (
         <>
-          <Text style={pdfStyles.signatureName}>{signer.signatureText || signer.name}</Text>
-          <Text style={pdfStyles.signatureDetail}>{signer.name} | {signer.title}</Text>
+          <Text style={pdfStyles.signatureName}>{signer.displayName}</Text>
+          <Text style={pdfStyles.signatureDetail}>{signer.title}</Text>
           <Text style={pdfStyles.signatureDetail}>Signed {signer.signedAt ? dateLabel(signer.signedAt) : "electronically"}</Text>
           <Text style={pdfStyles.signatureDetail}>Evidence {signer.signatureHash?.slice(0, 20) ?? "recorded"}</Text>
         </>
       ) : (
         <>
           <Text style={pdfStyles.pending}>Signature pending</Text>
-          <Text style={pdfStyles.signatureDetail}>{signer?.name ?? "Authorized signatory"}</Text>
+          <Text style={pdfStyles.signatureDetail}>{signer?.displayName ?? "Authorized signatory"}</Text>
           <Text style={pdfStyles.signatureDetail}>{signer?.title ?? ""}</Text>
         </>
       )}
@@ -172,8 +173,8 @@ function wordContentParagraphs(letter: EngagementLetterRecord) {
 }
 
 function signatureCell(letter: EngagementLetterRecord, role: "ifta" | "client") {
-  const signer = signerStatus(letter, role);
-  const signed = signer?.status === "signed";
+  const signer = getSignatureDisplayState(letter).find((entry) => entry.role === role);
+  const signed = signer?.signed ?? false;
   return new TableCell({
     borders: {
       top: { style: BorderStyle.SINGLE, color: BRAND_MIST, size: 6 },
@@ -183,10 +184,10 @@ function signatureCell(letter: EngagementLetterRecord, role: "ifta" | "client") 
     },
     children: [
       new Paragraph({ children: [new TextRun({ bold: true, color: BRAND_DEEP, text: role === "ifta" ? "FOR IFTA CONSULTING" : "FOR THE CLIENT" })] }),
-      new Paragraph({ spacing: { before: 220 }, children: [new TextRun({ bold: signed, color: BRAND_DEEP, italics: signed, size: signed ? 32 : 20, text: signed ? signer.signatureText || signer.name : "Signature pending" })] }),
-      new Paragraph({ spacing: { before: 80 }, children: [new TextRun({ color: MUTED, size: 18, text: signer?.name ?? "Authorized signatory" })] }),
-      new Paragraph({ children: [new TextRun({ color: MUTED, size: 16, text: signed && signer.signedAt ? `Signed ${dateLabel(signer.signedAt)}` : signer?.title ?? "" })] }),
-      new Paragraph({ children: [new TextRun({ color: MUTED, size: 14, text: signed ? `Evidence ${signer.signatureHash?.slice(0, 24) ?? "recorded"}` : "" })] }),
+      new Paragraph({ spacing: { before: 220 }, children: [new TextRun({ bold: signed, color: BRAND_DEEP, italics: signed, size: signed ? 32 : 20, text: signed ? signer?.displayName ?? "Signed" : "Signature pending" })] }),
+      new Paragraph({ spacing: { before: 80 }, children: [new TextRun({ color: MUTED, size: 18, text: signer?.title ?? "Authorized signatory" })] }),
+      new Paragraph({ children: [new TextRun({ color: MUTED, size: 16, text: signed && signer?.signedAt ? `Signed ${dateLabel(signer.signedAt)}` : "" })] }),
+      new Paragraph({ children: [new TextRun({ color: MUTED, size: 14, text: signed ? `Evidence ${signer?.signatureHash?.slice(0, 24) ?? "recorded"}` : "" })] }),
     ],
   });
 }

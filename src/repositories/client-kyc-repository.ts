@@ -7,6 +7,19 @@ export const CLIENT_KYC_DOCUMENT_TYPES = [
   "identity_card",
   "tax_pin",
   "proof_of_location",
+  "passport_bio_page",
+  "passport_photo",
+  "proof_of_address",
+  "business_registration_documents",
+  "ownership_documents",
+  "authorisation_documents",
+  "certificate_of_incorporation",
+  "cr12_or_ownership_record",
+  "business_licence",
+  "board_resolution",
+  "latest_annual_return",
+  "financial_statements",
+  "business_address_proof",
 ] as const;
 
 export type ClientKycDocumentType = (typeof CLIENT_KYC_DOCUMENT_TYPES)[number];
@@ -15,6 +28,19 @@ export const CLIENT_KYC_DOCUMENT_LABELS: Record<ClientKycDocumentType, string> =
   identity_card: "Identity card",
   tax_pin: "Tax PIN certificate",
   proof_of_location: "Proof of location",
+  passport_bio_page: "Passport bio page",
+  passport_photo: "Passport-size photo or selfie",
+  proof_of_address: "Proof of address",
+  business_registration_documents: "Business registration documents",
+  ownership_documents: "Ownership documents",
+  authorisation_documents: "Authorisation documents",
+  certificate_of_incorporation: "Certificate of incorporation or business registration",
+  cr12_or_ownership_record: "CR12 or latest company ownership record",
+  business_licence: "Business licence or permit",
+  board_resolution: "Board resolution authorising the relationship",
+  latest_annual_return: "Latest annual return",
+  financial_statements: "Financial statements",
+  business_address_proof: "Proof of business address",
 };
 
 export type ClientKycDocument = {
@@ -86,7 +112,20 @@ export function resolveClientKycDocumentType(
 ): ClientKycDocumentType {
   const value = `${document.documentType ?? ""} ${document.filename ?? ""}`.toLowerCase();
   if (value.includes("tax") || value.includes("kra") || value.includes("pin")) return "tax_pin";
-  if (value.includes("location") || value.includes("address") || value.includes("utility")) return "proof_of_location";
+  if (value.includes("location") || value.includes("utility")) return "proof_of_location";
+  if (value.includes("passport") && value.includes("bio")) return "passport_bio_page";
+  if (value.includes("passport") || value.includes("selfie") || value.includes("photo")) return "passport_photo";
+  if (value.includes("address") && !value.includes("business")) return "proof_of_address";
+  if (value.includes("business") && value.includes("address")) return "business_address_proof";
+  if (value.includes("incorporation") || value.includes("registration")) return "certificate_of_incorporation";
+  if (value.includes("ownership") || value.includes("cr12")) return "cr12_or_ownership_record";
+  if (value.includes("licence") || value.includes("permit")) return "business_licence";
+  if (value.includes("resolution")) return "board_resolution";
+  if (value.includes("annual") || value.includes("return")) return "latest_annual_return";
+  if (value.includes("statement") || value.includes("financial")) return "financial_statements";
+  if (value.includes("authorisation") || value.includes("authority")) return "authorisation_documents";
+  if (value.includes("ownership") || value.includes("owner")) return "ownership_documents";
+  if (value.includes("registration") || value.includes("business")) return "business_registration_documents";
   return "identity_card";
 }
 

@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
-import { CheckCircle2, Save } from "lucide-react";
+import { CheckCircle2, Plus, Save } from "lucide-react";
+import { useMemo, useState } from "react";
 import { saveClientKycQuestionnaireAction } from "@/features/kyc/client-actions";
 import { CLIENT_KYC_QUESTIONS, type ClientKycQuestion } from "@/features/kyc/client-questionnaire";
 import type { ClientKycSubmission } from "@/repositories/client-kyc-repository";
@@ -11,8 +14,96 @@ import { Select } from "@/components/ui/select";
 import { SubmitButton } from "@/components/ui/submit-button";
 import { Textarea } from "@/components/ui/textarea";
 
+const DOCUMENT_FIELDS = [
+  { id: "id_front_back", label: "ID front and back", required: true },
+  { id: "passport_bio_page", label: "Passport bio page", required: false },
+  { id: "kra_pin_certificate", label: "KRA PIN certificate", required: true },
+  { id: "passport_photo", label: "Passport-size photo or selfie", required: false },
+  { id: "proof_of_address", label: "Proof of address", required: true },
+  { id: "business_registration_documents", label: "Business registration documents", required: false },
+  { id: "ownership_documents", label: "Ownership documents", required: false },
+  { id: "authorisation_documents", label: "Authorisation documents", required: false },
+  { id: "certificate_of_incorporation", label: "Certificate of incorporation or business registration", required: false },
+  { id: "cr12_or_ownership_record", label: "CR12 or latest company ownership record", required: false },
+  { id: "business_licence", label: "Business licence or permit", required: false },
+  { id: "board_resolution", label: "Board resolution authorising the relationship", required: false },
+  { id: "latest_annual_return", label: "Latest annual return", required: false },
+  { id: "financial_statements", label: "Financial statements", required: false },
+  { id: "business_address_proof", label: "Proof of business address", required: false },
+];
+
+function parseRepeatableEntries(value: string) {
+  if (!value) return [{ full_name: "", nationality: "", national_id: "", phone_number: "", email: "", position: "", percentage_ownership: "", kra_pin: "" }];
+
+  try {
+    const parsed = JSON.parse(value) as Array<Record<string, string>>;
+    return parsed.length > 0 ? parsed : [{ full_name: "", nationality: "", national_id: "", phone_number: "", email: "", position: "", percentage_ownership: "", kra_pin: "" }];
+  } catch {
+    return [{ full_name: "", nationality: "", national_id: "", phone_number: "", email: "", position: "", percentage_ownership: "", kra_pin: "" }];
+  }
+}
+
 function QuestionField({ question, value }: { question: ClientKycQuestion; value: string }) {
   const fieldId = `kyc-${question.id}`;
+
+  if (question.kind === "repeatable-group") {
+    const initialEntries = useMemo(() => parseRepeatableEntries(value), [value]);
+    const [entries, setEntries] = useState(initialEntries);
+
+    const addEntry = () => {
+      setEntries((current) => [...current, { full_name: "", nationality: "", national_id: "", phone_number: "", email: "", position: "", percentage_ownership: "", kra_pin: "" }]);
+    };
+
+    return (
+      <div className="grid gap-3" key={question.id}>
+        <div className="grid gap-2">
+          <Label htmlFor={fieldId}>
+            {question.label}
+            {question.required ? <span className="text-destructive"> *</span> : null}
+          </Label>
+          <p className="text-sm leading-6 text-muted-foreground">{question.helpText}</p>
+        </div>
+        <div className="grid gap-3">
+          {entries.map((entry, index) => (
+            <div className="grid gap-3 rounded-md border border-dashed border-border p-4" key={`${question.id}-${index}`}>
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-sm font-medium text-foreground">Entry {index + 1}</p>
+                <button className="inline-flex items-center gap-2 rounded-md border border-border px-3 py-2 text-sm font-medium text-foreground" onClick={addEntry} type="button">
+                  <Plus aria-hidden="true" className="h-4 w-4" />
+                  Add another
+                </button>
+              </div>
+              <div className="grid gap-3 md:grid-cols-2">
+                {question.subFields?.map((field) => {
+                  const subFieldId = `${question.id}__${index}__${field.id}`;
+                  const subValue = entry[field.id] ?? "";
+                  return (
+                    <div className="grid gap-2" key={subFieldId}>
+                      <Label htmlFor={subFieldId}>{field.label}</Label>
+                      {field.kind === "textarea" ? (
+                        <Textarea defaultValue={subValue} id={subFieldId} name={subFieldId} required={field.required} />
+                      ) : field.kind === "select" ? (
+                        <Select defaultValue={subValue} id={subFieldId} name={subFieldId} required={field.required}>
+                          <option value="">Select an answer</option>
+                          {field.options?.map((option) => (
+                            <option key={option} value={option}>
+                              {option}
+                            </option>
+                          ))}
+                        </Select>
+                      ) : (
+                        <Input defaultValue={subValue} id={subFieldId} name={subFieldId} required={field.required} />
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="grid gap-2" key={question.id}>
@@ -96,6 +187,21 @@ export function ClientKycQuestionnaire({ saved, submission }: { saved: boolean; 
             </CardContent>
           </Card>
         ))}
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Documents</CardTitle>
+            <CardDescription>Upload the supporting evidence at the bottom of the form so the review team receives everything together.</CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-4">
+            {DOCUMENT_FIELDS.map((field) => (
+              <div className="grid gap-2" key={field.id}>
+                <Label htmlFor={`document-${field.id}`}>{field.label}</Label>
+                <Input id={`document-${field.id}`} name={`document-${field.id}`} type="file" required={field.required} />
+              </div>
+            ))}
+          </CardContent>
+        </Card>
 
         <div className="flex flex-wrap justify-end gap-3">
           <Link className={buttonClassName({ variant: "secondary" })} href="/client/kyc/upload-replacement">

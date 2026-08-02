@@ -1,5 +1,6 @@
 import { CheckCircle2, CircleDashed, FileCheck2, ShieldCheck } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { getSignatureDisplayState } from "@/features/engagement-letters/signature-state";
 import type { EngagementLetterRecord } from "@/repositories/engagement-letter-repository";
 
 function formatDate(value: string) {
@@ -25,6 +26,7 @@ function LetterBody({ content }: { content: string }) {
 }
 
 export function SignatureRegister({ letter }: { letter: EngagementLetterRecord }) {
+  const signatureState = getSignatureDisplayState(letter);
   return (
     <section className="border-t border-border bg-muted/15 px-5 py-5 sm:px-8">
       <div className="mb-4 flex items-center gap-2">
@@ -32,17 +34,17 @@ export function SignatureRegister({ letter }: { letter: EngagementLetterRecord }
         <h3 className="font-bold text-foreground">Electronic signature register</h3>
       </div>
       <div className="grid gap-3 md:grid-cols-2">
-        {letter.signers.filter((signer) => signer.required || signer.status === "signed").map((signer) => (
-          <div className="rounded-md border border-border bg-background p-4" key={signer.id}>
+        {signatureState.map((signer) => (
+          <div className="rounded-md border border-border bg-background p-4" key={signer.role}>
             <div className="flex items-start justify-between gap-3">
               <div>
-                <p className="text-xs font-bold uppercase text-muted-foreground">{signer.role === "ifta" ? "For IFTA Consulting" : "For the client"}</p>
-                <p className="mt-2 text-sm font-bold text-foreground">{signer.name}</p>
+                <p className="text-xs font-bold uppercase text-muted-foreground">{signer.label}</p>
+                <p className="mt-2 text-sm font-bold text-foreground">{signer.displayName}</p>
                 <p className="mt-1 text-xs text-muted-foreground">{signer.title}</p>
               </div>
-              <Badge tone={signer.status === "signed" ? "green" : "gold"}>{signer.status === "signed" ? "Signed" : "Pending"}</Badge>
+              <Badge tone={signer.signed ? "green" : "gold"}>{signer.signed ? "Signed" : "Pending"}</Badge>
             </div>
-            {signer.status === "signed" ? (
+            {signer.signed ? (
               <div className="mt-4 border-t border-border pt-3">
                 <p className="font-serif text-xl italic text-primary">{signer.signatureText}</p>
                 <p className="mt-2 flex items-center gap-1 text-xs text-muted-foreground"><CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />Signed {signer.signedAt ? formatDate(signer.signedAt) : ""}</p>

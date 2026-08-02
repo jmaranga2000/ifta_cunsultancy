@@ -38,13 +38,87 @@ async function requireClientKycUser() {
   return principal;
 }
 
+async function uploadKycDocumentsToStorage(userId: string, files: Array<{ file: File; documentType: ClientKycDocumentType }>) {
+  if (files.length === 0) return [];
+
+  const configuration = getR2Configuration();
+  return Promise.all(files.map(async ({ file, documentType }) => {
+    const filename = file.name.replace(/[^a-zA-Z0-9._-]/g, "-") || `${documentType}-document`;
+    const key = `kyc/${userId}/${documentType}/${randomUUID()}-${filename}`;
+    await getR2Client().send(new PutObjectCommand({
+      Bucket: configuration.bucketName,
+      Key: key,
+      Body: Buffer.from(await file.arrayBuffer()),
+      ContentType: file.type,
+      ContentDisposition: `attachment; filename="${filename}"`,
+      Metadata: { documentType, documentLabel: CLIENT_KYC_DOCUMENT_LABELS[documentType] },
+    }));
+
+    return { r2Key: key, filename, contentType: file.type, size: file.size, documentType };
+  }));
+}
+
 export async function saveClientKycQuestionnaireAction(formData: FormData) {
   const principal = await requireClientKycUser();
-  const answers = Object.fromEntries(
-    CLIENT_KYC_QUESTIONS.map((question) => [question.id, String(formData.get(question.id) ?? "").trim()]),
-  );
+  const answers: Record<string, string> = {};
+
+  for (const question of CLIENT_KYC_QUESTIONS) {
+    if (question.kind === "repeatable-group") {
+      const entries: Array<Record<string, string>> = [];
+      const grouped = new Map<number, Record<string, string>>();
+
+      for (const [name, value] of formData.entries()) {
+        if (typeof name !== "string") continue;
+        const match = name.match(new RegExp(`^${question.id}__(\\d+)__(.+)$`));
+        if (!match) continue;
+
+        const [, indexText, fieldId] = match;
+        const entryIndex = Number(indexText);
+        const entry = grouped.get(entryIndex) ?? {};
+        entry[fieldId] = String(value).trim();
+        grouped.set(entryIndex, entry);
+      }
+
+      const sortedEntries = Array.from(grouped.entries())
+        .sort(([left], [right]) => left - right)
+        .map(([, entry]) => entry)
+        .filter((entry) => Object.values(entry).some((item) => item.trim().length > 0));
+
+      answers[question.id] = JSON.stringify(sortedEntries);
+      continue;
+    }
+
+    answers[question.id] = String(formData.get(question.id) ?? "").trim();
+  }
+
+  const uploads = [
+    { field: "document-id_front_back", documentType: "identity_card" as const },
+    { field: "document-passport_bio_page", documentType: "passport_bio_page" as const },
+    { field: "document-kra_pin_certificate", documentType: "tax_pin" as const },
+    { field: "document-passport_photo", documentType: "passport_photo" as const },
+    { field: "document-proof_of_address", documentType: "proof_of_address" as const },
+    { field: "document-business_registration_documents", documentType: "business_registration_documents" as const },
+    { field: "document-ownership_documents", documentType: "ownership_documents" as const },
+    { field: "document-authorisation_documents", documentType: "authorisation_documents" as const },
+    { field: "document-certificate_of_incorporation", documentType: "certificate_of_incorporation" as const },
+    { field: "document-cr12_or_ownership_record", documentType: "cr12_or_ownership_record" as const },
+    { field: "document-business_licence", documentType: "business_licence" as const },
+    { field: "document-board_resolution", documentType: "board_resolution" as const },
+    { field: "document-latest_annual_return", documentType: "latest_annual_return" as const },
+    { field: "document-financial_statements", documentType: "financial_statements" as const },
+    { field: "document-business_address_proof", documentType: "business_address_proof" as const },
+  ].flatMap(({ field, documentType }) => {
+    const value = formData.get(field);
+    return value instanceof File && value.size > 0 ? [{ file: value, documentType }] : [];
+  });
 
   await saveClientKycAnswers(principal.id, answers);
+
+  if (uploads.length > 0) {
+    const storedDocuments = await uploadKycDocumentsToStorage(principal.id, uploads);
+    await addClientKycDocuments(principal.id, storedDocuments);
+  }
+
   redirect("/client/kyc/questionnaire?saved=1");
 }
 
@@ -76,20 +150,7 @@ export async function uploadClientKycReplacementAction(formData: FormData) {
   }
 
   try {
-    const configuration = getR2Configuration();
-    const storedDocuments = await Promise.all(uploads.map(async ({ file, type }) => {
-      const filename = file.name.replace(/[^a-zA-Z0-9._-]/g, "-") || `${type}-document`;
-      const key = `kyc/${principal.id}/${type}/${randomUUID()}-${filename}`;
-      await getR2Client().send(new PutObjectCommand({
-        Bucket: configuration.bucketName,
-        Key: key,
-        Body: Buffer.from(await file.arrayBuffer()),
-        ContentType: file.type,
-        ContentDisposition: `attachment; filename="${filename}"`,
-        Metadata: { documentType: type, documentLabel: CLIENT_KYC_DOCUMENT_LABELS[type] },
-      }));
-      return { r2Key: key, filename, contentType: file.type, size: file.size, documentType: type };
-    }));
+    const storedDocuments = await uploadKycDocumentsToStorage(principal.id, uploads.map(({ file, type }) => ({ file, documentType: type })));
     await addClientKycDocuments(principal.id, storedDocuments);
   } catch (error) {
     console.error("Unable to upload the client KYC documents.", error);

@@ -216,6 +216,19 @@ The Client will provide timely, complete and accurate information and will revie
 ## Confidentiality and data handling
 Each party will protect confidential information and use it only for this engagement, subject to applicable law and professional obligations.
 
+## Privacy notice
+We are committed to handling your personal data responsibly and in accordance with applicable privacy and data protection obligations. The information you provide in this engagement and KYC process is collected for the following purposes: to verify your identity and that of any related individuals, businesses or beneficial owners; to assess your suitability for our services; to meet legal, regulatory and professional requirements, including customer due diligence, anti-money laundering and fraud prevention obligations; and to support the administration of the engagement, including onboarding, risk assessment, communication and recordkeeping.
+
+The information collected may include your name, identification details, contact information, business information, tax information, documents, beneficial ownership information, financial information, and other information reasonably necessary for the purpose of this engagement. We use this information to review your application, verify the information supplied, assess risk, manage our relationship with you, fulfil our contractual and legal responsibilities, and maintain appropriate records for the services provided.
+
+Your information may be shared with our internal teams who are involved in client onboarding, compliance, risk management, legal review, operations, payments and administration, as well as with professional advisers, auditors, service providers and regulators where this is necessary to perform our services, comply with legal obligations or protect our legitimate interests. Where appropriate, we may also share information with third parties who assist us in providing services or maintaining secure systems, subject to confidentiality and data protection requirements.
+
+We retain personal data for as long as necessary to fulfil the purposes for which it was collected, to comply with legal or regulatory obligations, to resolve disputes, and to support our legitimate business needs. In many cases, this means retaining records for a period required by law, professional standards or internal policy, after which they may be securely archived or deleted in accordance with our retention procedures.
+
+We take reasonable technical and organisational measures to protect your information from unauthorised access, misuse, loss, alteration or disclosure. These measures may include restricted access, secure storage, password protection, monitoring, encryption where appropriate, and controlled handling of documents and records. While we take appropriate precautions, no system can be guaranteed to be completely secure, and we encourage you to help protect your information by keeping your credentials confidential.
+
+You may request access to the personal information we hold about you, ask us to correct any inaccurate information, or raise concerns about how your information is being handled. To do so, please contact our privacy or compliance team using the contact details provided in our client communications. We will review your request in line with applicable law and, where permitted, take appropriate steps to respond to your request.
+
 ## Governing law
 This engagement is governed by {{governingLaw}}.
 
