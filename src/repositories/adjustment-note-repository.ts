@@ -5,15 +5,18 @@ import { hasPermission } from "@/features/authorization/access-control";
 import { verifyPassword } from "@/features/auth/password";
 import { writeAuditLog } from "@/features/audit/audit-service";
 import type { AdjustmentNoteType } from "@/features/etims/types";
+import { resolveEtimsEnv } from "@/features/etims/env-config";
 import { connectToDatabase } from "@/lib/db/mongoose";
 import { AuthorizationError } from "@/lib/errors";
 import { AdjustmentNoteModel } from "@/models/adjustment-note";
 import { EtimsOutboxEventModel } from "@/models/etims-outbox-event";
+import { EtimsServiceMappingModel } from "@/models/etims-service-mapping";
 import { FiscalInvoiceModel } from "@/models/fiscal-invoice";
 import { UserModel } from "@/models/user";
 import { createCommunicationNotification } from "@/repositories/communication-repository";
 import { deterministicPayloadHash } from "@/repositories/fiscal-invoice-repository";
 import { getEtimsConfiguration } from "@/repositories/etims-configuration-repository";
+import { nextEtimsSequenceNumber } from "@/repositories/etims-sequence-repository";
 
 export type AdjustmentNoteRecord = {
   id: string;
@@ -324,8 +327,33 @@ export async function confirmAdjustmentNote(input: {
   ) {
     return { ok: false as const, reason: "debit_mapping" };
   }
+  const originalSnapshot = (originalInvoice?.snapshot ?? {}) as Record<string, unknown>;
+  const mappings = await EtimsServiceMappingModel.find({
+    _id: { $in: note.lines.map((line) => line.serviceMappingId) },
+  }).lean().exec();
+  type MappingCodes = { itemCode?: string; classificationCode?: string; packageUnitCode?: string; quantityUnitCode?: string };
+  const mappingsById = new Map<string, MappingCodes>(
+    mappings.map((mapping) => [mapping._id.toString(), mapping as unknown as MappingCodes]),
+  );
+  if (resolveEtimsEnv()) {
+    const original = Number(originalSnapshot.kraSequenceNumber);
+    if (!Number.isInteger(original) || original <= 0) {
+      return { ok: false as const, reason: "configuration" };
+    }
+    const unmapped = note.lines.find((line) => {
+      const mapping = mappingsById.get(line.serviceMappingId.toString());
+      return !mapping?.itemCode?.trim() || !mapping.classificationCode?.trim();
+    });
+    if (unmapped) return { ok: false as const, reason: "debit_mapping" };
+  }
+  const kraSequenceNumber = await nextEtimsSequenceNumber();
   const now = new Date();
   const snapshot = {
+    kraSequenceNumber,
+    originalKraSequenceNumber: Number(originalSnapshot.kraSequenceNumber) || 0,
+    clientKraPin: String(originalSnapshot.clientKraPin ?? ""),
+    paymentMethod: String(originalSnapshot.paymentMethod ?? configuration.defaultPaymentType),
+    approverName: input.actor.displayName || input.actor.email,
     noteId: note._id.toString(),
     noteNumber: note.noteNumber,
     type: note.type,
@@ -340,7 +368,16 @@ export async function confirmAdjustmentNote(input: {
     reasonDescription: note.reasonDescription,
     internalExplanation: note.internalExplanation,
     currency: note.currency,
-    lines: note.lines,
+    lines: note.lines.map((line) => {
+      const mapping = mappingsById.get(line.serviceMappingId.toString());
+      return {
+        ...line,
+        quantityUnitCode: mapping?.quantityUnitCode ?? "",
+        itemCode: mapping?.itemCode ?? "",
+        itemClassificationCode: mapping?.classificationCode ?? "",
+        packageUnitCode: mapping?.packageUnitCode ?? "",
+      };
+    }),
     subtotal: note.subtotal,
     taxAmount: note.taxAmount,
     totalAmount: note.totalAmount,

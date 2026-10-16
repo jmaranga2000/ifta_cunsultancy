@@ -1,4 +1,5 @@
 import { GetObjectCommand } from "@aws-sdk/client-s3";
+import { canPreviewInline } from "@/lib/uploads";
 import { getCurrentUser } from "@/features/auth/server";
 import { getR2Client, getR2Configuration } from "@/lib/r2";
 import { getEngagementDocumentFile } from "@/repositories/engagement-workspace-repository";
@@ -20,7 +21,7 @@ export async function GET(
     if (!object.Body) return new Response("Not found", { status: 404 });
     const bytes = await object.Body.transformToByteArray();
     const filename = record.name.replace(/["\r\n]/g, "-");
-    const inline = new URL(request.url).searchParams.get("preview") === "1";
+    const inline = new URL(request.url).searchParams.get("preview") === "1" && canPreviewInline(record.contentType);
     return new Response(Buffer.from(bytes), {
       headers: {
         "Cache-Control": "private, no-store",

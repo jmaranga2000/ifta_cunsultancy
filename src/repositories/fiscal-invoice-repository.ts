@@ -6,6 +6,7 @@ import { writeAuditLog } from "@/features/audit/audit-service";
 import { isClientVisibleInvoiceStatus } from "@/features/etims/types";
 import { connectToDatabase } from "@/lib/db/mongoose";
 import { getServerEnv } from "@/lib/env";
+import { resolveEtimsEnv } from "@/features/etims/env-config";
 import { AuthorizationError } from "@/lib/errors";
 import { ClientKycSubmissionModel } from "@/models/client-kyc-submission";
 import { EtimsOutboxEventModel } from "@/models/etims-outbox-event";
@@ -16,6 +17,7 @@ import { UserModel } from "@/models/user";
 import { WorkflowInstanceModel } from "@/models/workflow-instance";
 import { createCommunicationNotification } from "@/repositories/communication-repository";
 import { getEtimsConfiguration } from "@/repositories/etims-configuration-repository";
+import { nextEtimsSequenceNumber } from "@/repositories/etims-sequence-repository";
 import { getPlatformSettings } from "@/repositories/platform-settings-repository";
 
 export type FiscalInvoiceLineInput = {
@@ -671,8 +673,11 @@ function invoiceSnapshot(
   settings: Awaited<ReturnType<typeof getPlatformSettings>>,
   approvalStampId: string,
   approvedAt: Date,
+  mappingsById: Map<string, { itemCode?: string | null; classificationCode?: string | null; packageUnitCode?: string | null }>,
+  kraSequenceNumber: number,
 ) {
   return {
+    kraSequenceNumber,
     internalInvoiceId: invoice._id.toString(),
     internalInvoiceNumber: invoice.invoiceNumber,
     traderInvoiceNumber: invoice.invoiceNumber,
@@ -686,7 +691,16 @@ function invoiceSnapshot(
     currency: invoice.currency,
     paymentMethod: configuration.defaultPaymentType,
     paymentTerms: invoice.paymentTerms,
-    lines: invoice.lines,
+    // Item codes are copied in now so the submitted payload never changes if the mapping is edited later.
+    lines: invoice.lines.map((line) => {
+      const mapping = line.serviceMappingId ? mappingsById.get(line.serviceMappingId.toString()) : undefined;
+      return {
+        ...line,
+        itemCode: mapping?.itemCode ?? "",
+        itemClassificationCode: mapping?.classificationCode ?? "",
+        packageUnitCode: mapping?.packageUnitCode ?? "",
+      };
+    }),
     subtotal: invoice.subtotal,
     totalTax: invoice.taxAmount,
     grossTotal: invoice.totalAmount,
@@ -734,9 +748,13 @@ async function validateInvoiceForApproval(invoice: RawFiscalInvoice) {
       if (mapping.taxRate !== line.taxRate) errors.push(`The tax rate for "${line.description}" does not match its mapping.`);
       if (mapping.taxTypeCode !== line.taxTypeCode) errors.push(`The tax code for "${line.description}" does not match its mapping.`);
       if (!mapping.quantityUnitCode) errors.push(`The quantity unit for "${line.description}" is invalid.`);
+      const codes = mapping as unknown as { itemCode?: string; classificationCode?: string };
+      if (resolveEtimsEnv() && (!codes.itemCode?.trim() || !codes.classificationCode?.trim())) {
+        errors.push(`The KRA item code and classification code for "${line.description}" are missing. Complete its eTIMS service mapping.`);
+      }
     }
   }
-  return { configuration, errors };
+  return { configuration, errors, mappingsById: byId as unknown as Map<string, { itemCode?: string; classificationCode?: string; packageUnitCode?: string }> };
 }
 
 export async function approveFiscalInvoice(actor: Principal, invoiceId: string) {
@@ -764,7 +782,8 @@ export async function approveFiscalInvoice(actor: Principal, invoiceId: string) 
   const stampPayload = `${invoice._id.toString()}:${invoice.invoiceNumber}:${actor.id}:${now.toISOString()}`;
   const approvalStampId = `IFTA-${now.getUTCFullYear()}-${createHmac("sha256", signingKey).update(stampPayload).digest("hex").slice(0, 16).toUpperCase()}`;
   const settings = await getPlatformSettings();
-  const snapshot = invoiceSnapshot(invoice, validation.configuration, actor, settings, approvalStampId, now);
+  const kraSequenceNumber = await nextEtimsSequenceNumber();
+  const snapshot = invoiceSnapshot(invoice, validation.configuration, actor, settings, approvalStampId, now, validation.mappingsById, kraSequenceNumber);
   const payloadHash = deterministicPayloadHash(snapshot);
   const idempotencyKey = createHash("sha256")
     .update(`invoice:${invoice._id.toString()}:${invoice.invoiceNumber}:${payloadHash}`)

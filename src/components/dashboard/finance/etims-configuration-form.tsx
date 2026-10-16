@@ -60,6 +60,15 @@ export function EtimsConfigurationForm({
         {query.migrated ? <p className="rounded-md border border-success/30 bg-success-soft px-4 py-3 text-sm font-semibold text-success">Legacy invoice classification completed: {query.migrated} imported and {query.review ?? "0"} marked for manual reconciliation. No historical transaction was retransmitted.</p> : null}
         {!configuration.readiness.ready ? <div className="rounded-md border border-warning/30 bg-warning-soft p-4"><p className="font-semibold text-foreground">Complete these items before approving invoices</p><ul className="mt-2 grid gap-1 text-sm text-muted-foreground">{configuration.readiness.missing.map((item) => <li key={item}>· {item}</li>)}</ul></div> : null}
 
+        {configuration.managedByEnvironment ? (
+          <div className="rounded-md border border-primary/30 bg-brand-soft p-4">
+            <p className="font-semibold text-foreground">Connected through your server settings ({configuration.mode})</p>
+            <p className="mt-1 text-sm text-muted-foreground">
+              The mode, endpoint URL, KRA PIN, branch and device values below come from the <code>ETIMS_*</code> lines in your <code>.env</code> file, and changes made on this screen do not override them. To change the connection, edit <code>.env</code> and restart the app. Invoice prefixes, retries and notification choices below still apply.
+            </p>
+          </div>
+        ) : null}
+
         <form action={saveEtimsConfigurationAction} className="grid gap-6">
           <section className="grid gap-4">
             <div><h2 className="text-lg font-semibold text-foreground">Connection</h2><p className="mt-1 text-sm text-muted-foreground">Use sandbox while testing. Production is blocked for debit notes until its mapping is verified.</p></div>

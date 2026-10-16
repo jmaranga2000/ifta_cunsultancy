@@ -8,6 +8,8 @@ const userSchema = new Schema(
     passwordHash: { type: String, required: true, select: false },
     firstName: { type: String, default: "" },
     lastName: { type: String, default: "" },
+    phone: { type: String, default: "", trim: true },
+    smsOptIn: { type: Boolean, default: false },
     avatarKey: { type: String, default: null },
     avatarContentType: { type: String, default: null },
     avatarUpdatedAt: { type: Date, default: null },

@@ -28,9 +28,9 @@ function requestTone(status: EngagementRequestRecord["status"]) {
 
 function requestLabel(request: EngagementRequestRecord) {
   if (request.status !== "approved") return requestLabels[request.status];
-  if (!request.kycUnlockedAt) return "Approved, team assignment pending";
-  if (!request.kycApprovedAt) return "Complete KYC";
-  return "Engagement letter ready";
+  if (!request.kycUnlockedAt) return "Approved. We are setting things up";
+  if (!request.kycApprovedAt) return "Verify your identity";
+  return "Letter ready to sign";
 }
 
 function dateLabel(value: string) {
@@ -60,9 +60,9 @@ export function ClientEngagementsOverview({
       <section className="flex min-w-0 flex-col justify-between gap-4 rounded-md border border-border bg-card p-5 md:flex-row md:items-center">
         <div className="min-w-0">
           <Badge tone="teal">{activeWork} active</Badge>
-          <h1 className="mt-3 text-2xl font-bold text-foreground">My engagements</h1>
+          <h1 className="mt-3 text-2xl font-bold text-foreground">My work</h1>
           <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">
-            See what needs your attention and continue your work with IFTA.
+            Everything you have asked IFTA to do, and what to do next for each one.
           </p>
         </div>
         <Link className={buttonClassName()} href="/client/services">
@@ -108,7 +108,7 @@ export function ClientEngagementsOverview({
                     </SubmitButton>
                   </form>
                 ) : request.status === "approved" && request.kycUnlockedAt && !request.kycApprovedAt ? (
-                  <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-primary/30 bg-primary/5 p-3"><p className="text-sm font-medium text-foreground">Complete your KYC information so the review team can prepare your engagement letter.</p><Link className={buttonClassName()} href="/client/kyc">Continue KYC</Link></div>
+                  <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-primary/30 bg-primary/5 p-3"><p className="text-sm font-medium text-foreground">Verify your identity so we can prepare your engagement letter. It takes about 10 minutes.</p><Link className={buttonClassName()} href="/client/kyc">Continue verification</Link></div>
                 ) : request.status === "approved" && request.kycApprovedAt ? (
                   <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-primary/30 bg-primary/5 p-3"><p className="text-sm font-medium text-foreground">Your letter is ready to review and sign before work begins.</p><Link className={buttonClassName()} href="/client/documents">Review letter</Link></div>
                 ) : null}

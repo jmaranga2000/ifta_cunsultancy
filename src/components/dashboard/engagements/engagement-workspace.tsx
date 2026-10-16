@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, CheckCircle2, Download, FileCheck2, FileUp, ListChecks, MessageSquareText, NotebookPen, ShieldCheck } from "lucide-react";
+import { uploadAcceptAttribute, uploadFormatsLabel, uploadHelpText } from "@/lib/uploads";
 import { Badge } from "@/components/ui/badge";
 import { buttonClassName } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -52,7 +53,8 @@ const errors: Record<string, string> = {
   "review-access": "The technical review could not be recorded.",
   document: "Add a title, document type, and file.",
   "document-size": "The file must be 20 MB or smaller.",
-  "document-type": "Upload a PDF, Word, Excel, CSV, JPG, or PNG file.",
+  "document-type": `That file type is not supported. Please upload ${uploadFormatsLabel("documents")}.`,
+  "document-content": "That file could not be read. It may be damaged or saved with the wrong extension.",
   "document-upload": "The document could not be stored. Please try again.",
 };
 
@@ -123,7 +125,7 @@ export function EngagementWorkspace({
               <input name="workflowId" type="hidden" value={workflow.id} /><input name="returnPath" type="hidden" value={returnPath} />
               <div className="grid gap-2"><Label htmlFor={`document-title-${portal}`}>Document title</Label><Input id={`document-title-${portal}`} maxLength={180} name="title" placeholder="Tax assessment review - draft" required /></div>
               <div className="grid gap-2"><Label htmlFor={`document-kind-${portal}`}>Document type</Label><Select id={`document-kind-${portal}`} name="documentKind" required><option value="draft_deliverable">Draft deliverable</option><option value="final_deliverable">Final deliverable</option><option value="technical_evidence">Internal technical evidence</option></Select></div>
-              <div className="grid gap-2"><Label htmlFor={`engagement-document-${portal}`}>File</Label><input accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.jpg,.jpeg,.png" className="block w-full rounded-md border border-input bg-background px-3 py-2 text-sm file:mr-3 file:rounded file:border-0 file:bg-brand-soft file:px-3 file:py-1.5 file:font-semibold file:text-brand-deep" id={`engagement-document-${portal}`} name="document" required type="file" /><p className="text-xs text-muted-foreground">PDF, Word, Excel, CSV, JPG, or PNG. Maximum 20 MB.</p></div>
+              <div className="grid gap-2"><Label htmlFor={`engagement-document-${portal}`}>File</Label><input accept={uploadAcceptAttribute("documents")} className="block w-full rounded-md border border-input bg-background px-3 py-2 text-sm file:mr-3 file:rounded file:border-0 file:bg-brand-soft file:px-3 file:py-1.5 file:font-semibold file:text-brand-deep" id={`engagement-document-${portal}`} name="document" required type="file" /><p className="text-xs text-muted-foreground">{uploadHelpText("documents", 20 * 1024 * 1024)}</p></div>
               <SubmitButton pendingText="Uploading document..."><FileUp className="h-4 w-4" />Upload document</SubmitButton>
             </form>
           </CardContent>

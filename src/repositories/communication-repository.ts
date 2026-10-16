@@ -6,6 +6,7 @@ import {
 } from "@/features/authorization/access-control";
 import { sendNewPortalMessageEmail } from "@/features/communication/message-email";
 import { sendPushNotificationToUser } from "@/features/communication/push-notifications";
+import { sendSmsNotificationToUser } from "@/features/communication/sms-notifications";
 import type {
   AnnouncementAudience,
   CommunicationModule,
@@ -14,6 +15,7 @@ import type {
   ConversationType,
   NotificationType,
 } from "@/features/communication/types";
+import { ATTACHMENT_TYPES } from "@/features/communication/types";
 import { connectToDatabase } from "@/lib/db/mongoose";
 import { AuthorizationError } from "@/lib/errors";
 import { clientRecipientName } from "@/lib/client-recipient";
@@ -717,6 +719,12 @@ export async function createCommunicationNotification(input: CreateNotificationI
     actionUrl: input.actionUrl,
     tag: `${input.type}-${input.relatedRecordId ?? notification._id.toString()}`,
   });
+  await sendSmsNotificationToUser(recipientUserId.toString(), {
+    type: input.type,
+    title: input.title,
+    description: input.description,
+    actionUrl: input.actionUrl,
+  });
   return notification;
 }
 
@@ -736,13 +744,13 @@ export async function createConversationMessage(input: CreateMessageInput) {
     ? await ClientDocumentModel.findOne({ _id: attachmentId, workflowId: conversation.engagementId, status: { $ne: "archived" } }).lean().exec()
     : null;
   const extension = attachment?.name.split(".").pop()?.toLowerCase();
-  const attachmentType = extension === "jpeg" ? "jpg" : extension === "doc" ? "docx" : extension;
+  const attachmentType = ({ jpeg: "jpg", tif: "tiff", doc: "docx", xls: "xlsx" } as Record<string, string>)[extension ?? ""] ?? extension;
   const message = await CommunicationMessageModel.create({
     conversationId: conversation._id,
     senderUserId: senderId,
     senderName: input.sender.email,
     body: input.body,
-    attachments: attachment && attachmentType && ["pdf", "docx", "xlsx", "csv", "jpg", "png"].includes(attachmentType)
+    attachments: attachment && attachmentType && (ATTACHMENT_TYPES as readonly string[]).includes(attachmentType)
       ? [{
           fileName: attachment.name,
           fileType: attachmentType,

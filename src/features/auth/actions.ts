@@ -3,6 +3,7 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
+import { normalizePhoneNumber } from "@/lib/sms";
 import type { AppRole } from "@/features/authorization/roles";
 import { writeAuditLog } from "@/features/audit/audit-service";
 import { createSession, destroyCurrentSession } from "@/features/auth/session";
@@ -36,6 +37,7 @@ const signUpSchema = z.object({
   email: z.string().trim().email(),
   password: z.string().min(1).max(128),
   confirmPassword: z.string().min(1).max(128),
+  phone: z.string().trim().max(30),
 });
 
 function authErrorRedirect(path: "/sign-in" | "/sign-up", message: string): never {
@@ -172,10 +174,16 @@ export async function signUpAction(formData: FormData) {
     email: formData.get("email"),
     password: formData.get("password"),
     confirmPassword: formData.get("confirmPassword"),
+    phone: String(formData.get("phone") ?? ""),
   });
 
   if (!parsed.success) {
     authErrorRedirect("/sign-up", "Complete all fields before creating an account.");
+  }
+
+  const phone = parsed.data.phone ? normalizePhoneNumber(parsed.data.phone) : "";
+  if (parsed.data.phone && !phone) {
+    authErrorRedirect("/sign-up", "Enter a valid phone number such as 0712 345 678, or leave it blank.");
   }
 
   const registrationEmail = parsed.data.email.toLowerCase();
@@ -208,6 +216,8 @@ export async function signUpAction(formData: FormData) {
     email: registrationEmail,
     firstName: parsed.data.firstName,
     lastName: parsed.data.lastName,
+    phone: phone ?? "",
+    smsOptIn: Boolean(phone) && formData.get("smsOptIn") === "on",
     passwordHash: await hashPassword(parsed.data.password),
     roleKeys: ["client"],
   });

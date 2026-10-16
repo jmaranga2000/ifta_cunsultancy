@@ -8,6 +8,7 @@ import { z } from "zod";
 import { requireUser } from "@/features/auth/server";
 import { WORKFLOW_TASK_STATUSES } from "@/features/workflows/types";
 import { getR2Client, getR2Configuration } from "@/lib/r2";
+import { validateUpload } from "@/lib/uploads";
 import {
   ENGAGEMENT_DOCUMENT_KINDS,
   createEngagementDocument,
@@ -17,16 +18,6 @@ import {
 
 import { getWorkflowForPrincipal } from "@/repositories/workflow-repository";
 const MAX_FILE_SIZE = 20 * 1024 * 1024;
-const allowedTypes = new Set([
-  "application/pdf",
-  "application/msword",
-  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-  "application/vnd.ms-excel",
-  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-  "text/csv",
-  "image/jpeg",
-  "image/png",
-]);
 
 function returnPath(formData: FormData, workflowId: string) {
   const value = String(formData.get("returnPath") ?? "");
@@ -98,8 +89,11 @@ export async function uploadEngagementDocumentAction(formData: FormData) {
   const file = formData.get("document");
   const back = returnPath(formData, workflowId);
   if (!workflowId || title.length < 3 || !kind.success || !(file instanceof File) || !file.size) redirect(`${back}?tab=documents&error=document`);
-  if (file.size > MAX_FILE_SIZE) redirect(`${back}?tab=documents&error=document-size`);
-  if (!allowedTypes.has(file.type)) redirect(`${back}?tab=documents&error=document-type`);
+  const check = await validateUpload(file, { scope: "documents", maxBytes: MAX_FILE_SIZE });
+  if (!check.ok) {
+    const code = check.reason === "size" ? "document-size" : check.reason === "content" ? "document-content" : "document-type";
+    redirect(`${back}?tab=documents&error=${code}`);
+  }
 
   const cleanFileName = file.name.replace(/[^a-zA-Z0-9._-]/g, "-") || "engagement-file";
   const extension = cleanFileName.includes(".") ? `.${cleanFileName.split(".").pop()}` : "";
@@ -114,7 +108,7 @@ export async function uploadEngagementDocumentAction(formData: FormData) {
       Bucket: configuration.bucketName,
       Key: storageKey,
       Body: Buffer.from(await file.arrayBuffer()),
-      ContentType: file.type,
+      ContentType: check.contentType,
       ContentDisposition: `attachment; filename="${name}"`,
     }));
     documentResult = await createEngagementDocument({
@@ -123,7 +117,7 @@ export async function uploadEngagementDocumentAction(formData: FormData) {
       documentKind: kind.data,
       name,
       storageKey,
-      contentType: file.type,
+      contentType: check.contentType,
       size: file.size,
       replacesDocumentId: replacesDocumentId || null,
     });

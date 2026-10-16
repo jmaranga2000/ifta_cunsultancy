@@ -12,11 +12,13 @@ import {
   uploadClientAvatarAction,
 } from "@/features/client/profile-actions";
 import { ClientAccountClosureRequest } from "@/components/dashboard/client/client-account-closure-request";
+import { formatPhoneForDisplay } from "@/lib/sms";
 import type { ClientProfileRecord } from "@/repositories/client-profile-repository";
 import type { AccountClosureRequestRecord } from "@/repositories/account-closure-repository";
 
 const errors: Record<string, string> = {
   profile: "Enter a valid first and last name.",
+  phone: "That phone number does not look right. Try the format 0712 345 678, or clear the box.",
   "avatar-missing": "Choose a profile picture before uploading.",
   "avatar-size": "The profile picture must be smaller than 3 MB.",
   "avatar-type": "Use a JPG, PNG or WebP image.",
@@ -126,6 +128,14 @@ export function ClientProfile({
                 <Label htmlFor="lastName">Last name</Label>
                 <Input defaultValue={profile.lastName} id="lastName" name="lastName" required />
               </div>
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="phone">Phone number</Label>
+              <Input autoComplete="tel" defaultValue={formatPhoneForDisplay(profile.phone)} id="phone" inputMode="tel" name="phone" placeholder="0712 345 678" type="tel" />
+              <label className="flex items-start gap-2 text-sm text-muted-foreground" htmlFor="smsOptIn">
+                <input className="mt-1 h-4 w-4 rounded border-border text-primary focus:ring-primary" defaultChecked={profile.smsOptIn} id="smsOptIn" name="smsOptIn" type="checkbox" />
+                <span>Text me important updates, such as when action is needed from me.</span>
+              </label>
             </div>
             <div className="flex justify-end">
               <SubmitButton pendingText="Saving profile...">

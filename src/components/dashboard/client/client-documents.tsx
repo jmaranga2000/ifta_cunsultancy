@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { CheckCircle2, Download, Eye, FilePlus2, FileSignature, FolderOpen, MessageSquareReply, RotateCcw, Upload } from "lucide-react";
+import { uploadAcceptAttribute, uploadFormatsLabel, uploadHelpText } from "@/lib/uploads";
 import { Badge } from "@/components/ui/badge";
 import { buttonClassName } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -23,7 +24,7 @@ function dateLabel(value: string) {
 const signedUploadErrors: Record<string, string> = {
   "signed-missing": "Choose a signed copy and confirm that all required parties have signed it.",
   "signed-size": "The signed copy must be 10 MB or smaller.",
-  "signed-type": "Upload the signed copy as a PDF, JPG or PNG file.",
+  "signed-type": `Upload the signed copy as ${uploadFormatsLabel("identity")}.`,
   "signed-letter": "This engagement letter is not available for signed-copy upload.",
   "signed-upload": "The signed copy could not be stored. Please try again.",
 };
@@ -64,7 +65,7 @@ export function ClientDocuments({ documents, letters, notice, error }: {
         </CardHeader>
         <CardContent className="grid gap-3">
           {letters.length === 0 ? (
-            <EmptyState title="No engagement letter yet" description="Your letter will appear after IFTA approves your KYC." />
+            <EmptyState title="No engagement letter yet" description="Your letter will appear here once your identity check is approved." />
           ) : letters.map((letter) => {
             const clientSigner = letter.signers.find((signer) => signer.role === "client");
             const needsSignedCopy = clientSigner?.status === "pending" && letter.status !== "completed";
@@ -83,8 +84,8 @@ export function ClientDocuments({ documents, letters, notice, error }: {
                 {needsSignedCopy ? (
                   <form action={uploadSignedEngagementLetterAction} className="mt-4 grid gap-3 rounded-md border border-border bg-muted/20 p-4" encType="multipart/form-data">
                     <input name="letterId" type="hidden" value={letter.id} />
-                    <div><p className="text-sm font-semibold text-foreground">Upload the fully signed copy</p><p className="mt-1 text-xs leading-5 text-muted-foreground">PDF, JPG or PNG, up to 10 MB. You can also sign electronically from View.</p></div>
-                    <input accept="application/pdf,image/jpeg,image/png" className="block w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground file:mr-3 file:rounded file:border-0 file:bg-brand-soft file:px-3 file:py-1.5 file:font-semibold file:text-brand-deep" name="signedCopy" required type="file" />
+                    <div><p className="text-sm font-semibold text-foreground">Upload the fully signed copy</p><p className="mt-1 text-xs leading-5 text-muted-foreground">{uploadHelpText("identity")} You can also sign electronically from View.</p></div>
+                    <input accept={uploadAcceptAttribute("identity")} className="block w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground file:mr-3 file:rounded file:border-0 file:bg-brand-soft file:px-3 file:py-1.5 file:font-semibold file:text-brand-deep" name="signedCopy" required type="file" />
                     <label className="flex items-start gap-3 text-sm leading-6 text-foreground"><input className="mt-1 h-4 w-4 shrink-0 accent-primary" name="signedConfirmation" required type="checkbox" /><span>I confirm this copy has been signed by all required parties and is ready to activate the engagement.</span></label>
                     <div className="flex justify-end"><SubmitButton pendingText="Uploading signed copy..."><Upload className="h-4 w-4" />Upload signed letter</SubmitButton></div>
                   </form>

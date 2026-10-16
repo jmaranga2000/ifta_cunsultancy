@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/features/auth/server";
 import { CLIENT_KYC_QUESTIONS } from "@/features/kyc/client-questionnaire";
 import { getR2Client, getR2Configuration } from "@/lib/r2";
+import { validateUpload } from "@/lib/uploads";
 import {
   CLIENT_KYC_DOCUMENT_LABELS,
   addClientKycDocuments,
@@ -18,7 +19,6 @@ import {
 import { getClientKycAccess, notifyKycSubmitted } from "@/repositories/request-onboarding-repository";
 
 const MAX_DOCUMENT_SIZE = 10 * 1024 * 1024;
-const allowedDocumentTypes = new Set(["application/pdf", "image/jpeg", "image/png"]);
 
 async function requireClientKycUser() {
   const principal = await getCurrentUser();
@@ -38,23 +38,23 @@ async function requireClientKycUser() {
   return principal;
 }
 
-async function uploadKycDocumentsToStorage(userId: string, files: Array<{ file: File; documentType: ClientKycDocumentType }>) {
+async function uploadKycDocumentsToStorage(userId: string, files: Array<{ file: File; documentType: ClientKycDocumentType; contentType: string }>) {
   if (files.length === 0) return [];
 
   const configuration = getR2Configuration();
-  return Promise.all(files.map(async ({ file, documentType }) => {
+  return Promise.all(files.map(async ({ file, documentType, contentType }) => {
     const filename = file.name.replace(/[^a-zA-Z0-9._-]/g, "-") || `${documentType}-document`;
     const key = `kyc/${userId}/${documentType}/${randomUUID()}-${filename}`;
     await getR2Client().send(new PutObjectCommand({
       Bucket: configuration.bucketName,
       Key: key,
       Body: Buffer.from(await file.arrayBuffer()),
-      ContentType: file.type,
+      ContentType: contentType,
       ContentDisposition: `attachment; filename="${filename}"`,
       Metadata: { documentType, documentLabel: CLIENT_KYC_DOCUMENT_LABELS[documentType] },
     }));
 
-    return { r2Key: key, filename, contentType: file.type, size: file.size, documentType };
+    return { r2Key: key, filename, contentType, size: file.size, documentType };
   }));
 }
 
@@ -88,10 +88,14 @@ export async function saveClientKycQuestionnaireAction(formData: FormData) {
       continue;
     }
 
+    // File questions are stored as documents below, never as a text answer.
+    if (question.kind === "file") continue;
+
     answers[question.id] = String(formData.get(question.id) ?? "").trim();
   }
 
   const uploads = [
+    { field: "customer_image", documentType: "passport_photo" as const },
     { field: "document-id_front_back", documentType: "identity_card" as const },
     { field: "document-passport_bio_page", documentType: "passport_bio_page" as const },
     { field: "document-kra_pin_certificate", documentType: "tax_pin" as const },
@@ -115,7 +119,13 @@ export async function saveClientKycQuestionnaireAction(formData: FormData) {
   await saveClientKycAnswers(principal.id, answers);
 
   if (uploads.length > 0) {
-    const storedDocuments = await uploadKycDocumentsToStorage(principal.id, uploads);
+    const checks = await Promise.all(uploads.map((upload) => validateUpload(upload.file, { scope: "identity", maxBytes: MAX_DOCUMENT_SIZE })));
+    if (checks.some((check) => !check.ok)) redirect("/client/kyc/questionnaire?saved=1&error=file");
+    const verifiedUploads = uploads.map((upload, index) => {
+      const check = checks[index];
+      return { ...upload, contentType: check.ok ? check.contentType : "application/octet-stream" };
+    });
+    const storedDocuments = await uploadKycDocumentsToStorage(principal.id, verifiedUploads);
     await addClientKycDocuments(principal.id, storedDocuments);
   }
 
@@ -154,15 +164,20 @@ export async function uploadClientKycReplacementAction(formData: FormData) {
     }
   }
   if (uploads.length === 0) redirect("/client/kyc/upload-replacement?error=missing-file");
-  if (uploads.some((upload) => upload.file.size > MAX_DOCUMENT_SIZE)) {
+  const checks = await Promise.all(uploads.map((upload) => validateUpload(upload.file, { scope: "identity", maxBytes: MAX_DOCUMENT_SIZE })));
+  if (checks.some((check) => !check.ok && check.reason === "size")) {
     redirect("/client/kyc/upload-replacement?error=file-too-large");
   }
-  if (uploads.some((upload) => !allowedDocumentTypes.has(upload.file.type))) {
+  if (checks.some((check) => !check.ok)) {
     redirect("/client/kyc/upload-replacement?error=unsupported-file");
   }
+  const verifiedUploads = uploads.map((upload, index) => {
+    const check = checks[index];
+    return { ...upload, contentType: check.ok ? check.contentType : "application/octet-stream" };
+  });
 
   try {
-    const storedDocuments = await uploadKycDocumentsToStorage(principal.id, uploads.map(({ file, type }) => ({ file, documentType: type })));
+    const storedDocuments = await uploadKycDocumentsToStorage(principal.id, verifiedUploads.map(({ file, type, contentType }) => ({ file, documentType: type, contentType })));
     await addClientKycDocuments(principal.id, storedDocuments);
   } catch (error) {
     console.error("Unable to upload the client KYC documents.", error);

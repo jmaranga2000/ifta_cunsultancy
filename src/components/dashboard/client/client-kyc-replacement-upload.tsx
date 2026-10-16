@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { format } from "date-fns";
 import { CheckCircle2, FileCheck2, FileUp, MapPin, ShieldCheck, UploadCloud } from "lucide-react";
+import { uploadAcceptAttribute, uploadFormatsLabel, uploadHelpText } from "@/lib/uploads";
 import { uploadClientKycReplacementAction } from "@/features/kyc/client-actions";
 import {
   CLIENT_KYC_DOCUMENT_LABELS,
@@ -21,8 +22,8 @@ const errorMessages: Record<string, string> = {
   "identity-required": "Upload a valid identity card or passport before continuing.",
   "tax-required": "Upload your KRA Tax PIN certificate before continuing.",
   "file-too-large": "One of the files is larger than the 10 MB limit.",
-  "unsupported-file": "Use PDF, JPG, or PNG documents only.",
-  "upload-failed": "The documents could not be saved. Confirm the R2 settings and try again.",
+  "unsupported-file": `Use ${uploadFormatsLabel("identity")} documents only. Files that are damaged or renamed from another type cannot be accepted.`,
+  "upload-failed": "We could not save your documents just now. Please try again in a moment. If it keeps happening, contact IFTA support.",
 };
 
 const uploadFields: Array<{
@@ -160,7 +161,7 @@ export function ClientKycReplacementUpload({ error, submission }: {
       <section className="flex flex-col justify-between gap-4 border-b border-border pb-5 md:flex-row md:items-end">
         <div>
           <p className="text-sm font-semibold text-primary">Client verification</p>
-          <h1 className="mt-2 text-2xl font-bold text-foreground">KYC documents</h1>
+          <h1 className="mt-2 text-2xl font-bold text-foreground">Upload your documents</h1>
           <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">
             Add the documents used to verify your identity, tax registration, and location. Files are stored in the protected document vault.
           </p>
@@ -177,7 +178,7 @@ export function ClientKycReplacementUpload({ error, submission }: {
       <Card>
         <CardHeader>
           <CardTitle>Upload verification documents</CardTitle>
-          <CardDescription>PDF, JPG, or PNG. Maximum 10 MB per file.</CardDescription>
+          <CardDescription>{uploadHelpText("identity")}</CardDescription>
         </CardHeader>
         <CardContent>
           <form action={uploadClientKycReplacementAction} className="grid gap-0" encType="multipart/form-data">
@@ -200,7 +201,7 @@ export function ClientKycReplacementUpload({ error, submission }: {
                     </div>
                   </div>
                   <Input
-                    accept="application/pdf,image/jpeg,image/png"
+                    accept={uploadAcceptAttribute("identity")}
                     id={field.field}
                     name={field.field}
                     required={field.required && !uploaded}

@@ -7,12 +7,12 @@ import { redirect } from "next/navigation";
 export default async function ClientKycQuestionnairePage({
   searchParams,
 }: {
-  searchParams: Promise<{ saved?: string }>;
+  searchParams: Promise<{ saved?: string; error?: string }>;
 }) {
   const [principal, params] = await Promise.all([requireUser(), searchParams]);
   const access = await getClientKycAccess(principal.id);
   if (!access) redirect("/client/kyc?error=locked");
   const submission = await getClientKycSubmission(principal.id);
 
-  return <ClientKycQuestionnaire saved={params.saved === "1"} submission={submission} />;
+  return <ClientKycQuestionnaire fileError={params.error === "file"} saved={params.saved === "1"} submission={submission} />;
 }

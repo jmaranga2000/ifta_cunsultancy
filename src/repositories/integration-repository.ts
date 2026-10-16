@@ -2,6 +2,7 @@ import { HeadBucketCommand } from "@aws-sdk/client-s3";
 import { createTransport } from "nodemailer";
 import webpush from "web-push";
 import { Types } from "mongoose";
+import { resolveEtimsEnv } from "@/features/etims/env-config";
 import { INTEGRATION_CATALOG, INTEGRATION_KEYS, type IntegrationKey } from "@/features/integrations/catalog";
 import { getServerEnv } from "@/lib/env";
 import { connectToDatabase } from "@/lib/db/mongoose";
@@ -121,6 +122,11 @@ async function runConnectionTest(key: IntegrationKey) {
     return;
   }
   if (key === "kra_etims") {
+    const etims = resolveEtimsEnv();
+    if (etims) {
+      if (etims.missing.length) throw new Error(`Finish the eTIMS settings in .env: ${etims.missing.join(", ")}.`);
+      return;
+    }
     if (!env.KRA_ETIMS_API_URL || env.KRA_ETIMS_API_URL.trim().length === 0) {
       throw new Error("The KRA eTIMS API URL is not configured.");
     }

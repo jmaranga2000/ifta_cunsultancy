@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowLeft, Download, FileUp, MessageSquareReply } from "lucide-react";
+import { uploadAcceptAttribute, uploadFormatsLabel, uploadHelpText } from "@/lib/uploads";
 import { Badge } from "@/components/ui/badge";
 import { buttonClassName } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -20,7 +21,7 @@ function BackToDocuments() {
 }
 
 export function ClientDocumentUpload({ workflows, error }: { workflows: WorkflowInstanceRecord[]; error?: string }) {
-  const errorMessage = error === "size" ? "The file must be 10 MB or smaller." : error === "type" ? "Use a PDF, image or Word document." : error ? "Choose an engagement and a valid file, then try again." : null;
+  const errorMessage = error === "size" ? "The file must be 10 MB or smaller." : error === "type" ? `That file type is not supported. Please upload ${uploadFormatsLabel("documents")}.` : error === "content" ? "That file could not be read. It may be damaged or saved with the wrong extension." : error ? "Choose an engagement and a valid file, then try again." : null;
   return (
     <div className="grid max-w-3xl gap-5">
       <div><BackToDocuments /></div>
@@ -31,7 +32,7 @@ export function ClientDocumentUpload({ workflows, error }: { workflows: Workflow
           {workflows.length === 0 ? <EmptyState title="No active engagement" description="A document can be uploaded once the administration team creates your engagement." action={<Link className={buttonClassName()} href="/client/services">Browse services</Link>} /> : (
             <form action={uploadClientDocumentAction} className="grid gap-5" encType="multipart/form-data">
               <div className="grid gap-2"><Label htmlFor="workflowId">Engagement</Label><Select id="workflowId" name="workflowId" required><option value="">Select an engagement</option>{workflows.map((workflow) => <option key={workflow.id} value={workflow.id}>{workflow.reference} - {workflow.serviceName}</option>)}</Select></div>
-              <div className="grid gap-2"><Label htmlFor="document">File</Label><input className="w-full rounded-md border border-border bg-input px-3 py-2 text-sm text-foreground" id="document" name="document" required type="file" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" /><p className="text-xs text-muted-foreground">PDF, JPG, PNG or Word. Maximum 10 MB.</p></div>
+              <div className="grid gap-2"><Label htmlFor="document">File</Label><input className="w-full rounded-md border border-border bg-input px-3 py-2 text-sm text-foreground" id="document" name="document" required type="file" accept={uploadAcceptAttribute("documents")} /><p className="text-xs text-muted-foreground">{uploadHelpText("documents")}</p></div>
               <SubmitButton className="w-fit" pendingText="Uploading..."><FileUp className="h-4 w-4" />Upload document</SubmitButton>
             </form>
           )}

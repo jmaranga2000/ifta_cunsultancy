@@ -33,6 +33,14 @@ export function SignUpForm() {
         <Input autoComplete="email" id="email" name="email" required type="email" />
       </div>
       <div className="grid gap-2">
+        <Label htmlFor="phone">Phone number <span className="font-normal text-muted-foreground">(optional)</span></Label>
+        <Input autoComplete="tel" id="phone" inputMode="tel" name="phone" placeholder="0712 345 678" type="tel" />
+        <label className="flex items-start gap-2 text-sm text-muted-foreground" htmlFor="smsOptIn">
+          <input className="mt-1 h-4 w-4 rounded border-border text-primary focus:ring-primary" id="smsOptIn" name="smsOptIn" type="checkbox" />
+          <span>Text me important updates, such as when action is needed from me. You can change this any time in your profile.</span>
+        </label>
+      </div>
+      <div className="grid gap-2">
         <Label htmlFor="password">Password</Label>
         <PasswordInput
           autoComplete="new-password"

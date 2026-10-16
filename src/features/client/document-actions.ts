@@ -8,6 +8,7 @@ import { redirect } from "next/navigation";
 import { requireUser } from "@/features/auth/server";
 import { activateCompletedEngagementLetter } from "@/features/engagements/activation-service";
 import { getR2Client, getR2Configuration } from "@/lib/r2";
+import { validateUpload } from "@/lib/uploads";
 import { ClientDocumentModel } from "@/models/client-document";
 import { WorkflowInstanceModel } from "@/models/workflow-instance";
 import { recordClientDeliverableReview, respondToDocumentFeedback } from "@/repositories/client-portal-repository";
@@ -19,13 +20,6 @@ import {
 import { getWorkflowForPrincipal } from "@/repositories/workflow-repository";
 
 const MAX_DOCUMENT_SIZE = 10 * 1024 * 1024;
-const allowedDocumentTypes = new Set([
-  "application/pdf",
-  "image/jpeg",
-  "image/png",
-  "application/msword",
-  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-]);
 
 function revalidateDocuments() {
   revalidatePath("/client/documents");
@@ -56,8 +50,8 @@ export async function uploadClientDocumentAction(formData: FormData) {
   if (!Types.ObjectId.isValid(workflowId) || !(document instanceof File) || document.size === 0) {
     redirect(uploadErrorPath(back, "missing"));
   }
-  if (document.size > MAX_DOCUMENT_SIZE) redirect(uploadErrorPath(back, "size"));
-  if (!allowedDocumentTypes.has(document.type)) redirect(uploadErrorPath(back, "type"));
+  const check = await validateUpload(document, { scope: "documents", maxBytes: MAX_DOCUMENT_SIZE });
+  if (!check.ok) redirect(uploadErrorPath(back, check.reason === "empty" ? "missing" : check.reason));
   const workflow = await getWorkflowForPrincipal(principal, workflowId);
   if (!workflow || workflow.clientUserId !== principal.id || workflow.status !== "active") {
     redirect(uploadErrorPath(back, "engagement"));
@@ -81,7 +75,7 @@ export async function uploadClientDocumentAction(formData: FormData) {
       Bucket: configuration.bucketName,
       Key: storageKey,
       Body: Buffer.from(await document.arrayBuffer()),
-      ContentType: document.type,
+      ContentType: check.contentType,
       ContentDisposition: `attachment; filename="${filename}"`,
     }));
     await ClientDocumentModel.create({
@@ -90,7 +84,7 @@ export async function uploadClientDocumentAction(formData: FormData) {
       workflowId,
       name: filename,
       storageKey,
-      contentType: document.type,
+      contentType: check.contentType,
       size: document.size,
       direction: "sent",
       status: "pending_review",
@@ -158,9 +152,9 @@ export async function uploadSignedEngagementLetterAction(formData: FormData) {
   if (!Types.ObjectId.isValid(letterId) || !(signedCopy instanceof File) || signedCopy.size === 0 || !confirmed) {
     redirect("/client/documents?error=signed-missing");
   }
-  if (signedCopy.size > MAX_DOCUMENT_SIZE) redirect("/client/documents?error=signed-size");
-  if (!["application/pdf", "image/jpeg", "image/png"].includes(signedCopy.type)) {
-    redirect("/client/documents?error=signed-type");
+  const signedCheck = await validateUpload(signedCopy, { scope: "identity", maxBytes: MAX_DOCUMENT_SIZE });
+  if (!signedCheck.ok) {
+    redirect(`/client/documents?error=${signedCheck.reason === "size" ? "signed-size" : "signed-type"}`);
   }
   const letter = await getClientEngagementLetter(letterId, principal.id);
   if (!letter || !["awaiting_signatures", "partially_signed"].includes(letter.status)) {
@@ -177,7 +171,7 @@ export async function uploadSignedEngagementLetterAction(formData: FormData) {
       Bucket: configuration.bucketName,
       Key: storageKey,
       Body: Buffer.from(await signedCopy.arrayBuffer()),
-      ContentType: signedCopy.type,
+      ContentType: signedCheck.contentType,
       ContentDisposition: `attachment; filename="${filename}"`,
     }));
     await ClientDocumentModel.create({
@@ -188,7 +182,7 @@ export async function uploadSignedEngagementLetterAction(formData: FormData) {
       documentKind: "signed_engagement_letter",
       name: filename,
       storageKey,
-      contentType: signedCopy.type,
+      contentType: signedCheck.contentType,
       size: signedCopy.size,
       direction: "sent",
       status: "final",

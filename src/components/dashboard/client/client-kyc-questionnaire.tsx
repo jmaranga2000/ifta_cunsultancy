@@ -5,6 +5,7 @@ import { CheckCircle2, Plus, Save } from "lucide-react";
 import { useMemo, useState } from "react";
 import { saveClientKycQuestionnaireAction } from "@/features/kyc/client-actions";
 import { CLIENT_KYC_QUESTIONS, type ClientKycQuestion } from "@/features/kyc/client-questionnaire";
+import { uploadAcceptAttribute, uploadFormatsLabel } from "@/lib/uploads";
 import type { ClientKycSubmission } from "@/repositories/client-kyc-repository";
 import { buttonClassName } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -111,13 +112,13 @@ function QuestionField({ question, value }: { question: ClientKycQuestion; value
         <Input defaultValue={value} id={fieldId} name={question.id} required={question.required} />
       ) : null}
       {question.kind === "file" ? (
-        <Input accept="image/*" id={fieldId} name={question.id} required={question.required} type="file" />
+        <Input accept={uploadAcceptAttribute("identity")} id={fieldId} name={question.id} required={question.required} type="file" />
       ) : null}
     </div>
   );
 }
 
-export function ClientKycQuestionnaire({ saved, submission }: { saved: boolean; submission: ClientKycSubmission }) {
+export function ClientKycQuestionnaire({ saved, fileError = false, submission }: { saved: boolean; fileError?: boolean; submission: ClientKycSubmission }) {
   const sections = [...new Set(CLIENT_KYC_QUESTIONS.map((question) => question.section))];
 
   return (
@@ -125,7 +126,7 @@ export function ClientKycQuestionnaire({ saved, submission }: { saved: boolean; 
       <section className="flex flex-col justify-between gap-4 border-b border-border pb-5 md:flex-row md:items-end">
         <div>
           <p className="text-sm font-semibold text-primary">Client verification</p>
-          <h1 className="mt-2 text-2xl font-bold text-foreground">KYC questionnaire</h1>
+          <h1 className="mt-2 text-2xl font-bold text-foreground">A few questions about you</h1>
           <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">
             Complete every required answer, then upload the requested document before sending your KYC for review.
           </p>
@@ -135,7 +136,13 @@ export function ClientKycQuestionnaire({ saved, submission }: { saved: boolean; 
         </Link>
       </section>
 
-      {saved ? (
+      {fileError ? (
+        <div className="rounded-md border border-red-200 bg-red-50 px-3 py-3 text-sm font-medium text-red-800" role="alert">
+          Your answers were saved, but the photo could not be used. Please choose a {uploadFormatsLabel("identity")} file under 10 MB.
+        </div>
+      ) : null}
+
+      {saved && !fileError ? (
         <div className="flex items-center gap-2 rounded-md border border-emerald-200 bg-emerald-50 px-3 py-3 text-sm font-medium text-emerald-800">
           <CheckCircle2 aria-hidden="true" className="h-4 w-4" />
           Your questionnaire answers have been saved.

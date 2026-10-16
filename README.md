@@ -216,3 +216,33 @@ Phase 2 should connect the service catalogue, pricing snapshots and admin servic
 Phase 3 should add engagement cart, checkout, organization creation, client representatives, engagement request creation and admin review screens.
 
 Phase 4 should add configurable KYC templates, document upload session handling, R2 integration and document review.
+
+## Supported uploads
+
+All upload forms share one rule set in `src/lib/uploads.ts`. Accepted formats are PDF, DOCX (and legacy DOC), XLSX (and legacy XLS), CSV, TXT, XML, JPG, PNG, TIFF and ZIP. Identity (KYC) documents and signed letters accept PDF, JPG, PNG and TIFF only. Files are checked by extension, declared type, size and actual file contents, and only PDF/JPG/PNG are ever opened inline in the browser; everything else downloads.
+
+## SMS notifications
+
+Clients can add a phone number and opt in to SMS on sign-up or in their profile. Important events (action required, KYC updates, invoices, payments, engagement updates) are texted through Africa's Talking. Set `AT_USERNAME`, `AT_API_KEY` and optionally `AT_SENDER_ID` in your environment (use `AT_USERNAME=sandbox` to test). With these unset, SMS is skipped and everything else works as before.
+
+## Client dashboard
+
+The client home page shows one clear "next step" computed from the client's real requests, KYC, letters, invoices and engagements (`src/features/client/next-step.ts`), followed by live counts and a five-step journey.
+
+## KRA eTIMS (OSCU / VSCU) setup
+
+The portal submits approved invoices, credit notes and debit notes to KRA through the same queue, retry and reconciliation framework whichever control unit you use. To connect, edit `.env` only:
+
+1. Set `ETIMS_MODE=OSCU` (KRA-hosted) or `ETIMS_MODE=VSCU` (KRA's VSCU application running on your own server).
+2. Set `ETIMS_BASE_URL` (for example `https://etims-api-sbx.kra.go.ke/etims-api` for the OSCU sandbox, or `http://localhost:8088` for a local VSCU), `ETIMS_TIN`, and `ETIMS_BRANCH_ID` (default `00`).
+3. OSCU only: set `ETIMS_DEVICE_SERIAL`, run `npm run etims:init`, and paste the printed `ETIMS_CMC_KEY` into `.env`.
+4. Enter each service's KRA item code and classification code under Finance > eTIMS > Service mappings, then run `npm run etims:register-items` once so KRA knows the items.
+5. Restart the app and press "Test connection" on the eTIMS setup page.
+
+Endpoint paths default correctly for each mode and can be overridden with `ETIMS_PATH_INIT`, `ETIMS_PATH_SALES`, `ETIMS_PATH_CREDIT_NOTE`, `ETIMS_PATH_DEBIT_NOTE` and `ETIMS_PATH_ITEM`. Use `ETIMS_ENVIRONMENT=PRODUCTION` only after sandbox testing passes. Each invoice gets a sequential KRA invoice number assigned on approval (`ETIMS_SEQUENCE_START` continues numbering from another system); a failed submission is retried with the same number, never a new one.
+
+Credit notes are sent as KRA refund receipts that reference the original invoice number. Debit notes use the sales endpoint and stay blocked in production until an administrator marks the debit-note mapping as verified, because KRA has no dedicated debit-note receipt type. Leave `ETIMS_MODE` blank only if you use a third-party certified integrator through `KRA_ETIMS_API_URL` and `KRA_ETIMS_API_TOKEN`.
+
+## M-Pesa payments
+
+Clients can pay an invoice by approving an M-Pesa prompt on their phone (STK Push). Fill in the `MPESA_*` lines in `.env` (see `.env.example`); with the consumer key left blank the option is simply hidden and the manual "enter your reference" form remains. Safaricom confirms each payment to `/api/payments/mpesa/callback?token=...`, which must be reachable over https. The portal then marks the payment verified, reduces the invoice balance and notifies the client, with no finance staff action. A repeated confirmation from Safaricom changes nothing. If a client never approves the prompt, the pending payment is marked as not completed once Safaricom reports it.

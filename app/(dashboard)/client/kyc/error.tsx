@@ -11,7 +11,7 @@ export default function ClientKycError({ reset }: { reset: () => void }) {
         <AlertTriangle aria-hidden="true" className="h-6 w-6" />
       </span>
       <div>
-        <h1 className="text-xl font-bold text-foreground">KYC needs another try</h1>
+        <h1 className="text-xl font-bold text-foreground">Something went wrong. Please try again</h1>
         <p className="mt-2 text-sm leading-6 text-muted-foreground">
           Your saved answers and uploaded documents are safe. Please try again, or return to your KYC overview.
         </p>

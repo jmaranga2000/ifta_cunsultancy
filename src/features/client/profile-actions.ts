@@ -10,6 +10,7 @@ import { isPasswordPolicySatisfied } from "@/features/auth/password-policy";
 import { requireUser } from "@/features/auth/server";
 import { revokeUserSessions } from "@/features/auth/session";
 import { getR2Client, getR2Configuration } from "@/lib/r2";
+import { normalizePhoneNumber } from "@/lib/sms";
 import {
   getClientPasswordRecord,
   updateClientAvatarRecord,
@@ -40,7 +41,15 @@ export async function updateClientProfileAction(formData: FormData) {
   });
   if (!parsed.success) redirect("/client/profile?error=profile");
 
-  await updateClientProfileDetails(principal.id, parsed.data);
+  const rawPhone = String(formData.get("phone") ?? "").trim();
+  const phone = rawPhone ? normalizePhoneNumber(rawPhone) : "";
+  if (rawPhone && !phone) redirect("/client/profile?error=phone");
+
+  await updateClientProfileDetails(principal.id, {
+    ...parsed.data,
+    phone: phone ?? "",
+    smsOptIn: Boolean(phone) && formData.get("smsOptIn") === "on",
+  });
   revalidatePath("/client/profile");
   redirect("/client/profile?saved=1");
 }

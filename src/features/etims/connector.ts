@@ -1,4 +1,5 @@
 import { getServerEnv } from "@/lib/env";
+import { KraEtimsConnector, type KraConnectorConfiguration } from "@/features/etims/kra-connector";
 import type {
   EtimsConnectionResult,
   EtimsConnector,
@@ -18,6 +19,8 @@ export type EtimsConnectorConfiguration = {
   taxpayerPin: string;
   branchId: string;
   deviceId: string;
+  /** Present when the portal is configured for KRA OSCU/VSCU through `.env`. */
+  kra?: KraConnectorConfiguration;
 };
 
 function joinUrl(baseUrl: string, path: string) {
@@ -39,7 +42,7 @@ function textValue(record: Record<string, unknown>, keys: string[]) {
   return "";
 }
 
-const SECRET_KEY_PATTERN = /token|secret|password|authorization|credential|private.?key/i;
+const SECRET_KEY_PATTERN = /token|secret|password|authorization|credential|private.?key|cmc.?key|intrl.?key|sign.?key/i;
 
 export function sanitiseConnectorResponse(value: unknown): unknown {
   if (Array.isArray(value)) return value.map(sanitiseConnectorResponse);
@@ -259,5 +262,6 @@ class OscuHttpConnector implements EtimsConnector {
 }
 
 export function createEtimsConnector(configuration: EtimsConnectorConfiguration): EtimsConnector {
+  if (configuration.kra) return new KraEtimsConnector(configuration.kra);
   return new OscuHttpConnector(configuration);
 }

@@ -1,49 +1,31 @@
 import type { DashboardNavItem } from "@/components/layout/dashboard-shell";
 
 export function getClientNavItems(cartCount = 0, kycOpen = false): DashboardNavItem[] {
+  // A short, plain-language menu: the everyday tasks are always visible and
+  // the occasional ones are tucked into "More" so nothing overwhelms new users.
   return [
-  {
-    label: "Overview",
-    icon: "gauge",
-    defaultOpen: true,
-    children: [
-      { label: "Dashboard", href: "/client", icon: "gauge", symbol: "D" },
-      { label: "Notifications", href: "/client/notifications", icon: "bell", symbol: "N" },
-      { label: "Calendar", href: "/client/calendar", icon: "calendar", symbol: "CA" },
-      { label: "My profile", href: "/client/profile", icon: "profile", symbol: "P" },
-    ],
-  },
-  {
-    label: "Engagements",
-    icon: "briefcase",
-    defaultOpen: true,
-    children: [
-      { label: "Browse services", href: "/client/services", icon: "briefcase", symbol: "S" },
-      { label: "My engagements", href: "/client/engagements", icon: "briefcase", symbol: "E" },
-      { label: "Engagement letters", href: "/client/engagement-letters", icon: "fileText", symbol: "EL" },
-      { label: "Service cart", href: "/client/cart", icon: "creditCard", symbol: "C", ...(cartCount > 0 ? { badge: String(cartCount) } : {}) },
-      { label: "KYC", href: "/client/kyc", icon: "fileCheck", symbol: "K", badge: kycOpen ? "Open" : "Locked" },
-    ],
-  },
-  {
-    label: "Workspace",
-    icon: "documents",
-    children: [
-      { label: "Documents", href: "/client/documents", icon: "documents", symbol: "F" },
-      { label: "Messages", href: "/client/messages", icon: "message", symbol: "M" },
-      { label: "AI Assistant", href: "/client/ai", icon: "sparkles", symbol: "AI" },
-    ],
-  },
-  {
-    label: "Billing and records",
-    icon: "finance",
-    children: [
-      { label: "Invoices", href: "/client/invoices", icon: "invoice", symbol: "I" },
-      { label: "Quotations", href: "/client/quotations", icon: "money", symbol: "Q" },
-      { label: "Payments", href: "/client/payments", icon: "money", symbol: "P" },
-      { label: "Archive", href: "/client/archive", icon: "archive", symbol: "A" },
-    ],
-  },
+    { label: "Home", href: "/client", icon: "gauge", symbol: "H" },
+    { label: "Get a service", href: "/client/services", icon: "briefcase", symbol: "S" },
+    { label: "My cart", href: "/client/cart", icon: "creditCard", symbol: "C", ...(cartCount > 0 ? { badge: String(cartCount) } : {}) },
+    { label: "My work", href: "/client/engagements", icon: "briefcase", symbol: "W" },
+    { label: "Verify my identity", href: "/client/kyc", icon: "fileCheck", symbol: "V", ...(kycOpen ? { badge: "Open" } : {}) },
+    { label: "Letters to sign", href: "/client/engagement-letters", icon: "fileText", symbol: "L" },
+    { label: "My documents", href: "/client/documents", icon: "documents", symbol: "D" },
+    { label: "Messages", href: "/client/messages", icon: "message", symbol: "M" },
+    { label: "Invoices and payments", href: "/client/invoices", icon: "invoice", symbol: "I" },
+    { label: "AI research assistant", href: "/client/ai", icon: "sparkles", symbol: "AI" },
+    {
+      label: "More",
+      icon: "folderArchive",
+      children: [
+        { label: "Quotations", href: "/client/quotations", icon: "money", symbol: "Q" },
+        { label: "Payment history", href: "/client/payments", icon: "money", symbol: "P" },
+        { label: "Finished work", href: "/client/archive", icon: "archive", symbol: "A" },
+        { label: "Notifications", href: "/client/notifications", icon: "bell", symbol: "N" },
+        { label: "Calendar", href: "/client/calendar", icon: "calendar", symbol: "CA" },
+        { label: "My profile", href: "/client/profile", icon: "profile", symbol: "PR" },
+      ],
+    },
   ];
 }
 

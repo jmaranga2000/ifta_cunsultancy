@@ -9,6 +9,8 @@ export type ClientProfileRecord = {
   email: string;
   firstName: string;
   lastName: string;
+  phone: string;
+  smsOptIn: boolean;
   role: "client" | "client_representative";
   status: string;
   avatarUpdatedAt: string | null;
@@ -26,7 +28,7 @@ export async function getClientProfile(input: { userId: string; email: string })
     roleKeys: { $in: CLIENT_ROLES },
     status: { $ne: "archived" },
   })
-    .select("email firstName lastName roleKeys status avatarUpdatedAt")
+    .select("email firstName lastName phone smsOptIn roleKeys status avatarUpdatedAt")
     .lean()
     .exec();
 
@@ -39,6 +41,8 @@ export async function getClientProfile(input: { userId: string; email: string })
     email: user.email,
     firstName: user.firstName ?? "",
     lastName: user.lastName ?? "",
+    phone: user.phone ?? "",
+    smsOptIn: Boolean(user.smsOptIn && user.phone),
     role,
     status: user.status ?? "active",
     avatarUpdatedAt: user.avatarUpdatedAt?.toISOString() ?? null,
@@ -47,7 +51,7 @@ export async function getClientProfile(input: { userId: string; email: string })
 
 export async function updateClientProfileDetails(
   userId: string,
-  input: { firstName: string; lastName: string },
+  input: { firstName: string; lastName: string; phone?: string; smsOptIn?: boolean },
 ) {
   await connectToDatabase();
   if (!Types.ObjectId.isValid(userId)) return false;

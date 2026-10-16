@@ -2,142 +2,131 @@ import Link from "next/link";
 import {
   ArrowRight,
   BriefcaseBusiness,
+  CheckCircle2,
+  Circle,
+  Clock3,
   FileCheck2,
-  FileText,
   MessageSquareText,
   ReceiptText,
 } from "lucide-react";
 import { CommunicationWidget } from "@/components/dashboard/communication/communication-widget";
-import { Badge } from "@/components/ui/badge";
 import { buttonClassName } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { requireUser } from "@/features/auth/server";
+import { getClientJourney, getClientNextStep } from "@/features/client/next-step";
+import { getClientKycSubmission } from "@/repositories/client-kyc-repository";
 import { getCommunicationHubData } from "@/repositories/communication-repository";
+import { listClientEngagementLetters } from "@/repositories/engagement-letter-repository";
+import { listClientEngagementRequests } from "@/repositories/engagement-request-repository";
+import { getClientKycAccess } from "@/repositories/request-onboarding-repository";
+import { listWorkflowsForPrincipal } from "@/repositories/workflow-repository";
 
-const clientMetrics = [
-  { icon: BriefcaseBusiness, label: "Active engagements", value: "0", helper: "Approved workspaces currently in progress." },
-  { icon: FileCheck2, label: "Actions required", value: "0", helper: "KYC, signatures and document requests." },
-  { icon: MessageSquareText, label: "Unread messages", value: "0", helper: "New engagement-linked conversations." },
-  { icon: ReceiptText, label: "Unpaid invoices", value: "0", helper: "Open finance records for your organization." },
-] as const;
+export const dynamic = "force-dynamic";
 
-const timeline = [
-  "Engagement request submitted",
-  "Administrative review",
-  "KYC and onboarding",
-  "Engagement letter",
-  "Active workspace",
-] as const;
+const PAYABLE_STATUSES = new Set(["approved", "issued", "partially_paid", "overdue", "etims_accepted"]);
+
+const toneStyles = {
+  action: "border-primary bg-brand-soft",
+  waiting: "border-border bg-card",
+  done: "border-emerald-200 bg-emerald-50",
+} as const;
 
 export default async function ClientDashboardPage() {
   const principal = await requireUser();
-  const communication = await getCommunicationHubData(principal);
+  const [communication, workflows, requests, letters, kycAccess] = await Promise.all([
+    getCommunicationHubData(principal),
+    listWorkflowsForPrincipal(principal),
+    listClientEngagementRequests(principal.id),
+    listClientEngagementLetters(principal.id),
+    getClientKycAccess(principal.id),
+  ]);
+  const kyc = kycAccess ? await getClientKycSubmission(principal.id) : null;
+
+  const activeEngagements = workflows.filter((workflow) => workflow.status === "active").length;
+  const completedEngagements = workflows.filter((workflow) => workflow.status === "completed" || workflow.status === "archived").length;
+  const unpaidInvoices = workflows.filter(
+    (workflow) => workflow.financial.balanceDue > 0 && PAYABLE_STATUSES.has(workflow.financial.invoiceStatus),
+  ).length;
+  // Only letters where the client's own signature is still outstanding need action.
+  const lettersAwaitingSignature = letters.filter(
+    (letter) =>
+      (letter.status === "awaiting_signatures" || letter.status === "partially_signed") &&
+      letter.signers.some((signer) => signer.role === "client" && signer.required && signer.status !== "signed"),
+  ).length;
+
+  const journeyInput = {
+    requestStatuses: requests.filter((request) => request.status !== "rejected").map((request) => request.status),
+    kycOpen: Boolean(kycAccess),
+    kycStatus: kyc?.status ?? null,
+    lettersAwaitingSignature,
+    activeEngagements,
+    completedEngagements,
+    unpaidInvoices,
+  };
+  const nextStep = getClientNextStep(journeyInput);
+  const journey = getClientJourney(journeyInput);
+  const { summary } = communication;
+
+  const metrics = [
+    { icon: BriefcaseBusiness, label: "Work in progress", value: activeEngagements, href: "/client/engagements" },
+    { icon: FileCheck2, label: "Needs your action", value: summary.actionRequired + lettersAwaitingSignature, href: "/client/notifications" },
+    { icon: MessageSquareText, label: "New messages", value: summary.unreadMessages, href: "/client/messages" },
+    { icon: ReceiptText, label: "Invoices to pay", value: unpaidInvoices, href: "/client/invoices" },
+  ];
 
   return (
     <div className="grid min-w-0 gap-5">
-      <section className="overflow-hidden rounded-md bg-brand-deep p-6 text-white shadow-sm">
-        <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
-          <div>
-            <Badge tone="teal">Client dashboard</Badge>
-            <h1 className="mt-4 max-w-3xl text-2xl font-bold leading-tight md:text-3xl">
-              Your engagements, documents and next actions.
-            </h1>
-            <p className="mt-3 max-w-2xl text-sm leading-6 text-white/70">
-              Track approved work, complete onboarding and keep every client-facing record connected to the correct engagement.
-            </p>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            <Link className={buttonClassName({ variant: "accent" })} href="/client/cart">
-              Request a service
-              <ArrowRight aria-hidden="true" className="h-4 w-4" />
-            </Link>
-            <Link
-              className={buttonClassName({ className: "border-white/30 bg-transparent text-white hover:bg-white/10", variant: "ghost" })}
-              href="/client/documents"
-            >
-              Open documents
-            </Link>
-          </div>
-        </div>
+      <section className={`rounded-md border-2 p-6 ${toneStyles[nextStep.tone]}`}>
+        <p className="flex items-center gap-2 text-sm font-semibold text-primary">
+          {nextStep.tone === "waiting" ? <Clock3 aria-hidden="true" className="h-4 w-4" /> : <CheckCircle2 aria-hidden="true" className="h-4 w-4" />}
+          {nextStep.tone === "action" ? "Your next step" : nextStep.tone === "waiting" ? "Where things stand" : "All done"}
+        </p>
+        <h1 className="mt-2 text-2xl font-bold text-foreground md:text-3xl">{nextStep.title}</h1>
+        <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">{nextStep.description}</p>
+        <Link className={buttonClassName({ className: "mt-5", size: "lg" })} href={nextStep.href}>
+          {nextStep.cta}
+          <ArrowRight aria-hidden="true" className="h-4 w-4" />
+        </Link>
       </section>
 
-      <section className="grid gap-4 sm:grid-cols-2 2xl:grid-cols-4">
-        {clientMetrics.map((metric) => {
+      <section className="grid grid-cols-2 gap-3 xl:grid-cols-4">
+        {metrics.map((metric) => {
           const Icon = metric.icon;
           return (
-            <Card key={metric.label}>
-              <CardHeader className="flex flex-row items-start justify-between gap-3 space-y-0">
-                <div>
-                  <CardDescription>{metric.label}</CardDescription>
-                  <CardTitle className="mt-2 text-3xl font-bold">{metric.value}</CardTitle>
-                </div>
-                <span className="grid h-10 w-10 place-items-center rounded-md bg-brand-soft text-brand-deep">
-                  <Icon aria-hidden="true" className="h-5 w-5" />
-                </span>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm leading-6 text-muted-foreground">{metric.helper}</p>
-              </CardContent>
-            </Card>
+            <Link className="rounded-md border border-border bg-card p-4 hover:border-primary" href={metric.href} key={metric.label}>
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-muted-foreground">{metric.label}</span>
+                <Icon aria-hidden="true" className="h-4 w-4 text-primary" />
+              </div>
+              <p className="mt-2 text-3xl font-bold text-foreground">{metric.value}</p>
+            </Link>
           );
         })}
       </section>
 
-      <section className="grid min-w-0 gap-5 lg:grid-cols-[minmax(0,1.25fr)_minmax(300px,0.75fr)]">
-        <Card className="min-w-0">
-          <CardHeader>
-            <CardTitle>Engagement journey</CardTitle>
-            <CardDescription>Your next approved request will progress through these client-visible stages.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ol className="divide-y divide-border border-y border-border">
-              {timeline.map((item, index) => (
-                <li className="grid grid-cols-[36px_minmax(0,1fr)_auto] items-center gap-3 py-3" key={item}>
-                  <span className="grid h-7 w-7 place-items-center rounded-md bg-brand-soft font-mono text-[10px] font-bold text-brand-deep">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <span className="text-sm font-semibold text-foreground">{item}</span>
-                  <span className="text-xs font-medium text-muted-foreground">Waiting</span>
-                </li>
-              ))}
-            </ol>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Start here</CardTitle>
-            <CardDescription>Common client actions.</CardDescription>
-          </CardHeader>
-          <CardContent className="grid gap-2">
-            {[
-              ["Browse and request a service", "/client/cart"],
-              ["Check KYC requirements", "/client/kyc"],
-              ["Upload requested documents", "/client/documents"],
-              ["Send a secure message", "/client/messages"],
-            ].map(([label, href], index) => (
-              <Link className="flex items-center gap-3 rounded-md border border-border px-3 py-3 text-sm font-semibold text-foreground hover:border-primary hover:bg-brand-soft" href={href} key={label}>
-                <span className="font-mono text-xs font-bold text-primary">0{index + 1}</span>
-                <span className="min-w-0 flex-1">{label}</span>
-                <ArrowRight aria-hidden="true" className="h-4 w-4 text-muted-foreground" />
-              </Link>
-            ))}
-          </CardContent>
-        </Card>
-      </section>
-
       <Card>
-        <CardHeader className="flex flex-row items-start justify-between gap-4 space-y-0">
-          <div>
-            <CardTitle>Recently shared</CardTitle>
-            <CardDescription>Documents appear here after access checks and validation.</CardDescription>
-          </div>
-          <FileText aria-hidden="true" className="h-5 w-5 text-primary" />
+        <CardHeader>
+          <CardTitle>Your journey with IFTA</CardTitle>
+          <CardDescription>Five simple steps from request to finished work.</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="rounded-md border border-dashed border-border bg-surface-subtle px-4 py-6 text-sm leading-6 text-muted-foreground">
-            No documents have been shared yet. Request an engagement or complete KYC when it opens.
-          </div>
+          <ol className="divide-y divide-border border-y border-border">
+            {journey.map((stage, index) => (
+              <li className="grid grid-cols-[28px_minmax(0,1fr)_auto] items-center gap-3 py-3" key={stage.key}>
+                {stage.state === "done" ? (
+                  <CheckCircle2 aria-hidden="true" className="h-5 w-5 text-emerald-600" />
+                ) : (
+                  <Circle aria-hidden="true" className={stage.state === "current" ? "h-5 w-5 text-primary" : "h-5 w-5 text-muted-foreground/50"} />
+                )}
+                <span className={stage.state === "upcoming" ? "text-sm text-muted-foreground" : "text-sm font-semibold text-foreground"}>
+                  {index + 1}. {stage.label}
+                </span>
+                <span className="text-xs font-medium text-muted-foreground">
+                  {stage.state === "done" ? "Done" : stage.state === "current" ? "You are here" : ""}
+                </span>
+              </li>
+            ))}
+          </ol>
         </CardContent>
       </Card>
 

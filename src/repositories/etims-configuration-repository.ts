@@ -3,6 +3,7 @@ import type { Principal } from "@/features/authorization/access-control";
 import { hasPermission } from "@/features/authorization/access-control";
 import { writeAuditLog } from "@/features/audit/audit-service";
 import { createEtimsConnector, type EtimsConnectorConfiguration } from "@/features/etims/connector";
+import { resolveEtimsEnv } from "@/features/etims/env-config";
 import { getServerEnv } from "@/lib/env";
 import { connectToDatabase } from "@/lib/db/mongoose";
 import { AuthorizationError } from "@/lib/errors";
@@ -45,6 +46,9 @@ export type EtimsConfigurationRecord = {
   configuredByName: string;
   configuredAt: string | null;
   readiness: { ready: boolean; missing: string[] };
+  /** True when ETIMS_MODE is set in `.env`; connection settings then come from the environment. */
+  managedByEnvironment: boolean;
+  mode: "OSCU" | "VSCU" | null;
 };
 
 export type EtimsServiceMappingRecord = {
@@ -149,9 +153,37 @@ function missingConfiguration(record: RawConfiguration) {
   return missing;
 }
 
+/** When ETIMS_MODE is set, `.env` is the source of truth for every connection setting. */
+function withEnvironmentOverrides(record: EtimsConfigurationRecord): EtimsConfigurationRecord {
+  const env = resolveEtimsEnv();
+  if (!env) return record;
+  return {
+    ...record,
+    enabled: env.enabled,
+    environment: env.environment,
+    integrationType: "DIRECT_OSCU",
+    providerName: `KRA ${env.mode}`,
+    taxpayerPin: env.tin,
+    branchId: env.branchId,
+    deviceId: env.deviceSerial,
+    apiBaseUrl: env.baseUrl,
+    credentialReference: env.mode === "OSCU" ? "ETIMS_CMC_KEY" : "Not needed for VSCU",
+    credentialConfigured: env.mode === "VSCU" || Boolean(env.cmcKey),
+    salePath: env.paths.sales,
+    creditNotePath: env.paths.creditNote,
+    debitNotePath: env.paths.debitNote,
+    reconciliationPath: "Re-sends the same invoice number",
+    managedByEnvironment: true,
+    mode: env.mode,
+    readiness: env.enabled
+      ? { ready: env.missing.length === 0, missing: env.missing }
+      : { ready: false, missing: ["Integration is switched off (ETIMS_ENABLED=false)"] },
+  };
+}
+
 function serializeConfiguration(raw: RawConfiguration): EtimsConfigurationRecord {
   const missing = missingConfiguration(raw);
-  return {
+  return withEnvironmentOverrides({
     enabled: raw.enabled ?? false,
     environment: raw.environment ?? DEFAULT_CONFIGURATION.environment,
     integrationType: raw.integrationType ?? DEFAULT_CONFIGURATION.integrationType,
@@ -186,7 +218,9 @@ function serializeConfiguration(raw: RawConfiguration): EtimsConfigurationRecord
     configuredByName: raw.configuredByName ?? "",
     configuredAt: raw.configuredAt?.toISOString() ?? null,
     readiness: { ready: missing.length === 0, missing },
-  };
+    managedByEnvironment: false,
+    mode: null,
+  });
 }
 
 async function ensureConfiguration() {
@@ -211,7 +245,21 @@ export async function getOperationalEtimsConfiguration(): Promise<EtimsConnector
   if (!record.readiness.ready) {
     throw new Error(`eTIMS configuration is incomplete: ${record.readiness.missing.join(", ")}.`);
   }
+  const env = resolveEtimsEnv();
   return {
+    kra: env
+      ? {
+          mode: env.mode,
+          baseUrl: env.baseUrl,
+          tin: env.tin,
+          branchId: env.branchId,
+          deviceSerial: env.deviceSerial,
+          cmcKey: env.cmcKey,
+          paths: env.paths,
+          qrBaseUrl: env.qrBaseUrl,
+          retryableResultCodes: env.retryableResultCodes,
+        }
+      : undefined,
     environment: record.environment,
     providerName: record.providerName,
     apiBaseUrl: record.apiBaseUrl || getServerEnv().KRA_ETIMS_API_URL || "",
@@ -243,6 +291,8 @@ export async function updateEtimsConfiguration(
     | "configuredByName"
     | "configuredAt"
     | "readiness"
+    | "managedByEnvironment"
+    | "mode"
   >,
 ) {
   if (!hasPermission(actor, "etims.config.update")) throw new AuthorizationError();

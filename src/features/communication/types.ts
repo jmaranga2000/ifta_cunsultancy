@@ -53,7 +53,7 @@ export const ANNOUNCEMENT_AUDIENCES = [
 
 export type AnnouncementAudience = (typeof ANNOUNCEMENT_AUDIENCES)[number];
 
-export const ATTACHMENT_TYPES = ["pdf", "docx", "xlsx", "csv", "jpg", "png"] as const;
+export const ATTACHMENT_TYPES = ["pdf", "docx", "xlsx", "csv", "txt", "xml", "jpg", "png", "tiff", "zip"] as const;
 
 export type AttachmentType = (typeof ATTACHMENT_TYPES)[number];
 

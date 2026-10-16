@@ -13,6 +13,11 @@ const clientPaymentSchema = new Schema(
     verifiedAt: { type: Date, default: null },
     reviewNote: { type: String, default: "" },
     receiptNumber: { type: String, default: null, index: true },
+    source: { type: String, enum: ["manual", "mpesa_stk"], default: "manual" },
+    mpesaCheckoutRequestId: { type: String, default: null, index: true, sparse: true },
+    mpesaMerchantRequestId: { type: String, default: "" },
+    mpesaReceiptNumber: { type: String, default: "" },
+    mpesaPhoneLast4: { type: String, default: "" },
     archivedAt: { type: Date, default: null, index: true },
   },
   {

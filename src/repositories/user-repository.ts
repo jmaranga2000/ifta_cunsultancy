@@ -15,6 +15,8 @@ export type CreateUserWithPasswordInput = {
   passwordHash: string;
   firstName?: string;
   lastName?: string;
+  phone?: string;
+  smsOptIn?: boolean;
   roleKeys?: AppRole[];
 };
 
@@ -376,6 +378,8 @@ export async function createUserWithPassword(input: CreateUserWithPasswordInput)
     passwordHash: input.passwordHash,
     firstName: input.firstName ?? "",
     lastName: input.lastName ?? "",
+    phone: input.phone ?? "",
+    smsOptIn: Boolean(input.phone && input.smsOptIn),
     status: "active",
     roleKeys: input.roleKeys ?? ["client"],
     directPermissions: [],

@@ -46,9 +46,9 @@ export function ClientKyc({
       <div className="grid min-w-0 gap-5">
         <section className="rounded-md border border-border border-l-4 border-l-primary bg-card p-5">
           <p className="text-sm font-semibold text-primary">Client verification</p>
-          <h1 className="mt-2 text-2xl font-bold text-foreground">KYC is not open yet</h1>
+          <h1 className="mt-2 text-2xl font-bold text-foreground">Identity check is not open yet</h1>
           <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">
-            KYC becomes available after IFTA approves your engagement request and assigns the responsible staff member.
+            The identity check (KYC) opens after IFTA approves your request. We will tell you by email and in the portal as soon as it is ready.
           </p>
         </section>
         <Card>
@@ -77,14 +77,14 @@ export function ClientKyc({
         <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
           <div>
             <p className="text-sm font-semibold text-primary">Client verification</p>
-            <h1 className="mt-2 text-2xl font-bold text-foreground">Complete your KYC</h1>
+            <h1 className="mt-2 text-2xl font-bold text-foreground">Verify your identity (KYC)</h1>
             <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">
-              Complete the questionnaire, upload your identity and Tax PIN documents, then submit everything for review.
+              KYC means "Know Your Customer". It is a short identity check we must complete before work starts. It takes about 10 minutes: answer a few questions, upload your ID and KRA PIN certificate, then send it to us.
             </p>
           </div>
           <Link className={buttonClassName({ className: "shrink-0" })} href="/client/kyc/questionnaire">
             <ClipboardList aria-hidden="true" className="h-4 w-4" />
-            Continue to questionnaire
+            Start with the questions
           </Link>
         </div>
       </section>

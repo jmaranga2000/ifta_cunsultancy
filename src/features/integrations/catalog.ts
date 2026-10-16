@@ -67,8 +67,9 @@ export const INTEGRATION_CATALOG: Record<IntegrationKey, {
     description: "Sends approved invoices to KRA eTIMS for official acceptance before client delivery.",
     purpose: "Automatically submits stamped invoices to KRA and ensures client delivery is gated on eTIMS acceptance.",
     requiredSettings: [
-      { key: "KRA_ETIMS_API_URL", label: "eTIMS API URL" },
-      { key: "KRA_ETIMS_API_TOKEN", label: "eTIMS API token" },
+      { key: "ETIMS_MODE", label: "Mode (OSCU or VSCU)" },
+      { key: "ETIMS_BASE_URL", label: "eTIMS endpoint URL" },
+      { key: "ETIMS_TIN", label: "KRA PIN" },
     ],
   },
 };
