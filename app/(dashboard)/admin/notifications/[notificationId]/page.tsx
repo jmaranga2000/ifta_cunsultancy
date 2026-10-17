@@ -36,7 +36,7 @@ export default async function AdminNotificationDetailPage({
           Back to notifications
         </Link>
       }
-      description="Edit the message or audience. Changes are synchronized to recipient inboxes."
+      description="Change the message or audience. Changes reach recipients' inboxes."
       icon={BellRing}
       title={notification.title}
     >

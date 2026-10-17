@@ -100,7 +100,7 @@ export function AdminWorkflows() {
         <Card>
           <CardHeader>
             <CardTitle>Workflow library</CardTitle>
-            <CardDescription>Workflow stages, owners, status and task volume.</CardDescription>
+            <CardDescription>Stages, owners, status and number of tasks.</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="overflow-x-auto">
@@ -148,7 +148,7 @@ export function AdminWorkflows() {
         <Card>
           <CardHeader>
             <CardTitle>Stage model</CardTitle>
-            <CardDescription>The admin workflow model shown to staff and clients.</CardDescription>
+            <CardDescription>The workflow staff and clients see.</CardDescription>
           </CardHeader>
           <CardContent className="grid gap-3">
             {["Submitted", "Admin review", "KYC", "Active work", "Client review", "Archive"].map(

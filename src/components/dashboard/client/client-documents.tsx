@@ -22,11 +22,11 @@ function dateLabel(value: string) {
 }
 
 const signedUploadErrors: Record<string, string> = {
-  "signed-missing": "Choose a signed copy and confirm that all required parties have signed it.",
+  "signed-missing": "Choose the signed copy and tick the box to confirm everyone has signed.",
   "signed-size": "The signed copy must be 10 MB or smaller.",
   "signed-type": `Upload the signed copy as ${uploadFormatsLabel("identity")}.`,
-  "signed-letter": "This engagement letter is not available for signed-copy upload.",
-  "signed-upload": "The signed copy could not be stored. Please try again.",
+  "signed-letter": "You cannot upload a signed copy for this letter.",
+  "signed-upload": "We could not save the signed copy. Please try again.",
 };
 
 export function ClientDocuments({ documents, letters, notice, error }: {
@@ -47,7 +47,7 @@ export function ClientDocuments({ documents, letters, notice, error }: {
         <div>
           <Badge tone="teal">Engagement files</Badge>
           <h1 className="mt-3 text-2xl font-bold text-foreground">Documents</h1>
-          <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">Upload evidence, download files shared by IFTA and respond to review feedback.</p>
+          <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">Upload files, download what IFTA shares and answer feedback.</p>
         </div>
         <div className="flex flex-wrap gap-2">
           <Link className={buttonClassName({ variant: "secondary" })} href="/client/documents/shared"><FolderOpen className="h-4 w-4" />Shared files ({shared})</Link>
@@ -60,12 +60,12 @@ export function ClientDocuments({ documents, letters, notice, error }: {
         <CardHeader>
           <div className="flex items-start gap-3">
             <span className="grid h-10 w-10 shrink-0 place-items-center rounded-md bg-brand-soft text-brand-deep"><FileSignature className="h-5 w-5" /></span>
-            <div><CardTitle>Engagement letters</CardTitle><CardDescription>Review, download and return the signed agreement before work begins.</CardDescription></div>
+            <div><CardTitle>Engagement letters</CardTitle><CardDescription>Read, download and return the signed agreement before work starts.</CardDescription></div>
           </div>
         </CardHeader>
         <CardContent className="grid gap-3">
           {letters.length === 0 ? (
-            <EmptyState title="No engagement letter yet" description="Your letter will appear here once your identity check is approved." />
+            <EmptyState title="No engagement letter yet" description="Your letter will show here once your identity check is approved." />
           ) : letters.map((letter) => {
             const clientSigner = letter.signers.find((signer) => signer.role === "client");
             const needsSignedCopy = clientSigner?.status === "pending" && letter.status !== "completed";
@@ -86,7 +86,7 @@ export function ClientDocuments({ documents, letters, notice, error }: {
                     <input name="letterId" type="hidden" value={letter.id} />
                     <div><p className="text-sm font-semibold text-foreground">Upload the fully signed copy</p><p className="mt-1 text-xs leading-5 text-muted-foreground">{uploadHelpText("identity")} You can also sign electronically from View.</p></div>
                     <input accept={uploadAcceptAttribute("identity")} className="block w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground file:mr-3 file:rounded file:border-0 file:bg-brand-soft file:px-3 file:py-1.5 file:font-semibold file:text-brand-deep" name="signedCopy" required type="file" />
-                    <label className="flex items-start gap-3 text-sm leading-6 text-foreground"><input className="mt-1 h-4 w-4 shrink-0 accent-primary" name="signedConfirmation" required type="checkbox" /><span>I confirm this copy has been signed by all required parties and is ready to activate the engagement.</span></label>
+                    <label className="flex items-start gap-3 text-sm leading-6 text-foreground"><input className="mt-1 h-4 w-4 shrink-0 accent-primary" name="signedConfirmation" required type="checkbox" /><span>I confirm that everyone has signed this copy and it is ready to start the work.</span></label>
                     <div className="flex justify-end"><SubmitButton pendingText="Uploading signed copy..."><Upload className="h-4 w-4" />Upload signed letter</SubmitButton></div>
                   </form>
                 ) : null}
@@ -100,7 +100,7 @@ export function ClientDocuments({ documents, letters, notice, error }: {
         <Card>
           <CardHeader>
             <CardTitle>Drafts waiting for your review</CardTitle>
-            <CardDescription>Read each draft, then approve it or clearly describe the changes you need.</CardDescription>
+            <CardDescription>Read each draft, then approve it or tell us what to change.</CardDescription>
           </CardHeader>
           <CardContent className="divide-y divide-border p-0">
             {clientReviewDocuments.map((document) => (
@@ -111,7 +111,7 @@ export function ClientDocuments({ documents, letters, notice, error }: {
                   <div className="min-w-0"><p className="break-words font-semibold text-foreground">{document.name}</p><p className="mt-1 text-sm text-muted-foreground">{document.engagementReference}</p></div>
                   {document.downloadHref ? <Link className={buttonClassName({ variant: "secondary", size: "sm" })} href={document.downloadHref}><Download className="h-4 w-4" />Open draft</Link> : null}
                 </div>
-                <div className="grid gap-2"><label className="text-sm font-semibold text-foreground" htmlFor={`client-review-${document.id}`}>Your review comments</label><Textarea id={`client-review-${document.id}`} name="feedback" placeholder="Confirm that the draft meets your needs, or explain the exact changes required." required /></div>
+                <div className="grid gap-2"><label className="text-sm font-semibold text-foreground" htmlFor={`client-review-${document.id}`}>Your review comments</label><Textarea id={`client-review-${document.id}`} name="feedback" placeholder="Say if the draft is right, or tell us exactly what to change." required /></div>
                 <div className="grid gap-2 sm:grid-cols-2">
                   <SubmitButton name="decision" pendingText="Sending review..." value="changes_requested" variant="secondary"><RotateCcw className="h-4 w-4" />Request changes</SubmitButton>
                   <SubmitButton name="decision" pendingText="Sending approval..." value="approved"><CheckCircle2 className="h-4 w-4" />Approve draft</SubmitButton>
@@ -129,7 +129,7 @@ export function ClientDocuments({ documents, letters, notice, error }: {
         </CardHeader>
         <CardContent className="grid gap-2">
           {documents.length === 0 ? (
-            <EmptyState title="No documents yet" description="Files you upload or receive from IFTA will appear here." />
+            <EmptyState title="No documents yet" description="Files you upload or get from IFTA will show here." />
           ) : documents.map((document) => (
             <div className="flex flex-col justify-between gap-3 border-t border-border py-4 first:border-t-0 first:pt-0 sm:flex-row sm:items-center" key={document.id}>
               <div className="min-w-0">

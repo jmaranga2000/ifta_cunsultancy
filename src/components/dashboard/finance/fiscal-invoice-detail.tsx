@@ -91,7 +91,7 @@ export function FiscalInvoiceDetail({
       </div>
 
       {query.saved ? <p className="rounded-md border border-success/30 bg-success-soft px-4 py-3 text-sm font-semibold text-success">The fiscal record was updated successfully.</p> : null}
-      {query.error ? <p className="rounded-md border border-danger/30 bg-danger-soft px-4 py-3 text-sm font-semibold text-danger">The action could not be completed. Review the invoice status, eTIMS setup, service mapping, and your approval role.</p> : null}
+      {query.error ? <p className="rounded-md border border-danger/30 bg-danger-soft px-4 py-3 text-sm font-semibold text-danger">That did not work. Check the invoice status, eTIMS setup, service mapping and your approval role.</p> : null}
 
       <Card>
         <CardHeader className="flex flex-col justify-between gap-4 border-b border-border md:flex-row md:items-start">
@@ -118,9 +118,9 @@ export function FiscalInvoiceDetail({
             <p className="text-sm font-semibold text-foreground">Current step</p>
             <p className="mt-2 text-sm leading-6 text-muted-foreground">
               {invoice.etims.status === "ACCEPTED"
-                ? "KRA accepted this fiscal document. Portal and email delivery are tracked separately."
+                ? "KRA accepted this invoice. Delivery to the client is tracked separately."
                 : pendingApproval
-                  ? "Admin must review this invoice. Approval locks it permanently and queues it for KRA."
+                  ? "An admin must check this invoice. Approving locks it and sends it to KRA."
                   : fiscalStatus(invoice.status)}
             </p>
             <div className="mt-4 grid gap-2 text-xs text-muted-foreground">
@@ -133,7 +133,7 @@ export function FiscalInvoiceDetail({
       </Card>
 
       <Card>
-        <CardHeader><CardTitle>Invoice lines</CardTitle><CardDescription>Amounts and tax values locked into the fiscal document after approval.</CardDescription></CardHeader>
+        <CardHeader><CardTitle>Invoice lines</CardTitle><CardDescription>Amounts and taxes locked in after approval.</CardDescription></CardHeader>
         <CardContent>
           <div className="grid gap-3 md:hidden">
             {invoice.lines.map((line) => (
@@ -165,18 +165,18 @@ export function FiscalInvoiceDetail({
 
       <div className="grid gap-5 lg:grid-cols-2">
         <Card>
-          <CardHeader><CardTitle>KRA eTIMS response</CardTitle><CardDescription>Sanitized fiscal response. Credentials are never shown here.</CardDescription></CardHeader>
+          <CardHeader><CardTitle>KRA eTIMS response</CardTitle><CardDescription>KRA's reply, with secrets removed.</CardDescription></CardHeader>
           <CardContent><dl><Detail label="Fiscal status" value={invoice.etims.status} /><Detail label="KRA invoice reference" value={invoice.etims.kraInvoiceNumber} /><Detail label="Receipt number" value={invoice.etims.receiptNumber} /><Detail label="Control unit" value={invoice.etims.controlUnitId} /><Detail label="Response" value={[invoice.etims.responseCode, invoice.etims.responseMessage].filter(Boolean).join(" · ")} /><Detail label="Accepted" value={dateTime(invoice.etims.acceptedAt)} /></dl></CardContent>
         </Card>
         <Card>
-          <CardHeader><CardTitle>Client delivery</CardTitle><CardDescription>Delivery retries never send the invoice to KRA again.</CardDescription></CardHeader>
+          <CardHeader><CardTitle>Client delivery</CardTitle><CardDescription>Resending to the client never sends the invoice to KRA again.</CardDescription></CardHeader>
           <CardContent><dl><Detail label="Portal" value={invoice.portalPublishedAt ? `Published ${dateTime(invoice.portalPublishedAt)}` : "Not published"} /><Detail label="Email" value={invoice.emailDeliveryStatus} /><Detail label="Recipient" value={invoice.emailedTo} /><Detail label="Delivery note" value={invoice.emailDeliveryError || "No delivery problem recorded"} /></dl></CardContent>
         </Card>
       </div>
 
       {editable ? (
         <Card>
-          <CardHeader><CardTitle>Correct and resubmit invoice</CardTitle><CardDescription>Update quantities, prices, due date, and notes. Totals and tax are recalculated on the server from the approved service mapping.</CardDescription></CardHeader>
+          <CardHeader><CardTitle>Correct and resubmit invoice</CardTitle><CardDescription>Change quantities, prices, due date and notes. Totals and tax are worked out again from the service mapping.</CardDescription></CardHeader>
           <CardContent>
             {invoice.returnReason ? <p className="mb-4 rounded-md border border-warning/30 bg-warning-soft p-4 text-sm text-foreground"><strong>Admin requested:</strong> {invoice.returnReason}</p> : null}
             <form action={saveAndSubmitFiscalInvoiceAction} className="grid gap-5">
@@ -194,13 +194,13 @@ export function FiscalInvoiceDetail({
       ) : null}
       {pendingApproval && canApprove ? (
         <Card>
-          <CardHeader><CardTitle>Admin decision</CardTitle><CardDescription>Approval locks the amounts and queues the invoice. It does not make the invoice visible to the client yet.</CardDescription></CardHeader>
+          <CardHeader><CardTitle>Admin decision</CardTitle><CardDescription>Approving locks the amounts and queues the invoice. The client cannot see it yet.</CardDescription></CardHeader>
           <CardContent className="grid gap-5 lg:grid-cols-3">
             <form action={approveFiscalInvoiceAction} className="rounded-md border border-success/30 p-4">
               <input name="invoiceId" type="hidden" value={invoice.id} />
               <CheckCircle2 className="h-5 w-5 text-success" />
               <p className="mt-3 font-semibold">Approve and queue</p>
-              <p className="mt-1 text-sm text-muted-foreground">Apply the server-signed stamp and send this to the eTIMS queue.</p>
+              <p className="mt-1 text-sm text-muted-foreground">Stamp the invoice and send it to the eTIMS queue.</p>
               <SubmitButton className="mt-4 w-full" pendingText="Queuing...">Approve invoice</SubmitButton>
             </form>
             <form action={returnFiscalInvoiceAction} className="rounded-md border border-border p-4">
@@ -223,7 +223,7 @@ export function FiscalInvoiceDetail({
 
       {operation && ["RETRY_REQUIRED", "DEAD_LETTER", "RECONCILIATION_REQUIRED"].includes(operation.status) ? (
         <Card>
-          <CardHeader><CardTitle>Recovery action</CardTitle><CardDescription>Use reconciliation for uncertain submissions. Retry only confirmed technical failures.</CardDescription></CardHeader>
+          <CardHeader><CardTitle>Recovery action</CardTitle><CardDescription>Use reconcile when the result is unclear. Retry only after a confirmed technical failure.</CardDescription></CardHeader>
           <CardContent className="grid gap-4 md:grid-cols-2">
             {operation.status === "RECONCILIATION_REQUIRED" ? (
               <form action={reconcileEtimsTransactionAction}>
@@ -249,14 +249,14 @@ export function FiscalInvoiceDetail({
       ) : null}
 
       <Card>
-        <CardHeader><CardTitle>Credit and debit notes</CardTitle><CardDescription>Only one accepted adjustment note is allowed for this invoice.</CardDescription></CardHeader>
+        <CardHeader><CardTitle>Credit and debit notes</CardTitle><CardDescription>Only one correction is allowed for this invoice.</CardDescription></CardHeader>
         <CardContent className="grid gap-3">
           {notes.length ? notes.map((note) => (
             <Link className="flex flex-col justify-between gap-3 rounded-md border border-border p-4 transition-colors hover:bg-muted/30 sm:flex-row sm:items-center" href={`/admin/finance/etims/adjustments/${note.id}`} key={note.id}>
               <div><p className="font-semibold text-foreground">{note.noteNumber}</p><p className="mt-1 text-sm text-muted-foreground">{note.reasonDescription}</p></div>
               <div className="flex items-center gap-3"><Badge tone={fiscalTone(note.status)}>{fiscalStatus(note.status)}</Badge><span className="font-semibold">{fiscalMoney(note.totalAmount, note.currency)}</span></div>
             </Link>
-          )) : <p className="rounded-md border border-dashed border-border p-5 text-sm text-muted-foreground">No credit or debit note has been created for this invoice.</p>}
+          )) : <p className="rounded-md border border-dashed border-border p-5 text-sm text-muted-foreground">No credit or debit note for this invoice.</p>}
         </CardContent>
       </Card>
     </div>

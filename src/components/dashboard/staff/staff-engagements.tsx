@@ -28,7 +28,7 @@ export function StaffEngagements({
 
   return (
     <AdminPageSurface
-      description={managerView ? "View every engagement. Actions remain available only for engagements assigned to you." : "Open your assigned client work, see what comes next and follow deadlines."}
+      description={managerView ? "See every engagement. You can act only on the ones assigned to you." : "Open your client work, see what comes next and follow deadlines."}
       icon={BriefcaseBusiness}
       summary={[
         { label: "Active", value: active, helper: "Work currently moving", icon: BriefcaseBusiness },
@@ -39,7 +39,7 @@ export function StaffEngagements({
     >
       {workflows.length === 0 && requests.length === 0 ? (
         <StaffEmptyState
-          description="Assigned requests and engagements will appear here automatically."
+          description="Assigned requests and engagements show here automatically."
           title="No work assigned yet"
         />
       ) : (
@@ -89,7 +89,7 @@ export function StaffEngagements({
           {requests.length > 0 ? (
             <section className="p-5">
               <h2 className="font-semibold text-foreground">Assigned requests</h2>
-              <p className="mt-1 text-sm text-muted-foreground">These have been assigned to you but are not active engagements yet.</p>
+              <p className="mt-1 text-sm text-muted-foreground">Assigned to you but not active yet.</p>
               <div className="mt-4 grid gap-3">
                 {requests.map((request) => (
                   <div className="flex flex-col justify-between gap-3 rounded-md border border-border p-4 sm:flex-row sm:items-center" key={request.id}>

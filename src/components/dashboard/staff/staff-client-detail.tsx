@@ -64,8 +64,8 @@ export function StaffClientDetail({
           </div>
         )}
         description={reviewContext
-          ? "Review the client profile, KYC answers, signed engagement letter, and submitted evidence before completing the technical review."
-          : "Contact details and all work connected to this client in your workspace."}
+          ? "Check the client profile, KYC answers, signed letter and files before finishing the review."
+          : "Contact details and all work for this client."}
         icon={UserRound}
         summary={[
           { label: "Active engagements", value: client.activeEngagements, helper: "Work currently open", icon: BriefcaseBusiness },
@@ -124,7 +124,7 @@ export function StaffClientDetail({
         <Card className="min-w-0 overflow-hidden shadow-none">
           <CardHeader className="border-b border-border">
             <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-start">
-              <div><CardTitle>KYC questionnaire and evidence</CardTitle><CardDescription className="mt-1">Every answer and uploaded version submitted by the client.</CardDescription></div>
+              <div><CardTitle>KYC questionnaire and evidence</CardTitle><CardDescription className="mt-1">Every answer and file the client sent.</CardDescription></div>
               <Link className={buttonClassName({ variant: "secondary", size: "sm" })} href={`/staff/kyc/${reviewContext.kyc.id}`}><ShieldCheck className="h-4 w-4" />Open KYC workspace</Link>
             </div>
           </CardHeader>
@@ -153,7 +153,7 @@ export function StaffClientDetail({
           </CardContent>
         </Card>
       ) : reviewContext ? (
-        <StaffEmptyState description="No submitted KYC record is connected to this assigned client." title="KYC record unavailable" />
+        <StaffEmptyState description="No KYC has been submitted for this client yet." title="KYC record unavailable" />
       ) : null}
 
       {reviewContext?.letter ? (
@@ -167,12 +167,12 @@ export function StaffClientDetail({
           </CardContent>
         </Card>
       ) : reviewContext ? (
-        <StaffEmptyState description="The active engagement does not have a linked signed engagement letter." title="Engagement letter unavailable" />
+        <StaffEmptyState description="This active engagement has no linked signed letter." title="Engagement letter unavailable" />
       ) : null}
 
       {reviewContext && reviewContext.documents.length > 0 ? (
         <Card className="overflow-hidden shadow-none">
-          <CardHeader><CardTitle>Engagement documents</CardTitle><CardDescription>Files already exchanged inside this engagement workspace.</CardDescription></CardHeader>
+          <CardHeader><CardTitle>Engagement documents</CardTitle><CardDescription>Files already shared in this engagement.</CardDescription></CardHeader>
           <CardContent className="divide-y divide-border p-0">
             {reviewContext.documents.map((document) => <div className="flex min-w-0 flex-col justify-between gap-3 p-4 sm:flex-row sm:items-center" key={document.id}><div className="min-w-0"><div className="flex flex-wrap items-center gap-2"><p className="break-words font-semibold text-foreground">{document.name}</p><Badge tone={staffStatusTone(document.status)}>{staffStatusLabel(document.status)}</Badge></div><p className="mt-1 text-xs text-muted-foreground">{staffStatusLabel(document.documentKind)} / Version {document.version}</p></div><div className="flex shrink-0 flex-wrap gap-2"><Link className={buttonClassName({ variant: "secondary", size: "sm" })} href={`/api/engagements/${reviewContext.workflow.id}/documents/${document.id}?preview=1`} target="_blank"><Eye className="h-4 w-4" />Preview</Link><Link className={buttonClassName({ variant: "secondary", size: "sm" })} href={`/api/engagements/${reviewContext.workflow.id}/documents/${document.id}`}><Download className="h-4 w-4" />Download</Link></div></div>)}
           </CardContent>
@@ -185,7 +185,7 @@ export function StaffClientDetail({
             <CardHeader><CardTitle>Engagements</CardTitle></CardHeader>
             <CardContent className="p-0">
               {workflows.length === 0 ? (
-                <StaffEmptyState description="This client does not have an engagement visible in your workspace yet." title="No engagement yet" />
+                <StaffEmptyState description="This client has no engagement you can see yet." title="No engagement yet" />
               ) : (
                 <div className="divide-y divide-border">
                   {workflows.map((workflow) => (

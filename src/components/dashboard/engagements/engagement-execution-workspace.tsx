@@ -63,12 +63,12 @@ import type { EngagementTeamCandidate, EngagementTeamRole } from "@/repositories
 const tabMeta: Array<{ key: EngagementWorkspaceTab; label: string; icon: typeof BriefcaseBusiness }> = [
   { key: "overview", label: "Overview", icon: BriefcaseBusiness },
   { key: "tasks", label: "Tasks", icon: ListChecks },
-  { key: "documents", label: "Documents", icon: FileText },
-  { key: "deliverables", label: "Deliverables", icon: FileCheck2 },
+  { key: "documents", label: "Files", icon: FileText },
+  { key: "deliverables", label: "Final files", icon: FileCheck2 },
   { key: "messages", label: "Messages", icon: MessageSquareText },
-  { key: "finance", label: "Finance", icon: CircleDollarSign },
-  { key: "timeline", label: "Timeline", icon: Clock3 },
-  { key: "completion", label: "Completion", icon: CheckCircle2 },
+  { key: "finance", label: "Money", icon: CircleDollarSign },
+  { key: "timeline", label: "History", icon: Clock3 },
+  { key: "completion", label: "Finish", icon: CheckCircle2 },
 ];
 
 function dateLabel(value: string | null, time = false) {
@@ -112,35 +112,35 @@ function statusTone(status: string) {
 const workspaceErrorCopy: Record<string, { title: string; message: string }> = {
   "document-consultant_assignment": {
     title: "Draft upload is not assigned to you",
-    message: "Only the consultant assigned to this engagement can upload draft and final deliverables. Ask an administrator to check the engagement team assignment.",
+    message: "Only the consultant assigned to this engagement can upload drafts and final files. Ask an admin to check the team.",
   },
   "document-dependencies": {
     title: "Complete the earlier task first",
-    message: "The draft cannot be submitted until its required earlier task is completed. Open Tasks to see the outstanding dependency.",
+    message: "Finish the earlier task first. Open Tasks to see what is blocking this one.",
   },
   "document-task_not_ready": {
     title: "The deliverable task is not ready",
-    message: "This task is already waiting for review, completed, or blocked. Open Tasks to check its current status before uploading another version.",
+    message: "This task is already waiting for review, done or blocked. Check Tasks before uploading again.",
   },
   "document-client_approval": {
     title: "Client approval is still required",
-    message: "A final deliverable can only be uploaded after the client approves the draft. Draft uploads are still available to the assigned consultant.",
+    message: "You can upload the final file only after the client approves the draft. Drafts can still be uploaded.",
   },
   "document-storage": {
     title: "The file could not be stored",
-    message: "The document did not reach secure storage. Check the file and R2 connection, then try again.",
+    message: "The file was not saved. Check it and try again.",
   },
   "invoice-access": {
     title: "Invoice is outside your access",
-    message: "This invoice could not be found in an engagement available to your account. Return to Active engagements and open it again.",
+    message: "We could not find this invoice in your engagements. Go back to Active engagements and open it again.",
   },
   "invoice-not_found": {
     title: "Invoice was not found",
-    message: "The invoice may have been removed or replaced. Refresh the engagement before trying again.",
+    message: "This invoice may have been removed or replaced. Refresh the engagement and try again.",
   },
   "invoice-not_pending": {
     title: "Invoice is no longer awaiting approval",
-    message: "This invoice has already been approved, sent, or otherwise updated. Refresh the Finance section to see its current status.",
+    message: "This invoice has already been approved or sent. Refresh the Finance section to see its status.",
   },
   "invoice-engagement_inactive": {
     title: "Engagement is not active",
@@ -148,31 +148,31 @@ const workspaceErrorCopy: Record<string, { title: string; message: string }> = {
   },
   "invoice-administrator_required": {
     title: "Administrator approval required",
-    message: "Only an administrator can approve, stamp, and issue an invoice.",
+    message: "Only an administrator can approve and issue an invoice.",
   },
   "invoice-permission": {
     title: "Invoice approval access is disabled",
-    message: "The administrator role does not currently allow invoice approval. Enable Invoice approval under Roles and permissions, then try again.",
+    message: "Your admin role cannot approve invoices. Turn on Invoice approval under Roles and permissions.",
   },
   "invoice-maker_checker": {
     title: "A different administrator must approve this invoice",
-    message: "The person who prepared this invoice cannot approve it. Ask another administrator to review and approve it.",
+    message: "The person who prepared this invoice cannot approve it. Ask another administrator.",
   },
   "invoice-validation": {
     title: "Invoice is not ready for eTIMS",
-    message: "Complete the company eTIMS settings and service tax mapping, then review the client and invoice details before trying again.",
+    message: "Finish the company eTIMS settings and service tax mapping, then check the client and invoice details.",
   },
   "invoice-conflict": {
     title: "Invoice was updated elsewhere",
-    message: "The invoice changed while this approval was being processed. Refresh the Finance section before taking another action.",
+    message: "The invoice changed while it was being approved. Refresh the Finance section and try again.",
   },
   "invoice-processing": {
     title: "Invoice approval could not finish",
-    message: "The invoice was not issued. Check the company settings and try again; the existing invoice remains unchanged.",
+    message: "The invoice was not issued. Check the company settings and try again. The invoice is unchanged.",
   },
   "invoice-email": {
     title: "Invoice email was not delivered",
-    message: "The invoice was approved, stamped, and saved in the client portal, but Gmail did not accept the delivery. Check the registered client email and SMTP account, then resend from the invoice record.",
+    message: "The invoice was approved and saved in the client portal, but the email did not send. Check the client's email and resend it from the invoice.",
   },
 };
 
@@ -212,12 +212,19 @@ function SectionIntro({
   title: string;
 }) {
   return (
-    <div className="mb-4 grid gap-4 rounded-md border border-border bg-card p-4 md:grid-cols-[minmax(0,1fr)_minmax(16rem,0.65fr)] md:items-start">
+    <div className={`mb-4 rounded-xl border p-4 ${complete ? "border-emerald-200 bg-emerald-50" : "border-primary/30 bg-brand-soft"}`}>
       <div className="flex items-start gap-3">
-        {complete ? <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-success" /> : <Circle className="mt-0.5 h-5 w-5 shrink-0 text-warning" />}
-        <div><div className="flex flex-wrap items-center gap-2"><h2 className="font-semibold text-foreground">{title}</h2><Badge tone={complete ? "green" : "gold"}>{complete ? "Section complete" : "Work remains"}</Badge></div><p className="mt-2 text-sm leading-6 text-muted-foreground">{purpose}</p></div>
+        {complete ? <CheckCircle2 className="mt-0.5 h-6 w-6 shrink-0 text-success" /> : <Circle className="mt-0.5 h-6 w-6 shrink-0 text-primary" />}
+        <div className="min-w-0">
+          <p className="text-sm font-semibold text-muted-foreground">{title}</p>
+          <p className="text-lg font-bold text-foreground">{complete ? "This part is done." : `Next: ${nextAction}`}</p>
+        </div>
       </div>
-      <dl className="grid gap-2 text-sm"><div><dt className="text-xs font-semibold text-muted-foreground">DONE WHEN</dt><dd className="mt-1 text-foreground">{doneWhen}</dd></div><div><dt className="text-xs font-semibold text-muted-foreground">NEXT ACTION</dt><dd className="mt-1 font-semibold text-foreground">{complete ? "No action required" : nextAction}</dd></div></dl>
+      <details className="mt-2 pl-9">
+        <summary className="cursor-pointer text-sm font-semibold text-primary">What is this for?</summary>
+        <p className="mt-2 text-base leading-7 text-muted-foreground">{purpose}</p>
+        <p className="mt-1 text-base leading-7 text-muted-foreground"><strong className="text-foreground">Done when:</strong> {doneWhen}</p>
+      </details>
     </div>
   );
 }
@@ -306,14 +313,14 @@ export function EngagementExecutionWorkspace({
     && workflow.financial.balanceDue <= 0
     && workflow.financial.invoices.every((invoice) => ["paid", "void", "refunded"].includes(invoice.status));
   const sectionState: Record<EngagementWorkspaceTab, { complete: boolean; doneWhen: string; nextAction: string; purpose: string }> = {
-    overview: { complete: teamReady, purpose: "Confirm the client, service, assigned team, current process stage, health, and outstanding client actions.", doneWhen: "The consultant, reviewer, and finance officer are assigned and responsibilities are clear.", nextAction: "Complete the engagement team assignment." },
-    tasks: { complete: tasksComplete, purpose: "Break the engagement into owned work, submit completed work for review, and record each reviewer decision.", doneWhen: "Every required task is completed or formally cancelled, including its required review.", nextAction: pendingTasks.length ? `Resolve ${pendingTasks.length} open task${pendingTasks.length === 1 ? "" : "s"}.` : "Create the engagement tasks." },
-    documents: { complete: documentsComplete, purpose: "Exchange client evidence, working papers, and draft outputs while preserving review decisions and replacement history.", doneWhen: "At least one working document exists and no document is waiting for review or replacement.", nextAction: pendingDocumentReviews.length ? `Review ${pendingDocumentReviews.length} pending document${pendingDocumentReviews.length === 1 ? "" : "s"}.` : documentsNeedingReplacement.length ? `Replace ${documentsNeedingReplacement.length} returned document${documentsNeedingReplacement.length === 1 ? "" : "s"}.` : "Upload the first engagement document." },
-    deliverables: { complete: deliverablesComplete, purpose: "Control the official final outputs that may be released to the client.", doneWhen: "At least one approved final deliverable has been released to the client.", nextAction: latestDeliverables.length ? "Complete approval and release for the final deliverable." : "Upload a final deliverable from Documents." },
-    messages: { complete: messagesComplete, purpose: "Keep engagement-specific communication with the client and assigned team in one auditable conversation.", doneWhen: "The engagement conversation has been started.", nextAction: "Send the first engagement message." },
-    finance: { complete: financeComplete, purpose: "Create and issue invoices, verify payments, and provide receipts from the engagement record.", doneWhen: "An invoice has been issued and the engagement balance is fully settled.", nextAction: workflow.financial.invoices.length ? "Resolve the outstanding invoice or payment." : "Create the engagement invoice." },
-    timeline: { complete: workflow.activity.length > 0, purpose: "Review the chronological audit history generated by tasks, reviews, documents, messages, finance, and stage changes.", doneWhen: "Activity is being recorded automatically against the engagement.", nextAction: "Complete an engagement action to create the first event." },
-    completion: { complete: ["completed", "archived"].includes(workflow.status), purpose: "Confirm all mandatory work, approvals, deliverables, client actions, finance, and closure notes before locking the record.", doneWhen: "The engagement is completed and its closure summary has been generated.", nextAction: "Resolve every missing completion requirement." },
+    overview: { complete: teamReady, purpose: "Check the client, service, team, stage and anything the client still needs to do.", doneWhen: "The consultant, reviewer and finance officer are assigned.", nextAction: "Complete the engagement team assignment." },
+    tasks: { complete: tasksComplete, purpose: "Split the work into tasks, send finished work for review and record each decision.", doneWhen: "Every required task is done or cancelled, including its review.", nextAction: pendingTasks.length ? `Resolve ${pendingTasks.length} open task${pendingTasks.length === 1 ? "" : "s"}.` : "Create the engagement tasks." },
+    documents: { complete: documentsComplete, purpose: "Share client files, working papers and drafts, with review decisions kept.", doneWhen: "At least one working document exists and none is waiting for review.", nextAction: pendingDocumentReviews.length ? `Review ${pendingDocumentReviews.length} pending document${pendingDocumentReviews.length === 1 ? "" : "s"}.` : documentsNeedingReplacement.length ? `Replace ${documentsNeedingReplacement.length} returned document${documentsNeedingReplacement.length === 1 ? "" : "s"}.` : "Upload the first engagement document." },
+    deliverables: { complete: deliverablesComplete, purpose: "Control the final files that are released to the client.", doneWhen: "At least one approved final file has been released to the client.", nextAction: latestDeliverables.length ? "Approve and release the final file." : "Upload a final deliverable from Documents." },
+    messages: { complete: messagesComplete, purpose: "Keep all messages about this engagement in one place.", doneWhen: "The engagement conversation has been started.", nextAction: "Send the first engagement message." },
+    finance: { complete: financeComplete, purpose: "Create and issue invoices, confirm payments and give receipts.", doneWhen: "An invoice has been issued and the balance is fully paid.", nextAction: workflow.financial.invoices.length ? "Resolve the outstanding invoice or payment." : "Create the engagement invoice." },
+    timeline: { complete: workflow.activity.length > 0, purpose: "See everything that happened on this engagement, in order.", doneWhen: "Activity is recorded automatically.", nextAction: "Do something on the engagement to create the first event." },
+    completion: { complete: ["completed", "archived"].includes(workflow.status), purpose: "Check all work, approvals, files, client actions, payments and closing notes before locking the record.", doneWhen: "The engagement is complete and its closing summary has been created.", nextAction: "Resolve every missing completion requirement." },
   };
   const internalSequence: EngagementWorkspaceTab[] = ["overview", "tasks", "documents", "deliverables", "finance", "completion"];
   const currentInternalIndex = internalSequence.indexOf(activeTab);
@@ -345,12 +352,9 @@ export function EngagementExecutionWorkspace({
         ["Balance", money(workflow.financial.currency, workflow.financial.balanceDue)],
       ]
     : [
-        ["Pending tasks", pendingTasks.length],
-        ["Documents uploaded", workingDocuments.length],
-        ["Deliverables", deliverables.length],
-        ["Messages", data.messages.length],
-        ["Outstanding balance", money(workflow.financial.currency, workflow.financial.balanceDue)],
-        ["Days remaining", data.daysRemaining === null ? "Not set" : data.daysRemaining < 0 ? `${Math.abs(data.daysRemaining)} overdue` : data.daysRemaining],
+        ["Tasks to do", pendingTasks.length],
+        ["Balance due", money(workflow.financial.currency, workflow.financial.balanceDue)],
+        ["Days left", data.daysRemaining === null ? "Not set" : data.daysRemaining < 0 ? `${Math.abs(data.daysRemaining)} overdue` : data.daysRemaining],
       ];
 
   return (
@@ -372,7 +376,7 @@ export function EngagementExecutionWorkspace({
               <Link className={buttonClassName({ size: "sm" })} href={`${basePath}?tab=${continueTab}`}>Continue working<ArrowRight aria-hidden="true" className="h-4 w-4" /></Link>
             </div>
           </div>
-          <div className={`grid min-w-0 gap-3 sm:grid-cols-2 ${isClient ? "lg:grid-cols-3" : "xl:grid-cols-6"}`}>
+          <div className="grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-3">
             {headerMetrics.map(([label, value]) => <div className="min-w-0 rounded-md border border-border bg-background px-4 py-3" key={label}><p className="text-xs font-medium text-muted-foreground">{label}</p><p className="mt-1 break-words text-lg font-bold text-foreground">{value}</p></div>)}
           </div>
         </CardHeader>
@@ -389,10 +393,10 @@ export function EngagementExecutionWorkspace({
       </nav>
 
       {query.saved ? <p className="rounded-md border border-success/30 bg-success-soft px-4 py-3 text-sm font-semibold text-success">{query.saved === "invoice-queued" ? "Invoice approved and safely queued for KRA eTIMS. The client will receive it only after KRA accepts it." : "Saved successfully. The engagement workspace and relevant notifications were updated."}</p> : null}
-      {query.error ? <ActionErrorPopup message={workspaceErrorCopy[query.error]?.message ?? "Check the information and your assigned role, then try again. Your existing engagement data has not been changed."} title={workspaceErrorCopy[query.error]?.title} /> : null}
-      {query.team === "saved" ? <p className="rounded-md border border-success/30 bg-success-soft px-4 py-3 text-sm font-semibold text-success">The complete engagement team was saved and notified.</p> : null}
-      {query.reviewed ? <p className="rounded-md border border-success/30 bg-success-soft px-4 py-3 text-sm font-semibold text-success">Your deliverable decision was saved and the engagement team was notified.</p> : null}
-      {query.transitioned === "1" ? <p className="rounded-md border border-success/30 bg-success-soft px-4 py-3 text-sm font-semibold text-success">The engagement moved to the next process stage.</p> : null}
+      {query.error ? <ActionErrorPopup message={workspaceErrorCopy[query.error]?.message ?? "Check the details and your role, then try again. Nothing was changed."} title={workspaceErrorCopy[query.error]?.title} /> : null}
+      {query.team === "saved" ? <p className="rounded-md border border-success/30 bg-success-soft px-4 py-3 text-sm font-semibold text-success">The team was saved and told.</p> : null}
+      {query.reviewed ? <p className="rounded-md border border-success/30 bg-success-soft px-4 py-3 text-sm font-semibold text-success">Your decision was saved and the team was told.</p> : null}
+      {query.transitioned === "1" ? <p className="rounded-md border border-success/30 bg-success-soft px-4 py-3 text-sm font-semibold text-success">The engagement moved to the next stage.</p> : null}
       {query.transitionError ? <p className="rounded-md border border-danger/30 bg-danger-soft px-4 py-3 text-sm font-semibold text-danger">The process stage could not advance: {query.transitionError}</p> : null}
 
       {activeTab === "overview" ? (
@@ -401,16 +405,13 @@ export function EngagementExecutionWorkspace({
           <div className="mb-4"><EngagementStageProgress canManage={editable && (isAdmin || (isEngagementManager && assignedToEngagement))} returnPath={basePath} workflow={workflow} /></div>
           <div className="grid min-w-0 gap-4 xl:grid-cols-[minmax(0,1.15fr)_minmax(20rem,0.85fr)]">
             <Card className="min-w-0 overflow-hidden shadow-none">
-              <CardHeader><CardTitle>Engagement overview</CardTitle><CardDescription>Current position, responsibility and the next action required.</CardDescription></CardHeader>
+              <CardHeader><CardTitle>Engagement overview</CardTitle><CardDescription>Where things stand and what to do next.</CardDescription></CardHeader>
               <CardContent className="grid gap-0">
                 {[
-                  ["Engagement reference", workflow.reference], ["Client name", workflow.clientName], ["Service", workflow.serviceName],
-                  ["Current status", statusLabel(workflow.status)], ["Current workflow stage", workflow.currentStageName],
-                  ["Engagement health", data.health.label],
-                  ["Progress", `${workflow.progress.overall}%`], ["Start date", dateLabel(workflow.startDate)],
-                  ["Due date", dateLabel(workflow.dueDate)], ["Last activity", dateLabel(workflow.lastActivityAt, true)],
-                  ...(workflow.previousEngagementReference ? [["Previous engagement", workflow.previousEngagementReference]] : []),
-                  ["Required next action", workflow.nextAction],
+                  ["Next step", workflow.nextAction],
+                  ["Stage", workflow.currentStageName],
+                  ["Due date", dateLabel(workflow.dueDate)],
+                  ["Last update", dateLabel(workflow.lastActivityAt, true)],
                 ].map(([label, value]) => <div className="grid gap-1 border-b border-border py-3 sm:grid-cols-[12rem_minmax(0,1fr)]" key={label}><dt className="text-sm text-muted-foreground">{label}</dt><dd className="break-words text-sm font-semibold text-foreground">{value}</dd></div>)}
                 <div className="mt-4"><div className="mb-2 flex justify-between text-xs font-semibold"><span>Overall progress</span><span>{workflow.progress.overall}%</span></div><div className="h-2 overflow-hidden rounded-sm bg-muted"><div className="h-full bg-primary" style={{ width: `${workflow.progress.overall}%` }} /></div></div>
               </CardContent>
@@ -426,16 +427,16 @@ export function EngagementExecutionWorkspace({
                 </CardContent>
               </Card>
               <Card className="shadow-none">
-                <CardHeader><CardTitle>Client collaboration</CardTitle><CardDescription>Requests for documents, clarification, approval, or signature.</CardDescription></CardHeader>
+                <CardHeader><CardTitle>Client collaboration</CardTitle><CardDescription>Ask the client for documents, answers, approval or a signature.</CardDescription></CardHeader>
                 <CardContent className="grid gap-3">
                   {outstandingActions.map((action) => <div className="rounded-md border border-border p-3" key={action.key}><div className="flex flex-wrap items-center justify-between gap-2"><p className="font-semibold text-foreground">{action.title}</p><Badge tone="gold">{statusLabel(action.status)}</Badge></div><p className="mt-2 text-sm text-muted-foreground">{action.instructions}</p><p className="mt-2 text-xs text-muted-foreground">Due {dateLabel(action.dueDate)}</p>{isClient && editable ? <form action={respondToClientCollaborationAction} className="mt-3 grid gap-2"><input name="workflowId" type="hidden" value={workflow.id} /><input name="actionKey" type="hidden" value={action.key} /><input name="returnPath" type="hidden" value={basePath} /><Textarea name="response" placeholder="Add your response or confirmation..." required /><SubmitButton pendingText="Sending response..." size="sm"><Send className="h-4 w-4" />Send response</SubmitButton></form> : null}</div>)}
                   {outstandingActions.length === 0 ? <p className="text-sm text-muted-foreground">No client response is currently outstanding.</p> : null}
-                  {consultant && editable ? <form action={requestClientCollaborationAction} className="grid gap-3 border-t border-border pt-4"><input name="workflowId" type="hidden" value={workflow.id} /><input name="returnPath" type="hidden" value={basePath} /><div className="grid gap-2"><Label htmlFor="client-action-title">Request</Label><Input id="client-action-title" name="title" placeholder="Upload additional tax records" required /></div><div className="grid gap-2"><Label htmlFor="client-action-instructions">Instructions</Label><Textarea id="client-action-instructions" name="instructions" placeholder="Explain exactly what the client should provide." required /></div><div className="grid gap-2"><Label htmlFor="client-action-due">Due date</Label><Input id="client-action-due" name="dueDate" required type="date" /></div><SubmitButton pendingText="Sending request..."><Send className="h-4 w-4" />Request client action</SubmitButton></form> : null}
+                  {consultant && editable ? <details className="group border-t border-border pt-4"><summary className="flex cursor-pointer list-none items-center justify-between text-base font-bold text-primary">Ask the client for something<span aria-hidden="true" className="text-xl transition-transform group-open:rotate-45">+</span></summary><form action={requestClientCollaborationAction} className="mt-4 grid gap-3"><input name="workflowId" type="hidden" value={workflow.id} /><input name="returnPath" type="hidden" value={basePath} /><div className="grid gap-2"><Label htmlFor="client-action-title">Request</Label><Input id="client-action-title" name="title" placeholder="Upload additional tax records" required /></div><div className="grid gap-2"><Label htmlFor="client-action-instructions">Instructions</Label><Textarea id="client-action-instructions" name="instructions" placeholder="Say exactly what the client should send." required /></div><div className="grid gap-2"><Label htmlFor="client-action-due">Due date</Label><Input id="client-action-due" name="dueDate" required type="date" /></div><SubmitButton pendingText="Sending request..."><Send className="h-4 w-4" />Request client action</SubmitButton></form></details> : null}
                 </CardContent>
               </Card>
             </div>
           </div>
-          {isAdmin && teamCandidates.length > 0 && editable ? <Card className="mt-4 shadow-none"><CardHeader><CardTitle>Team assignment</CardTitle><CardDescription>Assign or update all delivery roles without leaving the engagement.</CardDescription></CardHeader><CardContent><EngagementTeamAssignmentForm candidates={teamCandidates} initialSelection={initialSelection} workflowId={workflow.id} /></CardContent></Card> : null}
+          {isAdmin && teamCandidates.length > 0 && editable ? <details className="group mt-4 rounded-xl border border-border bg-card"><summary className="flex cursor-pointer list-none items-center justify-between p-5 text-lg font-bold text-foreground">Change the team<span aria-hidden="true" className="text-2xl text-primary transition-transform group-open:rotate-45">+</span></summary><div className="border-t border-border p-5"><EngagementTeamAssignmentForm candidates={teamCandidates} initialSelection={initialSelection} workflowId={workflow.id} /></div></details> : null}
         </MobileSection>
       ) : null}
 
@@ -444,7 +445,7 @@ export function EngagementExecutionWorkspace({
           <SectionIntro complete={sectionState.tasks.complete} doneWhen={sectionState.tasks.doneWhen} nextAction={sectionState.tasks.nextAction} purpose={sectionState.tasks.purpose} title="Task execution and review" />
           <div className="grid min-w-0 gap-4 xl:grid-cols-[minmax(0,1fr)_22rem]">
             <Card className="overflow-hidden shadow-none">
-              <CardHeader><CardTitle>Engagement tasks</CardTitle><CardDescription>Work moves from To Do to In Progress, Waiting Review, and Completed.</CardDescription></CardHeader>
+              <CardHeader><CardTitle>Engagement tasks</CardTitle><CardDescription>Work moves from To Do to In Progress, Waiting Review and Completed.</CardDescription></CardHeader>
               <CardContent className="grid gap-3">
                 {workflow.tasks.map((task) => {
                   const action = taskNextAction(task.status, task.approvalRequired);
@@ -529,10 +530,10 @@ export function EngagementExecutionWorkspace({
                       ) : null}
                     </article>
                   );
-                })}                {workflow.tasks.length === 0 ? <p className="py-8 text-center text-sm text-muted-foreground">No tasks have been created for this engagement.</p> : null}
+                })}                {workflow.tasks.length === 0 ? <p className="py-8 text-center text-sm text-muted-foreground">No tasks yet.</p> : null}
               </CardContent>
             </Card>
-            {isAdmin && editable ? <Card className="h-fit shadow-none"><CardHeader><CardTitle>Create task</CardTitle><CardDescription>Assign a clear piece of work to one team member.</CardDescription></CardHeader><CardContent><form action={createEngagementTaskAction} className="grid gap-3"><input name="workflowId" type="hidden" value={workflow.id} /><input name="returnPath" type="hidden" value={basePath} /><div className="grid gap-2"><Label htmlFor="task-title">Task title</Label><Input id="task-title" name="title" required /></div><div className="grid gap-2"><Label htmlFor="task-description">Description</Label><Textarea id="task-description" name="description" required /></div><div className="grid gap-2"><Label htmlFor="task-assignee">Assigned staff</Label><Select id="task-assignee" name="assignedUserId" required><option value="">Select staff</option>{workflow.team.filter((member) => member.userId).map((member) => <option key={`${member.userId}-${member.role}`} value={member.userId ?? ""}>{member.name} - {statusLabel(member.role)}</option>)}</Select></div><div className="grid grid-cols-2 gap-3"><div className="grid gap-2"><Label htmlFor="task-priority">Priority</Label><Select id="task-priority" name="priority"><option value="medium">Medium</option><option value="high">High</option><option value="critical">Critical</option><option value="low">Low</option></Select></div><div className="grid gap-2"><Label htmlFor="task-due">Due date</Label><Input id="task-due" name="dueDate" required type="date" /></div></div><SubmitButton pendingText="Creating task..."><Plus className="h-4 w-4" />Create task</SubmitButton></form></CardContent></Card> : null}
+            {isAdmin && editable ? <Card className="h-fit shadow-none"><CardHeader><CardTitle>Create task</CardTitle><CardDescription>Give one clear piece of work to one team member.</CardDescription></CardHeader><CardContent><form action={createEngagementTaskAction} className="grid gap-3"><input name="workflowId" type="hidden" value={workflow.id} /><input name="returnPath" type="hidden" value={basePath} /><div className="grid gap-2"><Label htmlFor="task-title">Task title</Label><Input id="task-title" name="title" required /></div><div className="grid gap-2"><Label htmlFor="task-description">Description</Label><Textarea id="task-description" name="description" required /></div><div className="grid gap-2"><Label htmlFor="task-assignee">Assigned staff</Label><Select id="task-assignee" name="assignedUserId" required><option value="">Select staff</option>{workflow.team.filter((member) => member.userId).map((member) => <option key={`${member.userId}-${member.role}`} value={member.userId ?? ""}>{member.name} - {statusLabel(member.role)}</option>)}</Select></div><div className="grid grid-cols-2 gap-3"><div className="grid gap-2"><Label htmlFor="task-priority">Priority</Label><Select id="task-priority" name="priority"><option value="medium">Medium</option><option value="high">High</option><option value="critical">Critical</option><option value="low">Low</option></Select></div><div className="grid gap-2"><Label htmlFor="task-due">Due date</Label><Input id="task-due" name="dueDate" required type="date" /></div></div><SubmitButton pendingText="Creating task..."><Plus className="h-4 w-4" />Create task</SubmitButton></form></CardContent></Card> : null}
           </div>
         </MobileSection>
       ) : null}
@@ -542,7 +543,7 @@ export function EngagementExecutionWorkspace({
           <SectionIntro complete={sectionState.documents.complete} doneWhen={sectionState.documents.doneWhen} nextAction={sectionState.documents.nextAction} purpose={sectionState.documents.purpose} title="Working documents and evidence" />
           <div className="grid min-w-0 gap-4 xl:grid-cols-[minmax(0,1fr)_22rem]">
             <Card className="shadow-none">
-              <CardHeader><CardTitle>Document exchange</CardTitle><CardDescription>Client evidence, working papers, and drafts stay here until their review or replacement is resolved.</CardDescription></CardHeader>
+              <CardHeader><CardTitle>Document exchange</CardTitle><CardDescription>Client files, working papers and drafts stay here until review is done.</CardDescription></CardHeader>
               <CardContent className="grid gap-3">
                 {workingDocuments.map((document) => {
                   const filePath = `/api/engagements/${workflow.id}/documents/${document.id}`;
@@ -558,13 +559,13 @@ export function EngagementExecutionWorkspace({
                         <div className="flex flex-wrap gap-2"><Link className={buttonClassName({ variant: "secondary", size: "sm" })} href={`${filePath}?preview=1`} target="_blank"><Eye className="h-4 w-4" />Preview</Link><Link className={buttonClassName({ variant: "secondary", size: "sm" })} href={filePath}><Download className="h-4 w-4" />Download</Link>{needsReplacement && editable && document.uploadedByUserId === principal.id ? <Link className={buttonClassName({ variant: "secondary", size: "sm" })} href={`${basePath}?tab=documents&replace=${document.id}#document-upload`}><RefreshCw className="h-4 w-4" />Upload replacement</Link> : null}</div>
                       </div>
 
-                      {awaitingReview ? <div className="mt-3 rounded-md border border-warning/30 bg-warning-soft p-3 text-sm text-foreground"><strong>Review required.</strong> An assigned reviewer or administrator must inspect this file and record a decision.</div> : null}
-                      {needsReplacement ? <div className="mt-3 rounded-md border border-danger/30 bg-danger-soft p-3 text-sm text-foreground"><strong>Changes requested.</strong> The uploader should replace this version before review continues.</div> : null}
+                      {awaitingReview ? <div className="mt-3 rounded-md border border-warning/30 bg-warning-soft p-3 text-sm text-foreground"><strong>Review required.</strong> A reviewer or administrator must check this file and decide.</div> : null}
+                      {needsReplacement ? <div className="mt-3 rounded-md border border-danger/30 bg-danger-soft p-3 text-sm text-foreground"><strong>Changes requested.</strong> The uploader should replace this file before review continues.</div> : null}
 
                       {reviewer && editable && awaitingReview && !isClient ? (
                         <form action={reviewEngagementDocumentAction} className="mt-4 grid gap-3 border-t border-border pt-4">
                           <input name="workflowId" type="hidden" value={workflow.id} /><input name="documentId" type="hidden" value={document.id} /><input name="returnPath" type="hidden" value={basePath} />
-                          <div className="grid gap-3 sm:grid-cols-[12rem_minmax(0,1fr)]"><Select name="decision"><option value="approved">Approve document</option><option value="changes_requested">Request changes</option></Select><Textarea className="min-h-20" name="comments" placeholder="Record the checks completed and the reason for this decision..." required /></div>
+                          <div className="grid gap-3 sm:grid-cols-[12rem_minmax(0,1fr)]"><Select name="decision"><option value="approved">Approve document</option><option value="changes_requested">Request changes</option></Select><Textarea className="min-h-20" name="comments" placeholder="Write what you checked and why you decided this..." required /></div>
                           <SubmitButton className="justify-self-end" pendingText="Saving review..." size="sm"><ShieldCheck className="h-4 w-4" />Save document review</SubmitButton>
                         </form>
                       ) : null}
@@ -576,7 +577,7 @@ export function EngagementExecutionWorkspace({
                           <input name="returnPath" type="hidden" value={basePath} />
                           <div>
                             <p className="font-semibold text-foreground">Review this draft</p>
-                            <p className="mt-1 text-sm leading-6 text-muted-foreground">Approve it to allow the team to prepare the final deliverable, or return it with clear revision notes.</p>
+                            <p className="mt-1 text-sm leading-6 text-muted-foreground">Approve it so the team can prepare the final file, or send it back with notes.</p>
                           </div>
                           <Select aria-label="Draft review decision" name="decision"><option value="approved">Approve draft</option><option value="changes_requested">Request changes</option></Select>
                           <Textarea className="min-h-24" name="feedback" placeholder="Add your approval note or explain what should be improved..." required />
@@ -588,19 +589,19 @@ export function EngagementExecutionWorkspace({
                     </article>
                   );
                 })}
-                {workingDocuments.length === 0 ? <p className="py-10 text-center text-sm text-muted-foreground">No working documents have been exchanged yet.</p> : null}
+                {workingDocuments.length === 0 ? <p className="py-10 text-center text-sm text-muted-foreground">No documents shared yet.</p> : null}
               </CardContent>
             </Card>
             {editable ? (
               <Card className="h-fit min-w-0 overflow-hidden shadow-none" id="document-upload">
-                <CardHeader><CardTitle>{isClient ? "Send a file" : "Upload document"}</CardTitle><CardDescription>{isClient ? "Choose the requested file and send it securely to your IFTA team." : "Add a working file for review or a final output for controlled release."}</CardDescription></CardHeader>
+                <CardHeader><CardTitle>{isClient ? "Send a file" : "Upload document"}</CardTitle><CardDescription>{isClient ? "Choose the file we asked for and send it safely to your IFTA team." : "Add a working file for review, or a final file to release."}</CardDescription></CardHeader>
                 <CardContent className="grid gap-4">
-                  {!isClient ? <ol className="grid gap-2 text-xs text-muted-foreground"><li className="flex gap-2"><span className="font-semibold text-primary">1.</span><span>Drafts and evidence enter Pending review.</span></li><li className="flex gap-2"><span className="font-semibold text-primary">2.</span><span>The assigned reviewer approves the file or requests a replacement.</span></li><li className="flex gap-2"><span className="font-semibold text-primary">3.</span><span>Final outputs move to Deliverables and are released separately.</span></li></ol> : null}
+                  {!isClient ? <ol className="grid gap-2 text-xs text-muted-foreground"><li className="flex gap-2"><span className="font-semibold text-primary">1.</span><span>Drafts and evidence enter Pending review.</span></li><li className="flex gap-2"><span className="font-semibold text-primary">2.</span><span>The reviewer approves the file or asks for a new one.</span></li><li className="flex gap-2"><span className="font-semibold text-primary">3.</span><span>Final files move to Deliverables and are released separately.</span></li></ol> : null}
                   <form action={isClient ? uploadClientDocumentAction : uploadEngagementDocumentAction} className="grid gap-3 border-t border-border pt-4" encType="multipart/form-data">
                     <input name="workflowId" type="hidden" value={workflow.id} /><input name="returnPath" type="hidden" value={basePath} />
                     {!isClient ? <><div className="grid gap-2"><Label htmlFor="document-title">Document title</Label><Input id="document-title" name="title" placeholder="Corporate tax review - draft" required /></div><div className="grid gap-2"><Label htmlFor="document-kind">Document type</Label><Select defaultValue={requestedDocumentKind} id="document-kind" name="documentKind">{canUploadDeliverables ? <option value="draft_deliverable">Draft report or deliverable</option> : null}<option value="technical_evidence">Working paper or technical evidence</option>{canUploadDeliverables ? <option disabled={!clientApprovedDraft} value="final_deliverable">Final deliverable{clientApprovedDraft ? "" : " - available after client approval"}</option> : null}</Select></div></> : null}
                     {isClient ? (
-                      query.replace ? <><input name="replacesDocumentId" type="hidden" value={query.replace} /><p className="rounded-md border border-warning/30 bg-warning-soft p-3 text-sm text-foreground">This file will replace the version returned by your reviewer.</p></> : null
+                      query.replace ? <><input name="replacesDocumentId" type="hidden" value={query.replace} /><p className="rounded-md border border-warning/30 bg-warning-soft p-3 text-sm text-foreground">This file will replace the one your reviewer sent back.</p></> : null
                     ) : (
                       <div className="grid gap-2"><Label htmlFor="replace-document">Version</Label><Select defaultValue={query.replace ?? ""} id="replace-document" name="replacesDocumentId"><option value="">Create a new document</option>{replaceableDocuments.map((document) => <option key={document.id} value={document.id}>Replace {document.name} (v{document.version})</option>)}</Select></div>
                     )}
@@ -620,7 +621,7 @@ export function EngagementExecutionWorkspace({
           <Card className="overflow-hidden shadow-none">
             <CardHeader className="border-b border-border">
               <CardTitle>Official deliverables</CardTitle>
-              <CardDescription>{isClient ? "Final outputs released to you by the engagement team." : "Final outputs move through review and remain private until they are released."}</CardDescription>
+              <CardDescription>{isClient ? "Final files released to you by your team." : "Final files are reviewed first and stay private until released."}</CardDescription>
             </CardHeader>
             <CardContent className="grid gap-4 p-4">
               {latestDeliverables.map((document) => {
@@ -688,7 +689,7 @@ export function EngagementExecutionWorkspace({
                   </article>
                 );
               })}
-              {latestDeliverables.length === 0 ? <div className="grid justify-items-center gap-2 py-12 text-center"><FileCheck2 className="h-8 w-8 text-muted-foreground" /><p className="font-semibold text-foreground">No official deliverables yet</p><p className="max-w-md text-sm text-muted-foreground">{isClient ? "Released final outputs will appear here." : "Upload a final report from Documents to begin its approval and release process."}</p>{canUploadDeliverables && editable ? <Link className={buttonClassName({ size: "sm" })} href={`${basePath}?tab=documents`}><Upload className="h-4 w-4" />Upload final document</Link> : null}</div> : null}
+              {latestDeliverables.length === 0 ? <div className="grid justify-items-center gap-2 py-12 text-center"><FileCheck2 className="h-8 w-8 text-muted-foreground" /><p className="font-semibold text-foreground">No official deliverables yet</p><p className="max-w-md text-sm text-muted-foreground">{isClient ? "Released final outputs will appear here." : "Upload a final report in Documents to start its approval."}</p>{canUploadDeliverables && editable ? <Link className={buttonClassName({ size: "sm" })} href={`${basePath}?tab=documents`}><Upload className="h-4 w-4" />Upload final document</Link> : null}</div> : null}
             </CardContent>
           </Card>
         </MobileSection>
@@ -697,17 +698,17 @@ export function EngagementExecutionWorkspace({
       {activeTab === "messages" ? (
         <MobileSection title="Messages">
           <SectionIntro complete={sectionState.messages.complete} doneWhen={sectionState.messages.doneWhen} nextAction={sectionState.messages.nextAction} purpose={sectionState.messages.purpose} title="Engagement conversation" />
-          <Card className="overflow-hidden shadow-none"><CardHeader className="border-b border-border"><CardTitle>Engagement conversation</CardTitle><CardDescription>Only the client and assigned engagement participants can access this conversation.</CardDescription></CardHeader><CardContent className="p-0"><div className="grid max-h-[32rem] gap-3 overflow-y-auto p-4">{data.messages.map((message) => { const mine = message.senderUserId === principal.id; return <div className={`max-w-[86%] rounded-md px-4 py-3 ${mine ? "ml-auto bg-primary text-primary-foreground" : "mr-auto border border-border bg-muted/40 text-foreground"}`} key={message.id}><p className={`text-xs font-semibold ${mine ? "text-primary-foreground/75" : "text-muted-foreground"}`}>{message.senderName}</p><p className="mt-1 whitespace-pre-wrap text-sm leading-6">{message.body}</p>{message.attachments.map((attachment) => <Link className={`mt-2 flex items-center gap-2 text-xs font-semibold underline ${mine ? "text-primary-foreground" : "text-primary"}`} href={attachment.url} key={attachment.url}><FileText className="h-3.5 w-3.5" />{attachment.fileName}</Link>)}<p className={`mt-2 text-[11px] ${mine ? "text-primary-foreground/70" : "text-muted-foreground"}`}>{dateLabel(message.createdAt, true)}</p></div>; })}{data.messages.length === 0 ? <p className="py-12 text-center text-sm text-muted-foreground">No engagement messages are available.</p> : null}</div>{data.conversation && editable ? <form action={sendEngagementMessageAction} className="grid gap-3 border-t border-border bg-card p-4"><input name="workflowId" type="hidden" value={workflow.id} /><input name="conversationId" type="hidden" value={data.conversation.id} /><input name="returnPath" type="hidden" value={basePath} /><Textarea name="body" placeholder="Write a message. Use @name to mention a team member..." required /><div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end"><div className="grid flex-1 gap-2"><Label htmlFor="message-attachment">Attach an engagement document</Label><Select id="message-attachment" name="attachmentDocumentId"><option value="">No attachment</option>{data.documents.map((document) => <option key={document.id} value={document.id}>{document.name}</option>)}</Select></div><SubmitButton pendingText="Sending..."><Send className="h-4 w-4" />Send message</SubmitButton></div></form> : isEngagementManager && !assignedToEngagement ? <p className="border-t border-border bg-muted/30 p-4 text-sm text-muted-foreground">View-only access. Engagement actions are available after you are assigned to this engagement.</p> : null}</CardContent></Card>
+          <Card className="overflow-hidden shadow-none"><CardHeader className="border-b border-border"><CardTitle>Engagement conversation</CardTitle><CardDescription>Only the client and the assigned team can see this conversation.</CardDescription></CardHeader><CardContent className="p-0"><div className="grid max-h-[32rem] gap-3 overflow-y-auto p-4">{data.messages.map((message) => { const mine = message.senderUserId === principal.id; return <div className={`max-w-[86%] rounded-md px-4 py-3 ${mine ? "ml-auto bg-primary text-primary-foreground" : "mr-auto border border-border bg-muted/40 text-foreground"}`} key={message.id}><p className={`text-xs font-semibold ${mine ? "text-primary-foreground/75" : "text-muted-foreground"}`}>{message.senderName}</p><p className="mt-1 whitespace-pre-wrap text-sm leading-6">{message.body}</p>{message.attachments.map((attachment) => <Link className={`mt-2 flex items-center gap-2 text-xs font-semibold underline ${mine ? "text-primary-foreground" : "text-primary"}`} href={attachment.url} key={attachment.url}><FileText className="h-3.5 w-3.5" />{attachment.fileName}</Link>)}<p className={`mt-2 text-[11px] ${mine ? "text-primary-foreground/70" : "text-muted-foreground"}`}>{dateLabel(message.createdAt, true)}</p></div>; })}{data.messages.length === 0 ? <p className="py-12 text-center text-sm text-muted-foreground">No engagement messages are available.</p> : null}</div>{data.conversation && editable ? <form action={sendEngagementMessageAction} className="grid gap-3 border-t border-border bg-card p-4"><input name="workflowId" type="hidden" value={workflow.id} /><input name="conversationId" type="hidden" value={data.conversation.id} /><input name="returnPath" type="hidden" value={basePath} /><Textarea name="body" placeholder="Write a message. Use @name to mention a team member..." required /><div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end"><div className="grid flex-1 gap-2"><Label htmlFor="message-attachment">Attach an engagement document</Label><Select id="message-attachment" name="attachmentDocumentId"><option value="">No attachment</option>{data.documents.map((document) => <option key={document.id} value={document.id}>{document.name}</option>)}</Select></div><SubmitButton pendingText="Sending..."><Send className="h-4 w-4" />Send message</SubmitButton></div></form> : isEngagementManager && !assignedToEngagement ? <p className="border-t border-border bg-muted/30 p-4 text-sm text-muted-foreground">View only. You can act once you are assigned to this engagement.</p> : null}</CardContent></Card>
         </MobileSection>
       ) : null}
 
       {activeTab === "finance" ? (
         <MobileSection title="Finance">
-          <SectionIntro complete={sectionState.finance.complete} doneWhen={sectionState.finance.doneWhen} nextAction={sectionState.finance.nextAction} purpose="Finance officers prepare invoices. Administrators approve and digitally stamp invoices and payments before the client receives them." title="Invoices and payments" />
+          <SectionIntro complete={sectionState.finance.complete} doneWhen={sectionState.finance.doneWhen} nextAction={sectionState.finance.nextAction} purpose="Finance officers prepare invoices. Administrators approve and stamp them before the client sees them." title="Invoices and payments" />
           <div className="grid min-w-0 gap-4 xl:grid-cols-[minmax(0,1fr)_22rem]">
             <div className="grid min-w-0 gap-4">
               <Card className="min-w-0 shadow-none">
-                <CardHeader><CardTitle>Invoices</CardTitle><CardDescription>Invoices remain internal until an administrator approves and stamps them.</CardDescription></CardHeader>
+                <CardHeader><CardTitle>Invoices</CardTitle><CardDescription>Invoices stay internal until an administrator approves and stamps them.</CardDescription></CardHeader>
                 <CardContent className="grid gap-3">
                   {workflow.financial.invoices.map((invoice) => (
                     <article className="grid min-w-0 gap-4 rounded-md border border-border p-4 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center" key={invoice.invoiceId}>
@@ -716,7 +717,7 @@ export function EngagementExecutionWorkspace({
                         <p className="mt-2 break-words text-sm text-muted-foreground">Created {dateLabel(invoice.issueDate)} | Due {dateLabel(invoice.dueDate)} | {money(invoice.currency, invoice.amount)}</p>
                         {invoice.approvedAt ? <p className="mt-2 text-xs font-semibold text-primary">Digitally approved by {invoice.approvedByName} on {dateLabel(invoice.approvedAt, true)} | {invoice.approvalStampId}</p> : null}
                         {isAdmin && invoice.emailDeliveryStatus === "sent" ? <p className="mt-2 break-all text-xs text-success">Email delivered to {invoice.emailedTo}.</p> : null}
-                        {isAdmin && invoice.emailDeliveryStatus === "failed" ? <p className="mt-2 text-xs font-semibold text-danger">Invoice approved, but email delivery failed. The client can still open it in the portal.</p> : null}
+                        {isAdmin && invoice.emailDeliveryStatus === "failed" ? <p className="mt-2 text-xs font-semibold text-danger">Invoice approved, but the email failed. The client can still open it in the portal.</p> : null}
                       </div>
                       <div className="flex flex-wrap gap-2">
                         <Link className={buttonClassName({ variant: "secondary", size: "sm" })} href={`/api/engagements/${workflow.id}/invoices/${invoice.invoiceId}`} target="_blank"><FileText className="h-4 w-4" />View invoice</Link>
@@ -736,7 +737,7 @@ export function EngagementExecutionWorkspace({
               </Card>
 
               <Card className="min-w-0 shadow-none">
-                <CardHeader><CardTitle>Payments and receipts</CardTitle><CardDescription>Client payment submissions require administrator approval before a receipt is created.</CardDescription></CardHeader>
+                <CardHeader><CardTitle>Payments and receipts</CardTitle><CardDescription>Client payments need administrator approval before a receipt is created.</CardDescription></CardHeader>
                 <CardContent className="grid gap-3">
                   {data.payments.map((payment) => (
                     <article className="grid min-w-0 gap-4 rounded-md border border-border p-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)] lg:items-center" key={payment.id}>
@@ -769,7 +770,7 @@ export function EngagementExecutionWorkspace({
 
             {assignedFinanceOfficer && editable ? (
               <Card className="h-fit shadow-none">
-                <CardHeader><CardTitle>Prepare invoice</CardTitle><CardDescription>Submit the invoice to an administrator for approval, digital stamping, and client delivery.</CardDescription></CardHeader>
+                <CardHeader><CardTitle>Prepare invoice</CardTitle><CardDescription>Send the invoice to an administrator for approval and delivery.</CardDescription></CardHeader>
                 <CardContent>
                   <form action={createEngagementInvoiceAction} className="grid gap-3">
                     <input name="workflowId" type="hidden" value={workflow.id} /><input name="returnPath" type="hidden" value={basePath} />
@@ -781,7 +782,7 @@ export function EngagementExecutionWorkspace({
                 </CardContent>
               </Card>
             ) : isAdmin ? (
-              <Card className="h-fit shadow-none"><CardHeader><CardTitle>Administrator approval</CardTitle><CardDescription>Use the action beside each pending invoice or payment. Approval creates the digital stamp before anything is sent to the client.</CardDescription></CardHeader><CardContent className="grid gap-3"><p className="text-sm text-muted-foreground">Pending invoices: {workflow.financial.invoices.filter((invoice) => ["draft", "pending_approval"].includes(invoice.status)).length}<br />Pending payments: {data.payments.filter((payment) => payment.status === "pending").length}</p>{!canApproveInvoices ? <div className="grid gap-3 rounded-md border border-warning/30 bg-warning/10 p-3"><p className="text-sm font-semibold text-foreground">Invoice approval is disabled for your administrator role.</p><Link className={buttonClassName({ variant: "secondary", size: "sm", className: "w-fit" })} href="/admin/permissions/admin">Review role access</Link></div> : null}</CardContent></Card>
+              <Card className="h-fit shadow-none"><CardHeader><CardTitle>Administrator approval</CardTitle><CardDescription>Use the button beside each pending invoice or payment. Approval adds the stamp before the client gets it.</CardDescription></CardHeader><CardContent className="grid gap-3"><p className="text-sm text-muted-foreground">Pending invoices: {workflow.financial.invoices.filter((invoice) => ["draft", "pending_approval"].includes(invoice.status)).length}<br />Pending payments: {data.payments.filter((payment) => payment.status === "pending").length}</p>{!canApproveInvoices ? <div className="grid gap-3 rounded-md border border-warning/30 bg-warning/10 p-3"><p className="text-sm font-semibold text-foreground">Your admin role cannot approve invoices.</p><Link className={buttonClassName({ variant: "secondary", size: "sm", className: "w-fit" })} href="/admin/permissions/admin">Review role access</Link></div> : null}</CardContent></Card>
             ) : null}
           </div>
         </MobileSection>
@@ -789,7 +790,7 @@ export function EngagementExecutionWorkspace({
       {activeTab === "timeline" ? (
         <MobileSection title="Timeline">
           <SectionIntro complete={sectionState.timeline.complete} doneWhen={sectionState.timeline.doneWhen} nextAction={sectionState.timeline.nextAction} purpose={sectionState.timeline.purpose} title="Timeline and audit history" />
-          <Card className="shadow-none"><CardHeader><CardTitle>Engagement timeline</CardTitle><CardDescription>The newest activity appears first and remains part of the permanent record.</CardDescription></CardHeader><CardContent><ol className="grid gap-0">{[...workflow.activity].sort((left, right) => new Date(right.createdAt).getTime() - new Date(left.createdAt).getTime()).map((event, index, events) => <li className="grid grid-cols-[1.25rem_minmax(0,1fr)] gap-3" key={`${event.type}-${event.createdAt}-${index}`}><div className="flex flex-col items-center"><span className="mt-1 h-2.5 w-2.5 rounded-full border-2 border-primary bg-card" />{index < events.length - 1 ? <span className="min-h-14 w-px flex-1 bg-border" /> : null}</div><div className="pb-5"><div className="flex flex-col justify-between gap-1 sm:flex-row"><p className="font-semibold text-foreground">{event.title}</p><time className="text-xs text-muted-foreground">{dateLabel(event.createdAt, true)}</time></div><p className="mt-1 text-sm leading-6 text-muted-foreground">{event.description}</p><p className="mt-1 text-xs text-muted-foreground">{event.actorName}</p></div></li>)}</ol></CardContent></Card>
+          <Card className="shadow-none"><CardHeader><CardTitle>Engagement timeline</CardTitle><CardDescription>Newest first. This is a permanent record.</CardDescription></CardHeader><CardContent><ol className="grid gap-0">{[...workflow.activity].sort((left, right) => new Date(right.createdAt).getTime() - new Date(left.createdAt).getTime()).map((event, index, events) => <li className="grid grid-cols-[1.25rem_minmax(0,1fr)] gap-3" key={`${event.type}-${event.createdAt}-${index}`}><div className="flex flex-col items-center"><span className="mt-1 h-2.5 w-2.5 rounded-full border-2 border-primary bg-card" />{index < events.length - 1 ? <span className="min-h-14 w-px flex-1 bg-border" /> : null}</div><div className="pb-5"><div className="flex flex-col justify-between gap-1 sm:flex-row"><p className="font-semibold text-foreground">{event.title}</p><time className="text-xs text-muted-foreground">{dateLabel(event.createdAt, true)}</time></div><p className="mt-1 text-sm leading-6 text-muted-foreground">{event.description}</p><p className="mt-1 text-xs text-muted-foreground">{event.actorName}</p></div></li>)}</ol></CardContent></Card>
         </MobileSection>
       ) : null}
 
@@ -798,7 +799,7 @@ export function EngagementExecutionWorkspace({
           <SectionIntro complete={sectionState.completion.complete} doneWhen={sectionState.completion.doneWhen} nextAction={sectionState.completion.nextAction} purpose={sectionState.completion.purpose} title="Completion and closure" />
           <div className="grid min-w-0 gap-4 xl:grid-cols-[minmax(0,1fr)_22rem]">
             <Card className="min-w-0 shadow-none">
-              <CardHeader><CardTitle>Completion readiness</CardTitle><CardDescription>Every required item must be complete before the engagement can be locked.</CardDescription></CardHeader>
+              <CardHeader><CardTitle>Completion readiness</CardTitle><CardDescription>Everything required must be done before the engagement can be locked.</CardDescription></CardHeader>
               <CardContent className="grid gap-3">
                 {missing.length > 0 ? <div className="break-words rounded-md border border-danger/30 bg-danger-soft p-3 text-sm font-semibold text-danger">Completion was blocked: {missing.join(", ")}.</div> : null}
                 {data.completionRequirements.map((requirement) => (
@@ -835,12 +836,12 @@ export function EngagementExecutionWorkspace({
                 {workflow.completion.summary ? <div className="rounded-md border border-success/30 bg-success-soft p-4"><p className="font-semibold text-success">Completion summary</p><p className="mt-2 text-sm leading-6 text-foreground">{workflow.completion.summary}</p><p className="mt-2 text-xs text-muted-foreground">Completed {dateLabel(workflow.completion.completedAt, true)} by {workflow.completion.completedByName}</p></div> : null}
               </CardContent>
             </Card>
-            <Card className="h-fit shadow-none"><CardHeader><CardTitle>{workflow.status === "active" ? "Complete or archive engagement" : workflow.status === "completed" ? "Archive engagement" : "Read-only record"}</CardTitle><CardDescription>{workflow.status === "active" ? "Complete the work when it is ready, or archive the engagement if the work is incomplete or no longer active." : workflow.status === "completed" ? "Create one ZIP package containing the workflow, files, messages, finance, timeline, approvals, and audit history." : "Archived engagements cannot be edited without administrator restoration."}</CardDescription></CardHeader><CardContent>{isAdmin && workflow.status === "active" ? <div className="grid gap-3"><form action={completeEngagementAction} className="grid gap-3"><input name="workflowId" type="hidden" value={workflow.id} /><input name="returnPath" type="hidden" value={basePath} /><div className="grid gap-2"><Label htmlFor="completion-notes">Completion notes</Label><Textarea id="completion-notes" minLength={10} name="notes" placeholder="Summarize the completed work, outcome, and final client handover..." required /></div><SubmitButton pendingText="Completing engagement..."><CheckCircle2 className="h-4 w-4" />Complete engagement</SubmitButton></form><form action={archiveCompletedEngagementAction} onSubmit={(event) => { if (!confirm('Are you sure you want to archive this engagement?')) event.preventDefault(); }}><input name="workflowId" type="hidden" value={workflow.id} /><input name="returnPath" type="hidden" value={basePath} /><SubmitButton pendingText="Creating ZIP archive..."><Archive className="h-4 w-4" />Archive incomplete work</SubmitButton></form></div> : isAdmin && workflow.status === "completed" ? <form action={archiveCompletedEngagementAction} onSubmit={(event) => { if (!confirm('Are you sure you want to archive this engagement?')) event.preventDefault(); }}><input name="workflowId" type="hidden" value={workflow.id} /><input name="returnPath" type="hidden" value={basePath} /><SubmitButton pendingText="Creating ZIP archive..."><Archive className="h-4 w-4" />Create ZIP and archive</SubmitButton></form> : <p className="text-sm text-muted-foreground">{workflow.status === "active" ? "Only an administrator can complete or archive the engagement." : "No further editing is available."}</p>}</CardContent></Card>
+            <Card className="h-fit shadow-none"><CardHeader><CardTitle>{workflow.status === "active" ? "Complete or archive engagement" : workflow.status === "completed" ? "Archive engagement" : "Read-only record"}</CardTitle><CardDescription>{workflow.status === "active" ? "Mark the work complete when it is ready, or archive it if it is unfinished or no longer active." : workflow.status === "completed" ? "Create one ZIP file with the workflow, files, messages, payments, timeline and approvals." : "Archived engagements cannot be edited unless an administrator restores them."}</CardDescription></CardHeader><CardContent>{isAdmin && workflow.status === "active" ? <div className="grid gap-3"><form action={completeEngagementAction} className="grid gap-3"><input name="workflowId" type="hidden" value={workflow.id} /><input name="returnPath" type="hidden" value={basePath} /><div className="grid gap-2"><Label htmlFor="completion-notes">Completion notes</Label><Textarea id="completion-notes" minLength={10} name="notes" placeholder="Summarise the work, the result and the handover to the client..." required /></div><SubmitButton pendingText="Completing engagement..."><CheckCircle2 className="h-4 w-4" />Complete engagement</SubmitButton></form><form action={archiveCompletedEngagementAction} onSubmit={(event) => { if (!confirm('Are you sure you want to archive this engagement?')) event.preventDefault(); }}><input name="workflowId" type="hidden" value={workflow.id} /><input name="returnPath" type="hidden" value={basePath} /><SubmitButton pendingText="Creating ZIP archive..."><Archive className="h-4 w-4" />Archive incomplete work</SubmitButton></form></div> : isAdmin && workflow.status === "completed" ? <form action={archiveCompletedEngagementAction} onSubmit={(event) => { if (!confirm('Are you sure you want to archive this engagement?')) event.preventDefault(); }}><input name="workflowId" type="hidden" value={workflow.id} /><input name="returnPath" type="hidden" value={basePath} /><SubmitButton pendingText="Creating ZIP archive..."><Archive className="h-4 w-4" />Create ZIP and archive</SubmitButton></form> : <p className="text-sm text-muted-foreground">{workflow.status === "active" ? "Only an administrator can complete or archive the engagement." : "No further editing is available."}</p>}</CardContent></Card>
           </div>
           {closureSummary && isAdmin ? (
             <Card className="mt-4 shadow-none">
               <CardHeader className="flex flex-col justify-between gap-3 border-b border-border md:flex-row md:items-start">
-                <div><CardTitle>Closure summary</CardTitle><CardDescription className="mt-1">Generated automatically from the permanent engagement record.</CardDescription></div>
+                <div><CardTitle>Closure summary</CardTitle><CardDescription className="mt-1">Created automatically from the engagement record.</CardDescription></div>
                 <div className="flex flex-wrap gap-2">
                   <Link className={buttonClassName({ variant: "secondary", size: "sm" })} href={`/api/engagements/${workflow.id}/closure-summary`} target="_blank"><Eye className="h-4 w-4" />View PDF</Link>
                   <Link className={buttonClassName({ variant: "secondary", size: "sm" })} href={`/api/engagements/${workflow.id}/closure-summary?download=1`}><Download className="h-4 w-4" />Download</Link>

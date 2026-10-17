@@ -7,7 +7,7 @@ export default async function AdminKycRiskRulesPage() {
   return (
     <KycSimpleTablePage
       columns={["rule", "risk", "action", "owner"]}
-      description="Review rules that classify KYC risk, trigger senior review and guide escalation."
+      description="Rules that rate KYC risk, trigger senior review and guide escalation."
       eyebrow="KYC risk"
       rows={rows}
       title="KYC risk rules"

@@ -46,7 +46,7 @@ export const staffNavItems: DashboardNavItem[] = [
     defaultOpen: true,
     children: [
       { label: "Assigned engagements", href: "/staff/engagements", icon: "briefcase", symbol: "E" },
-      { label: "Tasks", href: "/staff/tasks", icon: "listTodo", symbol: "T", badge: "4" },
+      { label: "Tasks", href: "/staff/tasks", icon: "listTodo", symbol: "T" },
       { label: "Clients", href: "/staff/clients", icon: "users", symbol: "C" },
       { label: "Reviews", href: "/staff/reviews", icon: "clipboard", symbol: "R" },
     ],
@@ -98,7 +98,7 @@ export const adminNavItems: DashboardNavItem[] = [
         icon: "fileCheck",
         symbol: "CE",
       },
-      { label: "Client checks (KYC)", href: "/admin/kyc", icon: "fileCheck", symbol: "K" },
+      { label: "Identity checks (KYC)", href: "/admin/kyc", icon: "fileCheck", symbol: "K" },
       { label: "Messages", href: "/admin/messages", icon: "message", symbol: "M" },
     ],
   },
@@ -108,7 +108,7 @@ export const adminNavItems: DashboardNavItem[] = [
     defaultOpen: false,
     children: [
       { label: "Tasks", href: "/admin/tasks", icon: "listTodo", symbol: "T" },
-      { label: "Workflow monitor", href: "/admin/workflows", icon: "workflow", symbol: "W" },
+      { label: "Work progress", href: "/admin/workflows", icon: "workflow", symbol: "W" },
       { label: "Documents", href: "/admin/documents", icon: "documents", symbol: "F" },
       { label: "Engagement letters", href: "/admin/engagement-letters", icon: "fileText", symbol: "EL" },
     ],
@@ -122,13 +122,13 @@ export const adminNavItems: DashboardNavItem[] = [
       { label: "Pricing", href: "/admin/pricing", icon: "money", symbol: "PR" },
       { label: "Document templates", href: "/admin/templates", icon: "fileText", symbol: "T" },
       {
-        label: "Work process templates",
+        label: "Process templates",
         href: "/admin/workflow-templates",
         icon: "workflow",
         symbol: "WT",
       },
       {
-        label: "Engagement letters",
+        label: "Letter templates",
         href: "/admin/letter-templates",
         icon: "fileText",
         symbol: "LT",
@@ -147,7 +147,7 @@ export const adminNavItems: DashboardNavItem[] = [
     defaultOpen: false,
     children: [
       { label: "Invoices", href: "/admin/invoices", icon: "invoice", symbol: "I" },
-      { label: "KRA eTIMS activity", href: "/admin/finance/etims", icon: "activity", symbol: "ET" },
+      { label: "KRA invoices (eTIMS)", href: "/admin/finance/etims", icon: "activity", symbol: "ET" },
       { label: "Quotations", href: "/admin/quotations", icon: "money", symbol: "Q" },
       { label: "Payments", href: "/admin/payments", icon: "creditCard", symbol: "P" },
       { label: "Reports", href: "/admin/reports", icon: "reports", symbol: "R" },

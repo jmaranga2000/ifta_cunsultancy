@@ -19,10 +19,10 @@ const errors: Record<string, string> = {
   "avatar-missing": "Choose an avatar image before uploading.",
   "avatar-size": "The avatar must be smaller than 3 MB.",
   "avatar-type": "Use a JPG, PNG or WebP image.",
-  "avatar-upload": "The avatar could not be stored. Check the R2 configuration.",
+  "avatar-upload": "The picture could not be saved. Check the storage settings.",
   "current-password": "The current password is incorrect.",
-  "password-policy": "The new passwords must match and meet the password requirements.",
-  "password-same": "Choose a password that is different from the current password.",
+  "password-policy": "The new passwords must match and meet the password rules.",
+  "password-same": "Choose a password that is different from your current one.",
 };
 
 function initials(profile: StaffProfileRecord) {
@@ -43,7 +43,7 @@ export function StaffProfile({
 
   return (
     <AdminPageSurface
-      description="Manage your staff identity, profile picture and sign-in password."
+      description="Manage your name, photo and password."
       icon={UserRound}
       title="My profile"
     >
@@ -97,7 +97,7 @@ export function StaffProfile({
           <form action={updateStaffProfileAction} className="grid gap-4 rounded-md border border-border p-5">
             <div>
               <h2 className="font-bold text-foreground">Profile details</h2>
-              <p className="mt-1 text-sm text-muted-foreground">Your work email is managed by an administrator.</p>
+              <p className="mt-1 text-sm text-muted-foreground">An administrator manages your work email.</p>
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="grid gap-2">
@@ -123,7 +123,7 @@ export function StaffProfile({
                 <KeyRound aria-hidden="true" className="h-4 w-4 text-primary" />
                 Change password
               </h2>
-              <p className="mt-1 text-sm text-muted-foreground">Changing your password signs out every active session.</p>
+              <p className="mt-1 text-sm text-muted-foreground">Changing your password signs you out everywhere.</p>
             </div>
             <div className="grid gap-2">
               <Label htmlFor="currentPassword">Current password</Label>
@@ -139,7 +139,7 @@ export function StaffProfile({
                 <PasswordInput autoComplete="new-password" id="confirmPassword" name="confirmPassword" required />
               </div>
             </div>
-            <p className="text-xs leading-5 text-muted-foreground">Use at least 12 characters with uppercase, lowercase, a number and a symbol.</p>
+            <p className="text-xs leading-5 text-muted-foreground">Use at least 12 characters with capitals, small letters, a number and a symbol.</p>
             <div className="flex justify-end">
               <SubmitButton pendingText="Changing password...">
                 <KeyRound aria-hidden="true" className="h-4 w-4" />

@@ -62,7 +62,7 @@ export function AdminNotificationForm({
                 id="body"
                 maxLength={4000}
                 name="body"
-                placeholder="Explain what recipients need to know and what they should do next."
+                placeholder="Say what people need to know and what to do next."
                 required
               />
             </div>

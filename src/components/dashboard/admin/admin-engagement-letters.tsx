@@ -57,7 +57,7 @@ export function AdminEngagementLetters({ letters }: { letters: EngagementLetterR
   return (
     <AdminPageSurface
       actions={<Link className={buttonClassName({ variant: "secondary", size: "sm" })} href="/admin/letter-templates"><FilePenLine className="h-4 w-4" />Letter templates</Link>}
-      description="Prepare, send and track engagement letters before client work is activated."
+      description="Prepare, send and track engagement letters before work starts."
       icon={FileSignature}
       summary={[
         { label: "Letters", value: letters.length, helper: "Current engagement records", icon: FileSignature },
@@ -88,14 +88,14 @@ export function AdminEngagementLetters({ letters }: { letters: EngagementLetterR
 }
 
 const errorMessages: Record<string, string> = {
-  invalid: "Review the subject, fee, expiry date and letter content before saving.",
-  locked: "This letter can no longer be edited because it has already been sent or signed.",
-  send: "The letter could not be sent. Save the draft and try again.",
-  signature: "Type the signatory's full legal name and confirm the signature declaration.",
-  expired: "This letter has expired. Prepare a new version before requesting signatures.",
-  signed: "The IFTA signature has already been completed.",
-  changed: "The document fingerprint no longer matches its content. Prepare a new draft.",
-  disabled: "Typed electronic signatures are disabled in Settings.",
+  invalid: "Check the subject, fee, expiry date and letter text before saving.",
+  locked: "This letter cannot be edited because it was already sent or signed.",
+  send: "The letter was not sent. Save the draft and try again.",
+  signature: "Type the signer's full legal name and tick the box to sign.",
+  expired: "This letter has expired. Prepare a new one before asking for signatures.",
+  signed: "The IFTA signature is already done.",
+  changed: "The letter was changed after it was fingerprinted. Prepare a new draft.",
+  disabled: "Typed signatures are turned off in Settings.",
 };
 
 export function AdminEngagementLetterDetail({ letter, query }: {
@@ -119,11 +119,11 @@ export function AdminEngagementLetterDetail({ letter, query }: {
         </div>
       </section>
 
-      {query.generated ? <p className="rounded-md border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-800">Customized letter prepared. Review it before sending.</p> : null}
+      {query.generated ? <p className="rounded-md border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-800">Letter prepared. Check it before sending.</p> : null}
       {query.saved ? <p className="rounded-md border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-800">Draft changes saved.</p> : null}
-      {query.sent ? <p className="rounded-md border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-800">The client was notified that this letter is ready for signature.</p> : null}
+      {query.sent ? <p className="rounded-md border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-800">The client was told the letter is ready to sign.</p> : null}
       {query.signed ? <p className="rounded-md border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-800">Your electronic signature was recorded.</p> : null}
-      {query.notice === "signature-required" ? <p className="rounded-md border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-900">The engagement will be activated after all required signatures are complete.</p> : null}
+      {query.notice === "signature-required" ? <p className="rounded-md border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-900">The engagement starts after all required signatures are in.</p> : null}
       {query.error && errorMessages[query.error] ? <p className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold text-red-800">{errorMessages[query.error]}</p> : null}
 
       {letter.status === "draft" ? (
@@ -149,17 +149,17 @@ export function AdminEngagementLetterDetail({ letter, query }: {
 
       <div className="grid gap-5 lg:grid-cols-2">
         <Card>
-          <CardHeader><CardTitle>Signature progress</CardTitle><CardDescription>Both required signers must accept the same document fingerprint.</CardDescription></CardHeader>
+          <CardHeader><CardTitle>Signature progress</CardTitle><CardDescription>Both signers must accept the same document.</CardDescription></CardHeader>
           <CardContent className="grid gap-3">
             {[iftaSigner, clientSigner].filter(Boolean).map((signer) => <div className="flex items-center justify-between gap-3 rounded-md border border-border p-3" key={signer!.id}><div><p className="text-sm font-bold text-foreground">{signer!.role === "ifta" ? "IFTA Consulting" : letter.clientName}</p><p className="mt-1 text-xs text-muted-foreground">{signer!.name}</p></div><Badge tone={signer!.status === "signed" ? "green" : "gold"}>{signer!.status === "signed" ? "Signed" : signer!.required ? "Required" : "Optional"}</Badge></div>)}
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader><CardTitle>Next action</CardTitle><CardDescription>{letter.status === "draft" ? "Send the reviewed letter to begin signing." : letter.status === "completed" ? "All required signatures are complete." : "Complete the outstanding signature."}</CardDescription></CardHeader>
+          <CardHeader><CardTitle>Next action</CardTitle><CardDescription>{letter.status === "draft" ? "Send the checked letter to start signing." : letter.status === "completed" ? "All required signatures are complete." : "Complete the outstanding signature."}</CardDescription></CardHeader>
           <CardContent className="grid gap-3">
             {letter.status === "draft" ? <form action={sendEngagementLetterAction}><input name="letterId" type="hidden" value={letter.id} /><SubmitButton className="w-full" pendingText="Sending to client..."><Send className="h-4 w-4" />Send for signatures</SubmitButton></form> : null}
-            {canSign ? <form action={signAdminEngagementLetterAction} className="grid gap-3"><input name="letterId" type="hidden" value={letter.id} /><label className="grid gap-2 text-sm font-semibold text-foreground">Full legal name<input className={inputClassName} defaultValue={iftaSigner?.name} name="signatureText" required /></label><label className="flex items-start gap-2 text-xs leading-5 text-muted-foreground"><input className="mt-1 h-4 w-4 accent-primary" name="signatureAccepted" required type="checkbox" />I have reviewed this letter and intend this typed name to be my electronic signature for IFTA Consulting.</label><SubmitButton className="w-full" pendingText="Recording signature..."><ShieldCheck className="h-4 w-4" />Sign for IFTA</SubmitButton></form> : null}
+            {canSign ? <form action={signAdminEngagementLetterAction} className="grid gap-3"><input name="letterId" type="hidden" value={letter.id} /><label className="grid gap-2 text-sm font-semibold text-foreground">Full legal name<input className={inputClassName} defaultValue={iftaSigner?.name} name="signatureText" required /></label><label className="flex items-start gap-2 text-xs leading-5 text-muted-foreground"><input className="mt-1 h-4 w-4 accent-primary" name="signatureAccepted" required type="checkbox" />I have checked this letter and my typed name is my electronic signature for IFTA Consulting.</label><SubmitButton className="w-full" pendingText="Recording signature..."><ShieldCheck className="h-4 w-4" />Sign for IFTA</SubmitButton></form> : null}
             {letter.status === "completed" && !letter.workflowId ? <form action={convertEngagementRequestAction}><input name="requestId" type="hidden" value={letter.requestId} /><SubmitButton className="w-full" pendingText="Activating engagement..."><CheckCircle2 className="h-4 w-4" />Activate engagement</SubmitButton></form> : null}
             {letter.workflowId ? <Link className={buttonClassName({ className: "w-full" })} href={`/admin/active-engagements/${letter.workflowId}?tab=overview`}>Open active engagement<ArrowUpRight className="h-4 w-4" /></Link> : null}
             {letter.status !== "draft" && clientSigner?.status === "pending" ? <p className="flex items-start gap-2 rounded-md border border-amber-200 bg-amber-50 p-3 text-xs leading-5 text-amber-900"><Users className="mt-0.5 h-4 w-4 shrink-0" />Waiting for {letter.clientName} to sign in the client portal.</p> : null}

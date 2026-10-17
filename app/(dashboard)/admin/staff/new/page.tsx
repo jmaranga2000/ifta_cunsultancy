@@ -22,14 +22,14 @@ export default async function NewStaffAccountPage({
           Back to staff
         </Link>
       }
-      description="Create the staff member’s portal account, role and temporary sign-in password."
+      description="Create the staff member's account, role and temporary password."
       icon={UserPlus}
       title="New staff account"
     >
       {query.error ? (
         <p className="border-b border-red-200 bg-red-50 px-5 py-3 text-sm font-semibold text-red-800">
           {query.error === "email"
-            ? "An account already uses that email address."
+            ? "An account already uses that email."
             : "Check every field and use a stronger temporary password."}
         </p>
       ) : null}

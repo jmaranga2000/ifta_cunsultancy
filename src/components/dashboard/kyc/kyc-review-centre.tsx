@@ -284,7 +284,7 @@ export function KycReviewCentre({ data }: { data: KycDashboardData }) {
           <Card>
             <CardHeader>
               <CardTitle>Reviewer assignment rules</CardTitle>
-              <CardDescription>Who can take each review and when to warn.</CardDescription>
+              <CardDescription>Who can take each review, and when to warn.</CardDescription>
             </CardHeader>
             <CardContent className="grid gap-3">
               {data.reviewerRules.map((rule) => (

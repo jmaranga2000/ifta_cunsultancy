@@ -9,14 +9,14 @@ export function StaffNotes({ archived, notes }: { archived?: boolean; notes: Sta
   return (
     <AdminPageSurface
       actions={<Link className={buttonClassName()} href="/staff/notes/new"><Plus className="h-4 w-4" />New note</Link>}
-      description="Engagement notes shared with authorized team members. These notes are never visible to clients."
+      description="Engagement notes shared with the team. Clients never see them."
       icon={NotebookPen}
       summary={[{ label: "Notes", value: notes.length, helper: "From your assigned tasks", icon: NotebookPen }]}
       title="Internal notes"
     >
       {archived ? <p className="border-b border-emerald-200 bg-emerald-50 px-5 py-3 text-sm font-semibold text-emerald-800">The note was archived.</p> : null}
       {notes.length === 0 ? (
-        <StaffEmptyState description="Notes added to your assigned tasks will be collected here." title="No internal notes yet" />
+        <StaffEmptyState description="Notes on your assigned tasks are collected here." title="No internal notes yet" />
       ) : (
         <div className="divide-y divide-border">
           {notes.map((note) => (

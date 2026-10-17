@@ -20,13 +20,13 @@ export function ClientCart({
   return (
     <AdminPageSurface
       actions={<Link className={buttonClassName({ variant: "secondary" })} href={returnPath.startsWith("/client") ? "/client/services" : "/services"}>Browse services</Link>}
-      description="Review selected services before submitting them for scope review or requesting a quotation."
+      description="Check your services, then send your request."
       icon={ShoppingCart}
       summary={[{ label: "Services selected", value: cart.itemCount, helper: "Ready for review", icon: ShoppingCart }]}
       title="Engagement cart"
     >
       {cart.empty ? (
-        <StaffEmptyState action={<Link className={buttonClassName()} href={returnPath.startsWith("/client") ? "/client/services" : "/services"}>Browse services</Link>} description="Add one or more consulting services before continuing." title="Your cart is empty" />
+        <StaffEmptyState action={<Link className={buttonClassName()} href={returnPath.startsWith("/client") ? "/client/services" : "/services"}>Browse services</Link>} description="Add at least one service first." title="Your cart is empty" />
       ) : (
         <div className="grid lg:grid-cols-[minmax(0,1fr)_320px]">
           <form action={updateCartAction} className="divide-y divide-border">
@@ -46,7 +46,7 @@ export function ClientCart({
 
           <aside className="grid content-start gap-3 border-t border-border bg-muted/20 p-5 lg:border-l lg:border-t-0">
             <h2 className="font-bold text-foreground">Cart actions</h2>
-            <p className="text-sm leading-6 text-muted-foreground">Checkout sends a formal request for admin review. No charge is made until scope and fees are confirmed.</p>
+            <p className="text-sm leading-6 text-muted-foreground">Sending your request costs nothing. You pay only after we agree the price.</p>
             <Link className={buttonClassName({ className: "mt-2 w-full" })} href={checkoutHref}>
               Proceed to checkout
               <ArrowRight aria-hidden="true" className="h-4 w-4" />

@@ -75,7 +75,7 @@ export function ClientEngagementsOverview({
         <section className="grid min-w-0 gap-3">
           <div>
             <h2 className="text-lg font-bold text-foreground">Requests</h2>
-            <p className="text-sm text-muted-foreground">Services that are still being reviewed or prepared.</p>
+            <p className="text-sm text-muted-foreground">Services we are still reviewing or preparing.</p>
           </div>
           {openRequests.map((request) => (
             <Card className="min-w-0 overflow-hidden shadow-none" key={request.id}>
@@ -101,7 +101,7 @@ export function ClientEngagementsOverview({
                 {request.status === "quotation_sent" ? (
                   <form action={acceptQuotationAction} className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-primary/30 bg-primary/5 p-3">
                     <input name="requestId" type="hidden" value={request.id} />
-                    <p className="text-sm font-medium text-foreground">Accept this quotation so IFTA can set up your engagement.</p>
+                    <p className="text-sm font-medium text-foreground">Accept the quotation so IFTA can set up your work.</p>
                     <SubmitButton pendingText="Accepting...">
                       <CheckCircle2 aria-hidden="true" className="h-4 w-4" />
                       Accept quotation
@@ -110,7 +110,7 @@ export function ClientEngagementsOverview({
                 ) : request.status === "approved" && request.kycUnlockedAt && !request.kycApprovedAt ? (
                   <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-primary/30 bg-primary/5 p-3"><p className="text-sm font-medium text-foreground">Verify your identity so we can prepare your engagement letter. It takes about 10 minutes.</p><Link className={buttonClassName()} href="/client/kyc">Continue verification</Link></div>
                 ) : request.status === "approved" && request.kycApprovedAt ? (
-                  <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-primary/30 bg-primary/5 p-3"><p className="text-sm font-medium text-foreground">Your letter is ready to review and sign before work begins.</p><Link className={buttonClassName()} href="/client/documents">Review letter</Link></div>
+                  <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-primary/30 bg-primary/5 p-3"><p className="text-sm font-medium text-foreground">Your letter is ready. Read and sign it to start.</p><Link className={buttonClassName()} href="/client/documents">Review letter</Link></div>
                 ) : null}
               </CardContent>
             </Card>
@@ -121,7 +121,7 @@ export function ClientEngagementsOverview({
       <section className="grid gap-3">
         <div>
           <h2 className="text-lg font-bold text-foreground">Active engagements</h2>
-          <p className="text-sm text-muted-foreground">Live progress, actions and shared updates from your consulting team.</p>
+          <p className="text-sm text-muted-foreground">Progress, tasks and updates from your IFTA team.</p>
         </div>
         <ClientWorkflowProgress showHeader={false} workflows={workflows} />
       </section>

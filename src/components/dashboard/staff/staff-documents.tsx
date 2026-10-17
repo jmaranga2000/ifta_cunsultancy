@@ -15,7 +15,7 @@ export function StaffDocuments({ documents }: { documents: StaffDocumentRecord[]
 
   return (
     <AdminPageSurface
-      description="Documents attached to the client work you can access."
+      description="Documents for the client work you can access."
       icon={Files}
       summary={[
         { label: "Documents", value: documents.length, helper: "Across assigned engagements", icon: Files },
@@ -25,7 +25,7 @@ export function StaffDocuments({ documents }: { documents: StaffDocumentRecord[]
       title="Documents"
     >
       {documents.length === 0 ? (
-        <StaffEmptyState description="Files will appear here when they are added to your assigned engagements." title="No documents available" />
+        <StaffEmptyState description="Files show here once they are added to your engagements." title="No documents available" />
       ) : (
         <div className="overflow-x-auto">
           <Table className="min-w-[800px]">

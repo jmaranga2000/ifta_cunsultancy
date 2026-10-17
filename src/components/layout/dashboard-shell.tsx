@@ -307,7 +307,7 @@ export function DashboardShell({
                 <button
                   aria-expanded={groupOpen}
                   className={cn(
-                    "flex min-h-11 w-full items-center justify-between gap-3 rounded-md px-3 py-2 text-left text-sm font-semibold",
+                    "flex min-h-12 w-full items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-left text-base font-semibold",
                     childActive
                       ? "bg-white/10 text-white"
                       : "text-white/70 hover:bg-white/10 hover:text-white",
@@ -341,7 +341,7 @@ export function DashboardShell({
           return (
             <Link
               className={cn(
-                "flex min-h-11 items-center justify-between gap-3 rounded-md px-3 py-2 text-sm font-medium",
+                "flex min-h-12 items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-base font-medium",
                 depth > 0 && showLabel && "pl-5",
                 active
                   ? "bg-brand-mist text-brand-deep shadow-sm"
@@ -459,7 +459,7 @@ export function DashboardShell({
             <div className="hidden min-w-0 flex-1 justify-center px-4 xl:flex">
               {portal === "admin" ? (
                 <AdminGlobalSearch />
-              ) : (
+              ) : portal === "client" ? null : (
                 <label className="relative w-full max-w-xl">
                   <span className="sr-only">Go to a page in {roleLabel}</span>
                   <Search aria-hidden="true" className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />

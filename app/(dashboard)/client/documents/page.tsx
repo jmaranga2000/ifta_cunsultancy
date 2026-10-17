@@ -14,12 +14,12 @@ export default async function ClientDocumentsPage({ searchParams }: {
   ]);
   const notice = query.signed
     ? query.activation === "pending"
-      ? "Your signed engagement letter was received. IFTA will complete the engagement activation."
-      : "Your signed engagement letter was received and the engagement has been activated."
+      ? "We received your signed letter. IFTA will start your work shortly."
+      : "We received your signed letter and your work has started."
     : query.reviewed === "approved"
-      ? "Your approval was sent to the engagement team."
+      ? "Your approval was sent to your IFTA team."
       : query.reviewed === "changes_requested"
-        ? "Your requested changes were sent to the engagement team."
+        ? "Your requested changes were sent to your IFTA team."
         : query.uploaded
           ? "Your document was uploaded for review."
           : undefined;

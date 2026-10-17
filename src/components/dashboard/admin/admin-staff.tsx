@@ -95,7 +95,7 @@ export function AdminStaff({
       description={
         assignmentRequest
           ? `Choose an active team member for ${assignmentRequest.reference}. Available staff are shown first, followed by the lightest workload.`
-          : "Create staff accounts, manage portal access and see who has capacity for new work."
+          : "Create staff accounts, manage access and see who has time for new work."
       }
       icon={assignmentMode ? BriefcaseBusiness : UserCog}
       summary={[

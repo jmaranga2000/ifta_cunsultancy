@@ -49,13 +49,13 @@ const notices: Record<string, string> = {
 const errors: Record<string, string> = {
   task: "Choose a valid task action.",
   "task-access": "You cannot update that task.",
-  review: "Choose a document, decision, and add review comments.",
-  "review-access": "The technical review could not be recorded.",
+  review: "Choose a document, a decision and add your comments.",
+  "review-access": "The review could not be saved.",
   document: "Add a title, document type, and file.",
   "document-size": "The file must be 20 MB or smaller.",
   "document-type": `That file type is not supported. Please upload ${uploadFormatsLabel("documents")}.`,
-  "document-content": "That file could not be read. It may be damaged or saved with the wrong extension.",
-  "document-upload": "The document could not be stored. Please try again.",
+  "document-content": "We could not read that file. It may be damaged or saved with the wrong extension.",
+  "document-upload": "The document could not be saved. Please try again.",
 };
 
 export function EngagementWorkspace({
@@ -82,7 +82,7 @@ export function EngagementWorkspace({
       {error && errors[error] ? <p className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold text-red-800">{errors[error]}</p> : null}
 
       <div className="flex flex-col justify-between gap-4 border-y border-border bg-brand-soft px-5 py-5 sm:flex-row sm:items-center">
-        <div><p className="text-xs font-bold text-brand-deep">LIVE ENGAGEMENT</p><h2 className="mt-1 text-xl font-bold text-brand-deep">Engagement workspace</h2><p className="mt-1 text-sm text-brand-deep/75">Complete tasks, review technical work, and exchange controlled documents with the client.</p></div>
+        <div><p className="text-xs font-bold text-brand-deep">LIVE ENGAGEMENT</p><h2 className="mt-1 text-xl font-bold text-brand-deep">Engagement workspace</h2><p className="mt-1 text-sm text-brand-deep/75">Finish tasks, review work and share documents with the client.</p></div>
         <div className="flex flex-wrap gap-2">
           <Link className={buttonClassName({ variant: "secondary" })} href={taskHref}><ListChecks className="h-4 w-4" />Task queue</Link>
           {portal === "staff" ? <Link className={buttonClassName({ variant: "secondary" })} href={`/staff/notes/new?workflowId=${workflow.id}`}><NotebookPen className="h-4 w-4" />Add note</Link> : null}
@@ -90,7 +90,7 @@ export function EngagementWorkspace({
       </div>
 
       <Card className="min-w-0 max-w-full overflow-hidden">
-        <CardHeader><CardTitle>Task execution</CardTitle><CardDescription>Move assigned work from start through review and completion.</CardDescription></CardHeader>
+        <CardHeader><CardTitle>Task execution</CardTitle><CardDescription>Move your work from start to review to done.</CardDescription></CardHeader>
         <CardContent className="block w-full min-w-0 max-w-full overflow-x-auto overscroll-x-contain p-0 [scrollbar-gutter:stable]">
           <Table className="min-w-[940px]">
             <TableHeader><TableRow><TableHead>Task</TableHead><TableHead>Owner</TableHead><TableHead>Status</TableHead><TableHead>Due</TableHead><TableHead>Next step</TableHead><TableHead className="text-right">Action</TableHead></TableRow></TableHeader>
@@ -106,20 +106,20 @@ export function EngagementWorkspace({
 
       <div className="grid min-w-0 gap-5 xl:grid-cols-2">
         <Card className="min-w-0">
-          <CardHeader><CardTitle>Technical review</CardTitle><CardDescription>Approve a draft for client release or return it for changes.</CardDescription></CardHeader>
+          <CardHeader><CardTitle>Technical review</CardTitle><CardDescription>Approve a draft for the client, or send it back for changes.</CardDescription></CardHeader>
           <CardContent>
             <form action={reviewEngagementDocumentAction} className="grid gap-4">
               <input name="workflowId" type="hidden" value={workflow.id} /><input name="returnPath" type="hidden" value={returnPath} />
               <div className="grid gap-2"><Label htmlFor={`review-document-${portal}`}>Document</Label><Select disabled={!pendingReview.length} id={`review-document-${portal}`} name="documentId" required><option value="">{pendingReview.length ? "Choose a document" : "No documents awaiting review"}</option>{pendingReview.map((document) => <option key={document.id} value={document.id}>{document.name}</option>)}</Select></div>
               <div className="grid gap-2"><Label htmlFor={`review-decision-${portal}`}>Decision</Label><Select disabled={!pendingReview.length} id={`review-decision-${portal}`} name="decision" required><option value="approved">Approve and release draft</option><option value="changes_requested">Request technical changes</option></Select></div>
-              <div className="grid gap-2"><Label htmlFor={`review-comments-${portal}`}>Review comments</Label><Textarea className="min-h-28" disabled={!pendingReview.length} id={`review-comments-${portal}`} name="comments" placeholder="Record the checks completed, findings, and any required changes." required /></div>
+              <div className="grid gap-2"><Label htmlFor={`review-comments-${portal}`}>Review comments</Label><Textarea className="min-h-28" disabled={!pendingReview.length} id={`review-comments-${portal}`} name="comments" placeholder="Write what you checked, what you found and what must change." required /></div>
               <SubmitButton disabled={!pendingReview.length} pendingText="Recording review..."><ShieldCheck className="h-4 w-4" />Complete technical review</SubmitButton>
             </form>
           </CardContent>
         </Card>
 
         <Card className="min-w-0">
-          <CardHeader><CardTitle>Upload engagement document</CardTitle><CardDescription>Drafts wait for technical approval. Final deliverables are released to the client immediately.</CardDescription></CardHeader>
+          <CardHeader><CardTitle>Upload engagement document</CardTitle><CardDescription>Drafts wait for approval. Final files go to the client straight away.</CardDescription></CardHeader>
           <CardContent>
             <form action={uploadEngagementDocumentAction} className="grid gap-4" encType="multipart/form-data">
               <input name="workflowId" type="hidden" value={workflow.id} /><input name="returnPath" type="hidden" value={returnPath} />
@@ -133,7 +133,7 @@ export function EngagementWorkspace({
       </div>
 
       <Card className="min-w-0">
-        <CardHeader><CardTitle>Document exchange</CardTitle><CardDescription>Files received from the client and controlled deliverables prepared by the team.</CardDescription></CardHeader>
+        <CardHeader><CardTitle>Document exchange</CardTitle><CardDescription>Files from the client and files prepared by the team.</CardDescription></CardHeader>
         <CardContent className="grid gap-0 p-0">
           {documents.length ? documents.map((document) => (
             <div className="border-t border-border px-5 py-4 first:border-t-0" key={document.id}>
@@ -170,11 +170,11 @@ export function EngagementWorkspace({
                 </form>
               ) : null}
             </div>
-          )) : <div className="grid justify-items-center gap-2 px-5 py-12 text-center"><FileCheck2 className="h-8 w-8 text-muted-foreground" /><p className="font-semibold text-foreground">No engagement files yet</p><p className="text-sm text-muted-foreground">Client uploads and team deliverables will appear here.</p></div>}
+          )) : <div className="grid justify-items-center gap-2 px-5 py-12 text-center"><FileCheck2 className="h-8 w-8 text-muted-foreground" /><p className="font-semibold text-foreground">No engagement files yet</p><p className="text-sm text-muted-foreground">Client uploads and team files will show here.</p></div>}
         </CardContent>
       </Card>
 
-      <div className="flex items-start gap-3 rounded-md border border-border bg-muted/20 p-4 text-sm text-muted-foreground"><MessageSquareText className="mt-0.5 h-4 w-4 shrink-0 text-primary" /><p>Client-facing releases create an in-app alert and email. Sensitive files remain available only through authenticated portal downloads.</p></div>
+      <div className="flex items-start gap-3 rounded-md border border-border bg-muted/20 p-4 text-sm text-muted-foreground"><MessageSquareText className="mt-0.5 h-4 w-4 shrink-0 text-primary" /><p>Releasing to the client sends an alert and email. Sensitive files can only be downloaded after signing in.</p></div>
     </section>
   );
 }

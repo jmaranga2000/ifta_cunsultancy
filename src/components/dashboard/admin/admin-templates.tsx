@@ -182,7 +182,7 @@ export function AdminTemplates() {
         <Card>
           <CardHeader>
             <CardTitle>Template groups</CardTitle>
-            <CardDescription>How templates are organized in the admin portal.</CardDescription>
+            <CardDescription>How templates are grouped.</CardDescription>
           </CardHeader>
           <CardContent className="grid gap-3">
             {templateGroups.map((group) => (

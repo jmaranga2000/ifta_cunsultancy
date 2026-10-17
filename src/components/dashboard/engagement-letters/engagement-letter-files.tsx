@@ -10,7 +10,7 @@ export function EngagementLetterFiles({ letter }: { letter: EngagementLetterReco
       <CardHeader className="flex flex-col justify-between gap-4 lg:flex-row lg:items-start">
         <div>
           <CardTitle>Letter files</CardTitle>
-          <CardDescription>Preview the generated PDF or download a signed PDF and editable Microsoft Word copy.</CardDescription>
+          <CardDescription>Preview the PDF, or download a signed PDF or a Word copy.</CardDescription>
         </div>
         <div className="flex flex-wrap gap-2">
           <a className={buttonClassName({ variant: "secondary", size: "sm" })} href={pdfHref} rel="noreferrer" target="_blank"><Eye aria-hidden="true" className="h-4 w-4" />Open PDF</a>

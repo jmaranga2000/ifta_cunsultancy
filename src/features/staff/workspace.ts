@@ -80,81 +80,81 @@ const routeAccess: Record<StaffAccountRole, readonly StaffRouteKey[]> = {
 
 const workspaceDetails: Record<StaffAccountRole, Omit<StaffWorkspace, "role" | "roleLabel">> = {
   engagement_manager: {
-    title: "Engagement management",
-    subtitle: "Requests, assignments, progress and delivery oversight",
-    description: "Coordinate new requests, assign work and keep every engagement moving toward completion.",
-    priorities: ["Review new client requests", "Balance team workload", "Resolve blocked engagements"],
+    title: "Engagement manager",
+    subtitle: "New requests, team and progress",
+    description: "Accept new requests, give out work and keep every job moving.",
+    priorities: ["Check new client requests", "Share work fairly across the team", "Unblock stuck engagements"],
     primaryLinks: [
-      { label: "Review requests", href: "/staff/requests", description: "Accept, clarify or decline new work." },
-      { label: "Check team workload", href: "/staff/team-workload", description: "Assign work to staff with capacity." },
-      { label: "Open engagements", href: "/staff/engagements", description: "Monitor active client work and deadlines." },
+      { label: "New requests", href: "/staff/requests", description: "Accept, ask questions or decline." },
+      { label: "Team workload", href: "/staff/team-workload", description: "See who has time for more." },
+      { label: "Engagements", href: "/staff/engagements", description: "Follow active work and deadlines." },
     ],
   },
   consultant: {
-    title: "Consulting workspace",
-    subtitle: "Assigned client work, tasks and deliverables",
-    description: "Focus on assigned engagements, complete professional tasks and keep clients informed.",
-    priorities: ["Complete due tasks", "Prepare client deliverables", "Record important engagement notes"],
+    title: "Consultant",
+    subtitle: "Your clients, tasks and files",
+    description: "Do your assigned work and keep clients updated.",
+    priorities: ["Finish tasks that are due", "Prepare files for clients", "Note important decisions"],
     primaryLinks: [
-      { label: "My engagements", href: "/staff/engagements", description: "Open work currently assigned to you." },
-      { label: "My tasks", href: "/staff/tasks", description: "See deadlines, dependencies and blockers." },
-      { label: "Documents", href: "/staff/documents", description: "Upload and review engagement files." },
+      { label: "My engagements", href: "/staff/engagements", description: "Work assigned to you." },
+      { label: "My tasks", href: "/staff/tasks", description: "Deadlines and blockers." },
+      { label: "Documents", href: "/staff/documents", description: "Upload and check files." },
     ],
   },
   reviewer: {
-    title: "Review workspace",
-    subtitle: "KYC, evidence and quality decisions",
-    description: "Review assigned evidence, record clear decisions and escalate risks that need senior attention.",
-    priorities: ["Process assigned KYC reviews", "Resolve missing evidence", "Record review decisions"],
+    title: "Reviewer",
+    subtitle: "Identity checks and quality checks",
+    description: "Check what clients send, record your decision and flag risks.",
+    priorities: ["Do your assigned identity checks", "Ask for missing documents", "Record your decisions"],
     primaryLinks: [
-      { label: "KYC queue", href: "/staff/kyc", description: "Review questionnaires, evidence and risk." },
-      { label: "Review tasks", href: "/staff/reviews", description: "Open your pending quality checks." },
-      { label: "Documents", href: "/staff/documents", description: "Inspect files linked to each review." },
+      { label: "Identity checks", href: "/staff/kyc", description: "Answers, documents and risk." },
+      { label: "Reviews", href: "/staff/reviews", description: "Quality checks waiting for you." },
+      { label: "Documents", href: "/staff/documents", description: "Files linked to each check." },
     ],
   },
   finance_officer: {
-    title: "Finance workspace",
-    subtitle: "Invoices, payments and financial reporting",
-    description: "Prepare invoices for approval and monitor client payment submissions.",
-    priorities: ["Prepare invoices for administrator approval", "Track incoming payment submissions", "Resolve finance questions"],
+    title: "Finance",
+    subtitle: "Quotations, invoices and payments",
+    description: "Prepare quotations and invoices, and keep an eye on payments.",
+    priorities: ["Prepare invoices for approval", "Check payments that come in", "Answer finance questions"],
     primaryLinks: [
-      { label: "Quotations", href: "/staff/quotations", description: "Prepare and send pricing for client requests." },
-      { label: "Invoices", href: "/staff/invoices", description: "Prepare invoices and track administrator approval." },
-      { label: "Payments", href: "/staff/payments", description: "Monitor payments awaiting administrator approval." },
-      { label: "Finance reports", href: "/staff/reports", description: "Review billing and payment summaries." },
+      { label: "Quotations", href: "/staff/quotations", description: "Send prices to clients." },
+      { label: "Invoices", href: "/staff/invoices", description: "Prepare invoices and follow approval." },
+      { label: "Payments", href: "/staff/payments", description: "Payments waiting for approval." },
+      { label: "Reports", href: "/staff/reports", description: "Billing and payment totals." },
     ],
   },
   document_controller: {
-    title: "Document control workspace",
-    subtitle: "Documents, templates, retention and records",
-    description: "Control document quality, classification, versions and retention across client work.",
-    priorities: ["Classify new documents", "Resolve document review issues", "Maintain retention records"],
+    title: "Documents",
+    subtitle: "Files, templates and records",
+    description: "Keep documents tidy, correct and stored for the right time.",
+    priorities: ["Sort new documents", "Fix document problems", "Keep records up to date"],
     primaryLinks: [
-      { label: "Document library", href: "/staff/documents", description: "Review, classify and manage files." },
-      { label: "Templates", href: "/staff/templates", description: "Maintain approved document templates." },
-      { label: "Archive", href: "/staff/archive", description: "Manage retained and completed records." },
+      { label: "Documents", href: "/staff/documents", description: "Check, sort and manage files." },
+      { label: "Templates", href: "/staff/templates", description: "Keep approved templates current." },
+      { label: "Archive", href: "/staff/archive", description: "Finished and stored records." },
     ],
   },
   support_staff: {
-    title: "Client support workspace",
-    subtitle: "Client enquiries, coordination and follow-up",
-    description: "Handle client communication, coordinate routine requests and keep support tasks moving.",
-    priorities: ["Respond to client messages", "Follow up open support tasks", "Organize requested documents"],
+    title: "Client support",
+    subtitle: "Questions and follow-ups",
+    description: "Answer clients and keep routine requests moving.",
+    priorities: ["Answer client messages", "Follow up open tasks", "Collect requested documents"],
     primaryLinks: [
-      { label: "Client messages", href: "/staff/messages", description: "Respond to assigned conversations." },
-      { label: "Support tasks", href: "/staff/tasks", description: "Open follow-ups and coordination work." },
-      { label: "Clients", href: "/staff/clients", description: "View client details needed for support." },
+      { label: "Messages", href: "/staff/messages", description: "Reply to your conversations." },
+      { label: "Tasks", href: "/staff/tasks", description: "Follow-ups to do." },
+      { label: "Clients", href: "/staff/clients", description: "Client details you need." },
     ],
   },
   auditor: {
-    title: "Audit workspace",
-    subtitle: "Read-only assurance, records and activity history",
-    description: "Review evidence, controls and activity history without changing operational records.",
-    priorities: ["Review audit exceptions", "Inspect retained evidence", "Export assurance reports"],
+    title: "Audit",
+    subtitle: "View-only records and history",
+    description: "Look at records and activity without changing anything.",
+    priorities: ["Look into unusual activity", "Check stored evidence", "Export audit reports"],
     primaryLinks: [
-      { label: "Activity history", href: "/staff/audit", description: "Review recorded system and user changes." },
-      { label: "Reports", href: "/staff/reports", description: "Open operational and assurance summaries." },
-      { label: "Archive", href: "/staff/archive", description: "Inspect retained records and legal holds." },
+      { label: "Activity log", href: "/staff/audit", description: "Who changed what, and when." },
+      { label: "Reports", href: "/staff/reports", description: "Summaries of the work." },
+      { label: "Archive", href: "/staff/archive", description: "Stored records and holds." },
     ],
   },
 };
@@ -165,18 +165,18 @@ function link(label: string, href: string, icon: DashboardNavItem["icon"], symbo
 
 const roleNavigation: Record<StaffAccountRole, DashboardNavItem> = {
   engagement_manager: {
-    label: "Engagement management", icon: "briefcase", defaultOpen: true,
+    label: "My work", icon: "briefcase", defaultOpen: true,
     children: [
-      link("Engagement requests", "/staff/requests", "inbox", "R"),
+      link("New requests", "/staff/requests", "inbox", "R"),
       link("All engagements", "/staff/engagements", "briefcase", "E"),
       link("Team workload", "/staff/team-workload", "staff", "W"),
       link("Tasks", "/staff/tasks", "listTodo", "T"),
       link("Clients", "/staff/clients", "users", "C"),
-      link("KYC coordination", "/staff/kyc", "fileCheck", "K"),
+      link("Identity checks", "/staff/kyc", "fileCheck", "K"),
     ],
   },
   consultant: {
-    label: "Consulting work", icon: "briefcase", defaultOpen: true,
+    label: "My work", icon: "briefcase", defaultOpen: true,
     children: [
       link("My engagements", "/staff/engagements", "briefcase", "E"),
       link("My tasks", "/staff/tasks", "listTodo", "T"),
@@ -187,10 +187,10 @@ const roleNavigation: Record<StaffAccountRole, DashboardNavItem> = {
     ],
   },
   reviewer: {
-    label: "Review work", icon: "clipboard", defaultOpen: true,
+    label: "My work", icon: "clipboard", defaultOpen: true,
     children: [
-      link("KYC queue", "/staff/kyc", "fileCheck", "K"),
-      link("Review queue", "/staff/reviews", "clipboard", "R"),
+      link("Identity checks", "/staff/kyc", "fileCheck", "K"),
+      link("Reviews", "/staff/reviews", "clipboard", "R"),
       link("Review tasks", "/staff/tasks", "listTodo", "T"),
       link("Documents", "/staff/documents", "documents", "D"),
       link("Clients", "/staff/clients", "users", "C"),
@@ -200,32 +200,32 @@ const roleNavigation: Record<StaffAccountRole, DashboardNavItem> = {
     ],
   },
   finance_officer: {
-    label: "Finance work", icon: "finance", defaultOpen: true,
+    label: "My work", icon: "finance", defaultOpen: true,
     children: [
       link("Quotations", "/staff/quotations", "money", "Q"),
-      link("Approval tasks", "/staff/tasks", "listTodo", "T"),
+      link("Tasks", "/staff/tasks", "listTodo", "T"),
       link("Invoices", "/staff/invoices", "invoice", "I"),
       link("Payments", "/staff/payments", "money", "P"),
-      link("Finance reports", "/staff/reports", "reports", "R"),
+      link("Reports", "/staff/reports", "reports", "R"),
       link("Clients", "/staff/clients", "users", "C"),
       link("Engagements", "/staff/engagements", "briefcase", "E"),
-      link("Invoice templates", "/staff/templates", "fileText", "T"),
-      link("Finance archive", "/staff/archive", "archive", "A"),
+      link("Invoice layouts", "/staff/templates", "fileText", "T"),
+      link("Archive", "/staff/archive", "archive", "A"),
     ],
   },
   document_controller: {
-    label: "Records work", icon: "documents", defaultOpen: true,
+    label: "My work", icon: "documents", defaultOpen: true,
     children: [
-      link("Document library", "/staff/documents", "documents", "D"),
-      link("Template library", "/staff/templates", "fileText", "T"),
-      link("Records archive", "/staff/archive", "archive", "A"),
-      link("Document reports", "/staff/reports", "reports", "R"),
+      link("Documents", "/staff/documents", "documents", "D"),
+      link("Templates", "/staff/templates", "fileText", "T"),
+      link("Archive", "/staff/archive", "archive", "A"),
+      link("Reports", "/staff/reports", "reports", "R"),
       link("Engagements", "/staff/engagements", "briefcase", "E"),
       link("Clients", "/staff/clients", "users", "C"),
     ],
   },
   support_staff: {
-    label: "Client support", icon: "users", defaultOpen: true,
+    label: "My work", icon: "users", defaultOpen: true,
     children: [
       link("Clients", "/staff/clients", "users", "C"),
       link("Support tasks", "/staff/tasks", "listTodo", "T"),
@@ -234,18 +234,18 @@ const roleNavigation: Record<StaffAccountRole, DashboardNavItem> = {
     ],
   },
   auditor: {
-    label: "Audit and assurance", icon: "activity", defaultOpen: true,
+    label: "My work", icon: "activity", defaultOpen: true,
     children: [
-      link("Activity history", "/staff/audit", "activity", "AL"),
+      link("Activity log", "/staff/audit", "activity", "AL"),
       link("Reports", "/staff/reports", "reports", "R"),
       link("Archive", "/staff/archive", "archive", "A"),
-      link("KYC records", "/staff/kyc", "fileCheck", "K"),
-      link("Finance records", "/staff/invoices", "invoice", "I"),
-      link("Client records", "/staff/clients", "users", "C"),
-      link("Staff records", "/staff/team", "staff", "S"),
-      link("Engagement records", "/staff/engagements", "briefcase", "E"),
-      link("Document records", "/staff/documents", "documents", "D"),
-      link("Template records", "/staff/templates", "fileText", "T"),
+      link("Identity checks", "/staff/kyc", "fileCheck", "K"),
+      link("Invoices", "/staff/invoices", "invoice", "I"),
+      link("Clients", "/staff/clients", "users", "C"),
+      link("Staff", "/staff/team", "staff", "S"),
+      link("Engagements", "/staff/engagements", "briefcase", "E"),
+      link("Documents", "/staff/documents", "documents", "D"),
+      link("Templates", "/staff/templates", "fileText", "T"),
     ],
   },
 };
@@ -269,36 +269,31 @@ export function getStaffWorkspace(role: StaffAccountRole): StaffWorkspace {
 }
 
 export function getStaffNavItems(role: StaffAccountRole): DashboardNavItem[] {
+  // One flat, short list: Home, then the few things this role does every day.
+  // Everything occasional (alerts, calendar, profile, reference pages) sits under "More".
   const canMessage = routeAccess[role].includes("messages");
-  const overview: DashboardNavItem = {
-    label: "Overview",
-    icon: "gauge",
-    defaultOpen: true,
-    children: [
-      link("Dashboard", "/staff", "gauge", "D"),
-      link("Notifications", "/staff/notifications", "bell", "N"),
-      link("Calendar", "/staff/calendar", "calendar", "CA"),
-      link("My profile", "/staff/profile", "profile", "P"),
-      ...(canMessage ? [link("Messages", "/staff/messages", "message", "M")] : []),
-    ],
-  };
+  const roleChildren = (roleNavigation[role].children ?? []).filter((item) => item.href !== "/staff/messages");
 
   const supportingChildren: DashboardNavItem[] = [];
-  if (routeAccess[role].includes("reports") && role !== "finance_officer" && role !== "document_controller" && role !== "auditor") {
-    supportingChildren.push(link("Reports", "/staff/reports", "reports", "R"));
-  }
-  if (routeAccess[role].includes("templates") && role !== "finance_officer" && role !== "document_controller" && role !== "auditor") {
-    supportingChildren.push(link("Templates", "/staff/templates", "fileText", "T"));
-  }
-  if (routeAccess[role].includes("archive") && role !== "finance_officer" && role !== "document_controller" && role !== "auditor") {
-    supportingChildren.push(link("Archive", "/staff/archive", "archive", "A"));
-  }
+  const hasSupporting = role !== "finance_officer" && role !== "document_controller" && role !== "auditor";
+  if (hasSupporting && routeAccess[role].includes("reports")) supportingChildren.push(link("Reports", "/staff/reports", "reports", "R"));
+  if (hasSupporting && routeAccess[role].includes("templates")) supportingChildren.push(link("Templates", "/staff/templates", "fileText", "T"));
+  if (hasSupporting && routeAccess[role].includes("archive")) supportingChildren.push(link("Archive", "/staff/archive", "archive", "A"));
+
+  const primarySlots = canMessage ? 5 : 6;
+  const primary = roleChildren.slice(0, primarySlots);
+  const more: DashboardNavItem[] = [
+    ...roleChildren.slice(primarySlots),
+    ...supportingChildren,
+    link("Notifications", "/staff/notifications", "bell", "N"),
+    link("Calendar", "/staff/calendar", "calendar", "CA"),
+    link("My profile", "/staff/profile", "profile", "P"),
+  ];
 
   return [
-    overview,
-    roleNavigation[role],
-    ...(supportingChildren.length > 0
-      ? [{ label: "Reference", icon: "folderArchive" as const, children: supportingChildren }]
-      : []),
+    link("Home", "/staff", "gauge", "H"),
+    ...primary,
+    ...(canMessage ? [link("Messages", "/staff/messages", "message", "M")] : []),
+    { label: "More", icon: "folderArchive" as const, children: more },
   ];
 }

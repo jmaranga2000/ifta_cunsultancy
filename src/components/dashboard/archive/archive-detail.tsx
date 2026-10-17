@@ -201,7 +201,7 @@ export function ArchiveDetail({ data }: { data: ArchiveDetailData }) {
         <Card>
           <CardHeader>
             <CardTitle>Archive summary</CardTitle>
-            <CardDescription>Original record state, retention and restore eligibility.</CardDescription>
+            <CardDescription>State of the record, how long it is kept and whether it can be restored.</CardDescription>
           </CardHeader>
           <CardContent className="grid gap-3 md:grid-cols-2">
             {[
@@ -303,7 +303,7 @@ export function ArchiveDetail({ data }: { data: ArchiveDetailData }) {
       </section>
 
       <DataTable
-        description="Completed stages, milestones, blockers and approvals preserved from the workspace."
+        description="Finished stages, milestones, blockers and approvals."
         rows={data.workflowHistory}
         title="Workflow History"
       />
@@ -313,12 +313,12 @@ export function ArchiveDetail({ data }: { data: ArchiveDetailData }) {
         title="Documents"
       />
       <DataTable
-        description="Permitted archived communication. Internal notes remain protected."
+        description="Messages kept in the archive. Internal notes stay private."
         rows={data.messages}
         title="Messages"
       />
       <DataTable
-        description="Archived invoices, payments, balances and receipt evidence."
+        description="Invoices, payments, balances and receipts."
         rows={data.finance}
         title="Finance"
       />

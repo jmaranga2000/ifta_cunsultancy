@@ -14,7 +14,7 @@ export function StaffClients({ clients }: { clients: StaffClientRecord[] }) {
 
   return (
     <AdminPageSurface
-      description="Clients connected to requests and engagements assigned to you."
+      description="Clients linked to the requests and engagements assigned to you."
       icon={Users}
       summary={[
         { label: "Clients", value: clients.length, helper: "In your current workload", icon: Users },
@@ -25,7 +25,7 @@ export function StaffClients({ clients }: { clients: StaffClientRecord[] }) {
     >
       {clients.length === 0 ? (
         <StaffEmptyState
-          description="A client will appear here as soon as an administrator assigns their request or engagement to you."
+          description="A client shows here once an administrator assigns you their request or engagement."
           title="No clients assigned yet"
         />
       ) : (

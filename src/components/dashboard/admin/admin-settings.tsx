@@ -85,7 +85,7 @@ export function AdminSettings({ settings, saved, error }: {
           Connections
         </Link>
       )}
-      description="Manage the company details, engagement terms, signatures and client notifications used throughout the portal."
+      description="Manage company details, terms, signatures and client alerts used across the portal."
       icon={Settings}
       summary={[
         { label: "Company details", value: `${companyReady}/3`, helper: "Core letter fields ready", icon: Building2 },
@@ -110,7 +110,7 @@ export function AdminSettings({ settings, saved, error }: {
       <div className="divide-y divide-border">
         <form action={updatePlatformSettingsAction}>
           <input name="section" type="hidden" value="company" />
-          <SectionHeader description="These details appear on engagement letters and client-facing records." icon={Building2} title="Company profile" />
+          <SectionHeader description="These details show on engagement letters and client records." icon={Building2} title="Company profile" />
           <div className="grid gap-4 p-5 md:grid-cols-2 xl:grid-cols-3">
             <Field defaultValue={settings.company.tradingName} label="Trading name" name="tradingName" required />
             <Field defaultValue={settings.company.legalName} label="Legal name" name="legalName" required />
@@ -133,7 +133,7 @@ export function AdminSettings({ settings, saved, error }: {
 
         <form action={updatePlatformSettingsAction}>
           <input name="section" type="hidden" value="engagement" />
-          <SectionHeader description="Control how engagement letters are generated, accepted and signed." icon={FileSignature} title="Engagement letters and signatures" />
+          <SectionHeader description="Choose how engagement letters are made, accepted and signed." icon={FileSignature} title="Engagement letters and signatures" />
           <div className="grid gap-5 p-5 lg:grid-cols-[minmax(0,1fr)_360px]">
             <div className="grid gap-4 md:grid-cols-2">
               <Field defaultValue={settings.engagement.defaultCurrency} label="Default currency" name="defaultCurrency" required />
@@ -152,10 +152,10 @@ export function AdminSettings({ settings, saved, error }: {
               </label>
             </div>
             <div className="grid content-start gap-3">
-              <Toggle defaultChecked={settings.engagement.autoGenerateLetters} description="Create a customized draft when an administrator approves and sets up a request." label="Generate letters automatically" name="autoGenerateLetters" />
-              <Toggle defaultChecked={settings.engagement.requireInternalSignature} description="Require an authorized IFTA signer as well as the client before activation." label="Require IFTA signature" name="requireInternalSignature" />
-              <Toggle defaultChecked={settings.engagement.allowTypedSignatures} description="Allow signers to type their legal name and confirm their signing intention." label="Allow typed electronic signatures" name="allowTypedSignatures" />
-              <Toggle defaultChecked={settings.engagement.requireDeliverableApproval} description="Require reviewer approval before an official deliverable can be released to the client." label="Require deliverable approval" name="requireDeliverableApproval" />
+              <Toggle defaultChecked={settings.engagement.autoGenerateLetters} description="Make a custom draft when an administrator approves a request." label="Generate letters automatically" name="autoGenerateLetters" />
+              <Toggle defaultChecked={settings.engagement.requireInternalSignature} description="Need an IFTA signer as well as the client before starting." label="Require IFTA signature" name="requireInternalSignature" />
+              <Toggle defaultChecked={settings.engagement.allowTypedSignatures} description="Let signers type their legal name to sign." label="Allow typed electronic signatures" name="allowTypedSignatures" />
+              <Toggle defaultChecked={settings.engagement.requireDeliverableApproval} description="Need reviewer approval before a final file goes to the client." label="Require deliverable approval" name="requireDeliverableApproval" />
               <p className="rounded-md border border-border bg-muted/20 p-3 text-xs leading-5 text-muted-foreground">
                 Every signature records the signer, time, content fingerprint, browser details and an audit event. Signed letters cannot be edited.
               </p>
@@ -168,7 +168,7 @@ export function AdminSettings({ settings, saved, error }: {
 
         <form action={updatePlatformSettingsAction}>
           <input name="section" type="hidden" value="portal" />
-          <SectionHeader description="Set client-facing contact details and useful signature notifications." icon={Bell} title="Portal and notifications" />
+          <SectionHeader description="Set contact details and signature alerts." icon={Bell} title="Portal and notifications" />
           <div className="grid gap-5 p-5 lg:grid-cols-[minmax(0,1fr)_360px]">
             <div className="grid gap-4 md:grid-cols-2">
               <Field defaultValue={settings.portal.timezone} label="Timezone" name="timezone" required />
@@ -179,8 +179,8 @@ export function AdminSettings({ settings, saved, error }: {
               </label>
             </div>
             <div className="grid content-start gap-3">
-              <Toggle defaultChecked={settings.portal.notifyClientOnLetterReady} description="Send an in-app and push alert when a letter is ready for client review." label="Notify clients about letters" name="notifyClientOnLetterReady" />
-              <Toggle defaultChecked={settings.portal.notifyAdminOnClientSignature} description="Record a portal alert when the client completes their signature." label="Notify team after client signing" name="notifyAdminOnClientSignature" />
+              <Toggle defaultChecked={settings.portal.notifyClientOnLetterReady} description="Send an alert when a letter is ready for the client." label="Notify clients about letters" name="notifyClientOnLetterReady" />
+              <Toggle defaultChecked={settings.portal.notifyAdminOnClientSignature} description="Record an alert when the client signs." label="Notify team after client signing" name="notifyAdminOnClientSignature" />
             </div>
           </div>
           <div className="flex justify-end border-t border-border bg-muted/15 px-5 py-4">

@@ -22,7 +22,7 @@ export function AdminIntegrations({ connections }: { connections: IntegrationCon
   const attention = connections.filter((connection) => ["not_configured", "failed"].includes(connection.status)).length;
   return (
     <AdminPageSurface
-      description="See which outside services are ready, test them safely, and turn individual connections on or off."
+      description="See which outside services are ready, test them and turn each on or off."
       icon={Link2}
       summary={[
         { label: "Connections", value: connections.length, helper: "Available services", icon: PlugZap },

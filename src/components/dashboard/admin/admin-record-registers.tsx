@@ -39,7 +39,7 @@ function EmptyRows({ colSpan, label }: { colSpan: number; label: string }) {
 export function AdminDocumentsRegister({ data }: { data: { records: AdminDocumentRecord[]; summary: { total: number; waiting: number; approved: number; clients: number } } }) {
   return (
     <AdminPageSurface
-      description="Find client and engagement files, see what needs review, and download uploaded documents."
+      description="Find client and engagement files, see what needs review and download documents."
       icon={Files}
       summary={[
         { label: "Files", value: data.summary.total, helper: "All current records", icon: Files },
@@ -74,7 +74,7 @@ export function AdminInvoicesRegister({ data }: { data: { records: AdminInvoiceR
   const currency = data.records[0]?.currency ?? "KES";
   return (
     <AdminPageSurface
-      description="A simple view of every engagement invoice, payment position, and balance still due."
+      description="Every invoice, payment and balance still due, at a glance."
       icon={ReceiptText}
       summary={[
         { label: "Engagements", value: data.summary.total, helper: "With billing records", icon: ReceiptText },
@@ -109,7 +109,7 @@ export function AdminPaymentsRegister({ data }: { data: { records: AdminPaymentR
   const currency = data.records[0]?.currency ?? "KES";
   return (
     <AdminPageSurface
-      description="Review payment submissions, transaction references, and the engagement each payment belongs to."
+      description="Check payments sent in, their references and which engagement they belong to."
       icon={CreditCard}
       summary={[
         { label: "Payments", value: data.summary.total, helper: "Submitted records", icon: CreditCard },
@@ -133,7 +133,7 @@ export function AdminPaymentsRegister({ data }: { data: { records: AdminPaymentR
               <TableCell>{dateLabel(record.submittedAt)}</TableCell>
               <TableCell className="text-right"><Link className={buttonClassName({ variant: "secondary", size: "sm" })} href={`/admin/active-engagements/${record.workflowId}?tab=overview`}><ExternalLink aria-hidden="true" className="h-4 w-4" />Open</Link></TableCell>
             </TableRow>
-          )) : <EmptyRows colSpan={8} label="No client payments have been submitted yet." />}</TableBody>
+          )) : <EmptyRows colSpan={8} label="No client payments yet." />}</TableBody>
         </Table>
       </div>
     </AdminPageSurface>

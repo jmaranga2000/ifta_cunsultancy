@@ -31,7 +31,7 @@ export default async function StaffAccountDetailPage({
           Back to staff
         </Link>
       }
-      description="Update the staff member’s profile, role, account status or sign-in password."
+      description="Update the staff member's profile, role, status or password."
       icon={UserCog}
       title={name}
     >
@@ -44,7 +44,7 @@ export default async function StaffAccountDetailPage({
       {query.error ? (
         <p className="border-b border-red-200 bg-red-50 px-5 py-3 text-sm font-semibold text-red-800">
           {query.error === "email"
-            ? "An account already uses that email address."
+            ? "An account already uses that email."
             : "Check the fields and password requirements."}
         </p>
       ) : null}

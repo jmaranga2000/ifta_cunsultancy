@@ -80,7 +80,7 @@ export function FiscalInvoiceRegister({ invoices, portal = "admin" }: { invoices
           </Link>
         </>
       ) : undefined}
-      description={admin ? "Approve invoices, follow KRA acceptance, and see whether each accepted document reached the client." : "Prepare assigned invoices and follow Admin approval, KRA acceptance, and client delivery."}
+      description={admin ? "Approve invoices, follow KRA acceptance and see if each one reached the client." : "Prepare assigned invoices and follow approval, KRA acceptance and delivery."}
       icon={ReceiptText}
       summary={[
         { label: "All invoices", value: invoices.length, helper: fiscalMoney(gross, currency), icon: ReceiptText },
@@ -92,7 +92,7 @@ export function FiscalInvoiceRegister({ invoices, portal = "admin" }: { invoices
     >
       {invoices.length === 0 ? (
         <EmptyState
-          description="Invoices created by Finance will appear here for approval."
+          description="Invoices created by Finance show here for approval."
           title="No fiscal invoices yet"
         />
       ) : (

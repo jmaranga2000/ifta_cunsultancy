@@ -86,7 +86,7 @@ function StageTracker({ workflow }: { workflow: WorkflowInstanceRecord }) {
     <Card className="min-w-0">
       <CardHeader>
         <CardTitle>Workflow stages</CardTitle>
-        <CardDescription>Client-visible and internal progression through the lifecycle.</CardDescription>
+        <CardDescription>Progress through the life of the engagement, for the client and the team.</CardDescription>
       </CardHeader>
       <CardContent className="grid min-w-0 gap-3 sm:grid-cols-2 xl:grid-cols-4">
         {workflow.stages.map((stage) => {
@@ -292,7 +292,7 @@ export function WorkflowDetail({
           <Card className="min-w-0">
             <CardHeader>
               <CardTitle>Overview</CardTitle>
-              <CardDescription>Current operating state and next required action.</CardDescription>
+              <CardDescription>Where things stand and what to do next.</CardDescription>
             </CardHeader>
             <CardContent className="grid gap-4 md:grid-cols-2">
               {[
@@ -438,7 +438,7 @@ export function WorkflowDetail({
           <Card className="min-w-0">
             <CardHeader>
               <CardTitle>Timeline and audit</CardTitle>
-              <CardDescription>Chronological activity, with internal events separated from client-visible updates.</CardDescription>
+              <CardDescription>What happened, in order. Internal events are kept apart from client updates.</CardDescription>
             </CardHeader>
             <CardContent className="grid gap-3">
               {workflow.activity.map((activity) => (
@@ -466,7 +466,7 @@ export function WorkflowDetail({
           <Card className="min-w-0">
             <CardHeader>
               <CardTitle>Workflow actions</CardTitle>
-              <CardDescription>Open the relevant work area or advance this engagement when checks are complete.</CardDescription>
+              <CardDescription>Open the right area, or move this engagement on when checks are done.</CardDescription>
             </CardHeader>
             <CardContent className="grid gap-2">
               {[

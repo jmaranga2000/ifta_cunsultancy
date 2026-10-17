@@ -54,7 +54,7 @@ export function ClientKyc({
         <Card>
           <CardContent className="flex items-start gap-4 p-5">
             <ShieldCheck aria-hidden="true" className="mt-0.5 h-6 w-6 shrink-0 text-primary" />
-            <div><h2 className="font-bold text-foreground">Waiting for administration setup</h2><p className="mt-1 text-sm leading-6 text-muted-foreground">You will receive an email and a live portal alert when KYC is ready. No questionnaire or upload can be submitted before then.</p><Link className={buttonClassName({ className: "mt-4", variant: "secondary" })} href="/client/engagements">View my requests</Link></div>
+            <div><h2 className="font-bold text-foreground">Waiting for administration setup</h2><p className="mt-1 text-sm leading-6 text-muted-foreground">We will email you and alert you in the portal when it is ready. You cannot send anything before then.</p><Link className={buttonClassName({ className: "mt-4", variant: "secondary" })} href="/client/engagements">View my requests</Link></div>
           </CardContent>
         </Card>
       </div>
@@ -106,14 +106,14 @@ export function ClientKyc({
       {submission.status === "submitted" || submission.status === "under_review" ? (
         <div className="flex items-start gap-3 rounded-md border border-amber-200 bg-amber-50 px-4 py-3 text-amber-950">
           <Clock3 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0" />
-          <div><p className="text-sm font-semibold">KYC approval pending</p><p className="mt-1 text-sm leading-6">Your information has been submitted. The assigned reviewer or administrator will notify you after approval.</p></div>
+          <div><p className="text-sm font-semibold">KYC approval pending</p><p className="mt-1 text-sm leading-6">Thank you. Your details are sent. We will tell you once they are approved.</p></div>
         </div>
       ) : null}
 
       {submission.status === "approved" ? (
         <div className="flex items-start gap-3 rounded-md border border-emerald-200 bg-emerald-50 px-4 py-3 text-emerald-950" role="status">
           <CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0" />
-          <div><p className="text-sm font-semibold">KYC approved</p><p className="mt-1 text-sm leading-6">Your verification is complete. You can now review your engagement letter in Documents.</p></div>
+          <div><p className="text-sm font-semibold">KYC approved</p><p className="mt-1 text-sm leading-6">Your identity check is complete. You can now read your engagement letter under Documents.</p></div>
         </div>
       ) : null}
 
@@ -134,7 +134,7 @@ export function ClientKyc({
           <AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0" />
           <div className="min-w-0">
             <p className="text-sm font-semibold">Supporting documents are still needed</p>
-            <p className="mt-1 text-sm leading-6">Your identity card and Tax PIN certificate are required before submission. Proof of location is optional but recommended.</p>
+            <p className="mt-1 text-sm leading-6">We need your ID and KRA PIN certificate. Proof of address is optional but helps.</p>
             <Link className="mt-2 inline-flex text-sm font-semibold underline underline-offset-4" href="/client/kyc/upload-replacement">
               Upload a document
             </Link>
@@ -145,7 +145,7 @@ export function ClientKyc({
       {!documentsMissing && !proofOfLocationReady ? (
         <div className="flex items-start gap-3 rounded-md border border-sky-200 bg-sky-50 px-4 py-3 text-sky-950" role="status">
           <MapPin aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0" />
-          <div><p className="text-sm font-semibold">Proof of location is still recommended</p><p className="mt-1 text-sm leading-6">Your required files are complete. Add a recent utility bill, lease, or similar address document when available.</p></div>
+          <div><p className="text-sm font-semibold">Proof of location is still recommended</p><p className="mt-1 text-sm leading-6">You have sent everything we need. You can still add a utility bill or lease as proof of address.</p></div>
         </div>
       ) : null}
 
@@ -172,9 +172,9 @@ export function ClientKyc({
             <p className="text-sm leading-6 text-muted-foreground">
               {requiredDocumentsReady
                 ? proofOfLocationReady
-                  ? "All three document types have been received."
-                  : "Required documents received. Proof of location is still recommended."
-                : "Identity and Tax PIN documents are required."}
+                  ? "All three documents received."
+                  : "Required documents received. Proof of address is still welcome."
+                : "Your ID and KRA PIN certificate are needed."}
             </p>
           </CardContent>
         </Card>
@@ -193,7 +193,7 @@ export function ClientKyc({
                   : "Your KYC is with the review team."
                 : readyForReview
                   ? "Your questionnaire is ready to submit."
-                  : "Complete the questionnaire to submit for review."}
+                  : "Answer the questions first."}
             </p>
           </CardContent>
         </Card>
@@ -210,21 +210,21 @@ export function ClientKyc({
               <ClipboardList aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
               <div>
                 <p className="text-sm font-semibold text-foreground">1. Answer the questionnaire</p>
-                <p className="mt-1 text-sm leading-6 text-muted-foreground">Provide the personal, tax, and declaration details requested.</p>
+                <p className="mt-1 text-sm leading-6 text-muted-foreground">Answer questions about you, your tax and a short declaration.</p>
               </div>
             </div>
             <div className="flex gap-3 border-l-2 border-primary pl-4">
               <FileUp aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
               <div>
                 <p className="text-sm font-semibold text-foreground">2. Upload your KYC documents</p>
-                <p className="mt-1 text-sm leading-6 text-muted-foreground">Provide your identity card, Tax PIN certificate, and proof of location where available.</p>
+                <p className="mt-1 text-sm leading-6 text-muted-foreground">Upload your ID, KRA PIN certificate and proof of address if you have it.</p>
               </div>
             </div>
             <div className="flex gap-3 border-l-2 border-primary pl-4">
               <ShieldCheck aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
               <div>
                 <p className="text-sm font-semibold text-foreground">3. Submit for review</p>
-                <p className="mt-1 text-sm leading-6 text-muted-foreground">Our compliance team will review the completed KYC submission.</p>
+                <p className="mt-1 text-sm leading-6 text-muted-foreground">Our team will check what you send.</p>
               </div>
             </div>
           </CardContent>
@@ -233,7 +233,7 @@ export function ClientKyc({
         <Card>
           <CardHeader>
             <CardTitle>KYC actions</CardTitle>
-            <CardDescription>Choose the next step for your submission.</CardDescription>
+            <CardDescription>Choose what to do next.</CardDescription>
           </CardHeader>
           <CardContent className="grid gap-3">
             <Link className={buttonClassName({ className: "w-full" })} href="/client/kyc/questionnaire">
@@ -249,7 +249,7 @@ export function ClientKyc({
                 className="w-full"
                 disabled={!readyForReview || reviewSubmitted}
                 pendingText="Submitting for review..."
-                title={!readyForReview ? "Complete the questionnaire and upload the required documents first." : undefined}
+                title={!readyForReview ? "Answer the questions and upload your documents first." : undefined}
               >
                 <Send aria-hidden="true" className="h-4 w-4" />
                 {reviewSubmitted ? "Submitted for review" : "Submit for review"}
@@ -262,7 +262,7 @@ export function ClientKyc({
       <Card>
         <CardHeader>
           <CardTitle>Uploaded documents</CardTitle>
-          <CardDescription>Your latest files are stored securely for the KYC review team.</CardDescription>
+          <CardDescription>Your latest files are stored safely for our reviewers.</CardDescription>
         </CardHeader>
         <CardContent className="grid gap-2">
           {submission.documents.length ? (

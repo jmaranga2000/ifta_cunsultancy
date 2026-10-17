@@ -18,14 +18,14 @@ import type { AccountClosureRequestRecord } from "@/repositories/account-closure
 
 const errors: Record<string, string> = {
   profile: "Enter a valid first and last name.",
-  phone: "That phone number does not look right. Try the format 0712 345 678, or clear the box.",
+  phone: "That phone number does not look right. Try 0712 345 678, or leave it blank.",
   "avatar-missing": "Choose a profile picture before uploading.",
-  "avatar-size": "The profile picture must be smaller than 3 MB.",
+  "avatar-size": "Your photo must be under 3 MB.",
   "avatar-type": "Use a JPG, PNG or WebP image.",
-  "avatar-upload": "The profile picture could not be stored. Please try again or contact support.",
+  "avatar-upload": "We could not save your photo. Please try again.",
   "current-password": "The current password is incorrect.",
-  "password-policy": "The new passwords must match and meet the password requirements.",
-  "password-same": "Choose a password that is different from the current password.",
+  "password-policy": "The new passwords must match and meet the password rules.",
+  "password-same": "Choose a password that is different from your current one.",
 };
 
 function initials(profile: ClientProfileRecord) {
@@ -53,7 +53,7 @@ export function ClientProfile({
 
   return (
     <AdminPageSurface
-      description="Keep your contact identity, profile picture and sign-in password up to date."
+      description="Keep your details, photo and password up to date."
       icon={UserRound}
       title="My profile"
     >
@@ -134,7 +134,7 @@ export function ClientProfile({
               <Input autoComplete="tel" defaultValue={formatPhoneForDisplay(profile.phone)} id="phone" inputMode="tel" name="phone" placeholder="0712 345 678" type="tel" />
               <label className="flex items-start gap-2 text-sm text-muted-foreground" htmlFor="smsOptIn">
                 <input className="mt-1 h-4 w-4 rounded border-border text-primary focus:ring-primary" defaultChecked={profile.smsOptIn} id="smsOptIn" name="smsOptIn" type="checkbox" />
-                <span>Text me important updates, such as when action is needed from me.</span>
+                <span>Text me important updates, such as when I need to act.</span>
               </label>
             </div>
             <div className="flex justify-end">

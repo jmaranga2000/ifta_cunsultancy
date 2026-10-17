@@ -12,7 +12,7 @@ export function AdminPermissions({ roles }: { roles: AdminRoleRecord[] }) {
 
   return (
     <AdminPageSurface
-      description="Review each role, see how many accounts use it, and change access with simple Yes or No controls."
+      description="See each role, how many accounts use it, and change access with Yes or No."
       icon={ShieldCheck}
       summary={[
         { label: "Roles", value: roles.length, helper: "Available account roles", icon: Users },
@@ -20,7 +20,7 @@ export function AdminPermissions({ roles }: { roles: AdminRoleRecord[] }) {
         { label: "Largest role", value: highestPermissionCount, helper: "Most allowed actions", icon: UserCog },
       ]}
       title="Roles and access"
-      footer={<p className="text-sm text-muted-foreground">Role changes apply to every active account assigned to that role and are recorded in the activity log.</p>}
+      footer={<p className="text-sm text-muted-foreground">A role change applies to everyone with that role and is saved in the activity log.</p>}
     >
       <div className="overflow-x-auto">
         <Table className="min-w-[900px]">

@@ -13,10 +13,10 @@ const variantClasses: Record<ButtonVariant, string> = {
 };
 
 const sizeClasses: Record<ButtonSize, string> = {
-  sm: "h-9 px-3 text-sm",
-  md: "h-10 px-4 text-sm",
-  lg: "h-11 px-5 text-base",
-  icon: "h-10 w-10 p-0",
+  sm: "h-10 px-3.5 text-sm",
+  md: "h-11 px-5 text-base",
+  lg: "h-12 px-6 text-base",
+  icon: "h-11 w-11 p-0",
 };
 
 export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -34,7 +34,7 @@ export function buttonClassName({
   size?: ButtonSize;
 } = {}) {
   return cn(
-    "inline-flex shrink-0 items-center justify-center gap-2 rounded-md font-semibold transition-colors",
+    "inline-flex shrink-0 items-center justify-center gap-2 rounded-lg font-semibold transition-colors",
     "border px-4",
     "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
     "disabled:pointer-events-none disabled:opacity-50",

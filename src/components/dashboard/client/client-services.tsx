@@ -33,7 +33,7 @@ export function ClientServices({
           </span>
         </Link>
       }
-      description="Browse current consulting services and add the work you need to your engagement cart."
+      description="Choose the services you need and add them to your cart."
       icon={ShoppingCart}
       title="Services"
     >

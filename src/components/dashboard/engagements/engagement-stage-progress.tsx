@@ -56,7 +56,7 @@ export function EngagementStageProgress({
         <div className="flex flex-col justify-between gap-3 lg:flex-row lg:items-start">
           <div>
             <CardTitle>Engagement process</CardTitle>
-            <CardDescription className="mt-1">The workflow is the process map behind this active engagement. This workspace is where the team completes the work recorded against those stages.</CardDescription>
+            <CardDescription className="mt-1">The workflow is the map for this engagement. This page is where the team does the work for each stage.</CardDescription>
           </div>
           <Badge tone={ready ? "green" : "gold"}>{ready ? "Stage ready" : "Stage requirements open"}</Badge>
         </div>
@@ -94,9 +94,9 @@ export function EngagementStageProgress({
                 <p className="text-xs font-semibold text-muted-foreground">NEXT PROCESS STAGE</p>
                 <p className="mt-1 font-semibold text-foreground">{nextStage.name}</p>
                 <p className="mt-2 text-sm leading-6 text-muted-foreground">{ready ? "All visible checks are complete. The administrator can advance the engagement." : "Complete the open requirements before advancing."}</p>
-                {canManage ? <form action={transitionWorkflowStageAction} className="mt-4 grid gap-3"><input name="workflowId" type="hidden" value={workflow.id} /><input name="nextStageKey" type="hidden" value={nextStage.key} /><input name="returnPath" type="hidden" value={returnPath} /><Textarea className="min-h-20" name="reason" placeholder="Optional transition note" /><label className="flex items-center gap-2 text-xs text-muted-foreground"><input className="h-4 w-4" name="override" type="checkbox" />Use administrator override and record the reason</label><SubmitButton pendingText="Checking requirements...">Advance to {nextStage.name}<ArrowRight className="h-4 w-4" /></SubmitButton></form> : <div className="mt-4 flex items-center gap-2 rounded-md bg-muted/30 p-3 text-sm text-muted-foreground"><LockKeyhole className="h-4 w-4" />Only an administrator can advance the process stage.</div>}
+                {canManage ? <form action={transitionWorkflowStageAction} className="mt-4 grid gap-3"><input name="workflowId" type="hidden" value={workflow.id} /><input name="nextStageKey" type="hidden" value={nextStage.key} /><input name="returnPath" type="hidden" value={returnPath} /><Textarea className="min-h-20" name="reason" placeholder="Optional transition note" /><label className="flex items-center gap-2 text-xs text-muted-foreground"><input className="h-4 w-4" name="override" type="checkbox" />Override as administrator and give a reason</label><SubmitButton pendingText="Checking requirements...">Advance to {nextStage.name}<ArrowRight className="h-4 w-4" /></SubmitButton></form> : <div className="mt-4 flex items-center gap-2 rounded-md bg-muted/30 p-3 text-sm text-muted-foreground"><LockKeyhole className="h-4 w-4" />Only an administrator can move the stage forward.</div>}
               </>
-            ) : <div className="flex items-start gap-3"><CheckCircle2 className="mt-0.5 h-5 w-5 text-success" /><div><p className="font-semibold text-foreground">Final process stage</p><p className="mt-1 text-sm text-muted-foreground">Use the Completion section to confirm closure requirements and archive the engagement.</p></div></div>}
+            ) : <div className="flex items-start gap-3"><CheckCircle2 className="mt-0.5 h-5 w-5 text-success" /><div><p className="font-semibold text-foreground">Final process stage</p><p className="mt-1 text-sm text-muted-foreground">Use the Completion section to confirm what is needed and archive the engagement.</p></div></div>}
           </div>
         </div>
       </CardContent>

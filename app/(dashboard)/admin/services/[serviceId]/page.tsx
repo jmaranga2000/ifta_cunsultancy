@@ -45,7 +45,7 @@ export default async function AdminServiceDetailPage({
           </Link>
         </>
       }
-      description="Review the full service record and update what clients see on the website."
+      description="Check the whole service and update what visitors see on the website."
       icon={ListChecks}
       title={service.title}
     >
@@ -53,20 +53,20 @@ export default async function AdminServiceDetailPage({
         <div className="flex items-center gap-2 border-b border-emerald-200 bg-emerald-50 px-5 py-3 text-sm font-semibold text-emerald-800">
           <Badge tone="green">{query.pricingCreated ? "Price added" : query.created ? "Created" : "Saved"}</Badge>
           {query.pricingCreated
-            ? "The price is ready. Review the service and publish it when you are satisfied."
+            ? "The price is ready. Check the service and publish it when you are happy."
             : "The service record is up to date."}
         </div>
       ) : null}
       {query.error ? (
         <p className="border-b border-red-200 bg-red-50 px-5 py-3 text-sm font-semibold text-red-800">
           {query.error === "pricing-required"
-            ? "Add and publish a price for this service before publishing it."
+            ? "Add and publish a price for this service before publishing the service."
             : query.error === "image-size"
               ? "Choose an image smaller than 8 MB."
               : query.error === "image-type"
                 ? "Choose a JPG, PNG or WebP image."
                 : query.error === "image-upload"
-                  ? "The image could not be uploaded to secure storage. Check the R2 connection and try again."
+                  ? "The image could not be saved. Please try again."
                   : query.error === "save"
                     ? "The service could not be saved. Please try again."
                     : "Check the required fields and try again."}

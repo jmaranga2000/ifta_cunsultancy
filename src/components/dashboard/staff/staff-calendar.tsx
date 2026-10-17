@@ -16,7 +16,7 @@ export function StaffCalendar({ events }: { events: StaffCalendarRecord[] }) {
 
   return (
     <AdminPageSurface
-      description="Due dates from your engagements, tasks and client follow-ups."
+      description="Due dates for your engagements, tasks and follow-ups."
       icon={CalendarDays}
       summary={[
         { label: "Upcoming", value: upcoming.length, helper: "Dates still ahead", icon: CalendarDays },
@@ -25,7 +25,7 @@ export function StaffCalendar({ events }: { events: StaffCalendarRecord[] }) {
       title="My calendar"
     >
       {events.length === 0 ? (
-        <StaffEmptyState description="Dates will appear when deadlines are added to your assigned work." title="No scheduled work" />
+        <StaffEmptyState description="Dates show here once deadlines are added to your work." title="No scheduled work" />
       ) : (
         <div className="divide-y divide-border">
           {events.map((event) => (

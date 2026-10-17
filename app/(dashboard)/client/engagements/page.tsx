@@ -15,11 +15,11 @@ export default async function ClientEngagementsPage({
     listClientEngagementRequests(principal.id),
   ]);
   const notice = query.submitted
-    ? "Your engagement request was submitted for administration review."
+    ? "Your request was sent to IFTA for review."
     : query.quotation
-      ? "Your quotation request was sent to the pricing team."
+      ? "Your quotation request was sent to our pricing team."
       : query.accepted
-        ? "Quotation accepted. The administration team can now create your engagement."
+        ? "Quotation accepted. IFTA will now set up your work."
         : undefined;
 
   return <ClientEngagementsOverview notice={notice} requests={requests} workflows={workflows} />;

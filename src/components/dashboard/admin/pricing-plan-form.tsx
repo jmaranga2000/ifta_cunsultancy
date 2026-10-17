@@ -99,7 +99,7 @@ export function PricingPlanForm({
                 id="description"
                 maxLength={1200}
                 name="description"
-                placeholder="Explain when this pricing option is appropriate."
+                placeholder="Say when this price option suits a client."
                 required
               />
             </div>

@@ -57,7 +57,7 @@ export default async function IntegrationDetailPage({ params, searchParams }: {
         <div className="mt-4 divide-y divide-border rounded-md border border-border">
           {connection.settings.map((setting) => <div className="flex items-center justify-between gap-4 px-4 py-3" key={setting.key}><div><p className="text-sm font-semibold text-foreground">{setting.label}</p><p className="mt-1 font-mono text-xs text-muted-foreground">{setting.key}</p></div><Badge tone={setting.configured ? "green" : "gold"}>{setting.configured ? "Ready" : "Missing"}</Badge></div>)}
         </div>
-        <p className="mt-4 text-xs leading-5 text-muted-foreground">Secret values are never displayed or stored on this page. Add or change them in the deployment environment, then run the connection test.</p>
+        <p className="mt-4 text-xs leading-5 text-muted-foreground">Secrets are never shown or saved on this page. Add or change them in the .env file, then run the connection test.</p>
       </section>
     </AdminPageSurface>
   );

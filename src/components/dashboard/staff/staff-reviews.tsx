@@ -15,7 +15,7 @@ export function StaffReviews({ reviews }: { reviews: StaffReviewRecord[] }) {
 
   return (
     <AdminPageSurface
-      description="KYC submissions for clients connected to your assigned work."
+      description="KYC submissions from clients on your assigned work."
       icon={ClipboardCheck}
       summary={[
         { label: "Reviews", value: reviews.length, helper: "Visible client submissions", icon: ClipboardCheck },
@@ -25,7 +25,7 @@ export function StaffReviews({ reviews }: { reviews: StaffReviewRecord[] }) {
       title="Review queue"
     >
       {reviews.length === 0 ? (
-        <StaffEmptyState description="A review appears after an assigned client starts their KYC submission." title="No reviews waiting" />
+        <StaffEmptyState description="A review shows once an assigned client starts their KYC." title="No reviews waiting" />
       ) : (
         <div className="overflow-x-auto">
           <Table className="min-w-[760px]">

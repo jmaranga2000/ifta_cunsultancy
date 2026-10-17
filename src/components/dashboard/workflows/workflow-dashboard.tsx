@@ -191,7 +191,7 @@ export function WorkflowDashboard({ data }: { data: WorkflowDashboardData }) {
         <Card className="min-w-0">
           <CardHeader>
             <CardTitle>Action required</CardTitle>
-            <CardDescription>Specific work that needs review, approval or follow-up.</CardDescription>
+            <CardDescription>Work that needs review, approval or follow-up.</CardDescription>
           </CardHeader>
           <CardContent className="grid gap-3">
             {data.actionRequired.length === 0 ? (
@@ -220,7 +220,7 @@ export function WorkflowDashboard({ data }: { data: WorkflowDashboardData }) {
         <Card className="min-w-0">
           <CardHeader>
             <CardTitle>Workflow list</CardTitle>
-            <CardDescription>Open a workflow to review its stages, tasks and client actions.</CardDescription>
+            <CardDescription>Open a workflow to see its stages, tasks and client actions.</CardDescription>
           </CardHeader>
           <CardContent className="min-w-0">
             <div className="max-w-full overflow-x-auto">
@@ -278,7 +278,7 @@ export function WorkflowDashboard({ data }: { data: WorkflowDashboardData }) {
           <Card className="min-w-0">
             <CardHeader>
               <CardTitle>Kanban preview</CardTitle>
-              <CardDescription>Drag actions open validation before any transition is saved.</CardDescription>
+              <CardDescription>Dragging asks you to confirm before anything is saved.</CardDescription>
             </CardHeader>
             <CardContent className="grid gap-3">
               {data.pipeline.slice(0, 4).map((stage) => (

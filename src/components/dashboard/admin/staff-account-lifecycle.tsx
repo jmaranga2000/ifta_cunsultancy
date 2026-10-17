@@ -29,7 +29,7 @@ export function StaffAccountLifecycle({
           <h2 className="text-base font-bold text-foreground">Account actions</h2>
           <p className="mt-1 max-w-2xl text-sm leading-5 text-muted-foreground">
             {active
-              ? "Deactivation signs the staff member out and prevents another sign-in."
+              ? "Deactivating signs the person out and stops them signing in again."
               : "This account is deactivated and cannot sign in until it is reactivated."}
           </p>
         </div>

@@ -25,13 +25,13 @@ export default async function NewAdminServicePage({
           Back to services
         </Link>
       }
-      description="Add a service, prepare its public description, and publish it when ready."
+      description="Add a service, write its public description and publish it when ready."
       icon={ListChecks}
       title="New service"
     >
       {query.error ? (
         <p className="border-b border-red-200 bg-red-50 px-5 py-3 text-sm font-semibold text-red-800">
-          {query.error === "image-size" ? "Choose an image smaller than 8 MB." : query.error === "image-type" ? "Choose a JPG, PNG or WebP image." : query.error === "image-upload" ? "The image could not be uploaded to secure storage. Check the R2 connection and try again." : query.error === "save" ? "The service could not be saved. Please try again." : "Check the required fields and try again."}
+          {query.error === "image-size" ? "Choose an image smaller than 8 MB." : query.error === "image-type" ? "Choose a JPG, PNG or WebP image." : query.error === "image-upload" ? "The image could not be saved. Please try again." : query.error === "save" ? "The service could not be saved. Please try again." : "Check the required fields and try again."}
         </p>
       ) : null}
       <ServiceCatalogForm

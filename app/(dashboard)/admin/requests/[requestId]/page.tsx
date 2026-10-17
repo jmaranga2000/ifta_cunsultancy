@@ -309,7 +309,7 @@ export default async function AdminRequestDetailPage({
           <Card>
             <CardHeader className="border-b border-border">
               <CardTitle>Request history</CardTitle>
-              <CardDescription>Recorded events from submission to the current review state.</CardDescription>
+              <CardDescription>What happened from submission to now.</CardDescription>
             </CardHeader>
             <CardContent className="p-5">
               <ol className="grid gap-0">
@@ -382,7 +382,7 @@ export default async function AdminRequestDetailPage({
                   ) : (
                     <Clock3 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
                   )}
-                  <div><p className="text-sm font-semibold text-foreground">Administration approval</p><p className="mt-1 text-xs leading-5 text-muted-foreground">{databaseRequest?.adminApprovedAt ? "The request has been approved." : "The request is waiting for an approval decision."}</p></div>
+                  <div><p className="text-sm font-semibold text-foreground">Administration approval</p><p className="mt-1 text-xs leading-5 text-muted-foreground">{databaseRequest?.adminApprovedAt ? "The request has been approved." : "Waiting for an approval decision."}</p></div>
                 </div>
                 <div className="flex items-start gap-3">
                   {assignment ? (
@@ -430,7 +430,7 @@ export default async function AdminRequestDetailPage({
                         ? "All required electronic signatures are complete."
                         : engagementLetter
                           ? "The letter is being reviewed or signed."
-                          : "A customized letter will be prepared before activation."}
+                          : "A custom letter will be prepared before the work starts."}
                     </p>
                   </div>
                 </div>

@@ -42,7 +42,7 @@ const reports = [
 
 const reportMetrics = [
   { label: "Ready reports", value: "3", helper: "Reports available for review or export." },
-  { label: "Draft reports", value: "1", helper: "Reports still waiting on final data checks." },
+  { label: "Draft reports", value: "1", helper: "Reports still waiting on final checks." },
   { label: "Export formats", value: "3", helper: "CSV, PDF and management summary views." },
 ];
 
@@ -127,7 +127,7 @@ export function AdminReports() {
         <Card>
           <CardHeader>
             <CardTitle>Export workflow</CardTitle>
-            <CardDescription>Admin review path before reports leave the portal.</CardDescription>
+            <CardDescription>Admin review before reports are shared.</CardDescription>
           </CardHeader>
           <CardContent className="grid gap-3">
             {["Select period", "Review source data", "Approve summary", "Export and archive"].map(

@@ -18,12 +18,12 @@ import { Label } from "@/components/ui/label";
 import { SubmitButton } from "@/components/ui/submit-button";
 
 const errorMessages: Record<string, string> = {
-  "missing-file": "Choose at least one new document before uploading.",
-  "identity-required": "Upload a valid identity card or passport before continuing.",
-  "tax-required": "Upload your KRA Tax PIN certificate before continuing.",
-  "file-too-large": "One of the files is larger than the 10 MB limit.",
+  "missing-file": "Choose at least one new file first.",
+  "identity-required": "Upload your ID card or passport to continue.",
+  "tax-required": "Upload your KRA PIN certificate to continue.",
+  "file-too-large": "One file is bigger than 10 MB.",
   "unsupported-file": `Use ${uploadFormatsLabel("identity")} documents only. Files that are damaged or renamed from another type cannot be accepted.`,
-  "upload-failed": "We could not save your documents just now. Please try again in a moment. If it keeps happening, contact IFTA support.",
+  "upload-failed": "We could not save your files. Please try again. If it keeps happening, contact IFTA.",
 };
 
 const uploadFields: Array<{
@@ -36,105 +36,105 @@ const uploadFields: Array<{
   {
     type: "identity_card",
     field: "identityDocument",
-    description: "National identity card or passport. Upload a clear copy showing all details.",
+    description: "ID card or passport. Make sure all details are clear.",
     required: true,
     icon: ShieldCheck,
   },
   {
     type: "tax_pin",
     field: "taxPinDocument",
-    description: "Your KRA PIN certificate with the PIN and registered name visible.",
+    description: "KRA PIN certificate showing your PIN and name.",
     required: true,
     icon: FileCheck2,
   },
   {
     type: "proof_of_address",
     field: "addressDocument",
-    description: "Recent utility bill, tenancy agreement, or other proof of your residential address.",
+    description: "A recent utility bill or tenancy agreement showing your address.",
     required: true,
     icon: MapPin,
   },
   {
     type: "passport_photo",
     field: "passportPhotoDocument",
-    description: "A recent passport-size photo or selfie for identity verification.",
+    description: "A recent passport-style photo or selfie.",
     required: false,
     icon: ShieldCheck,
   },
   {
     type: "passport_bio_page",
     field: "passportBioPageDocument",
-    description: "Passport bio page when you are using a passport as your primary identity document.",
+    description: "The photo page of your passport, if you use a passport as your ID.",
     required: false,
     icon: FileCheck2,
   },
   {
     type: "business_registration_documents",
     field: "businessRegistrationDocument",
-    description: "Business registration documents or incorporation certificate for company clients.",
+    description: "Business registration or incorporation certificate.",
     required: false,
     icon: FileCheck2,
   },
   {
     type: "ownership_documents",
     field: "ownershipDocument",
-    description: "Shareholding, ownership, or beneficial ownership evidence for the applicant.",
+    description: "Papers showing who owns the business.",
     required: false,
     icon: FileCheck2,
   },
   {
     type: "authorisation_documents",
     field: "authorisationDocument",
-    description: "Board resolution or authorisation documents when another person acts on behalf of the client.",
+    description: "A board resolution or letter if someone acts for you.",
     required: false,
     icon: FileCheck2,
   },
   {
     type: "certificate_of_incorporation",
     field: "incorporationDocument",
-    description: "Certificate of incorporation or business registration certificate.",
+    description: "Certificate of incorporation or business registration.",
     required: false,
     icon: FileCheck2,
   },
   {
     type: "cr12_or_ownership_record",
     field: "cr12Document",
-    description: "CR12 or the latest ownership record showing directors and shareholders.",
+    description: "CR12 or latest record of directors and shareholders.",
     required: false,
     icon: FileCheck2,
   },
   {
     type: "business_licence",
     field: "businessLicenceDocument",
-    description: "Current business licence or permit when the business requires one.",
+    description: "Your current business licence, if you need one.",
     required: false,
     icon: FileCheck2,
   },
   {
     type: "board_resolution",
     field: "boardResolutionDocument",
-    description: "Board resolution authorising the relationship or transaction.",
+    description: "Board resolution approving this work.",
     required: false,
     icon: FileCheck2,
   },
   {
     type: "latest_annual_return",
     field: "annualReturnDocument",
-    description: "Latest annual return or statutory filing for the business.",
+    description: "Latest annual return for the business.",
     required: false,
     icon: FileCheck2,
   },
   {
     type: "financial_statements",
     field: "financialStatementsDocument",
-    description: "Recent financial statements or management accounts where relevant.",
+    description: "Recent financial statements or management accounts, if you have them.",
     required: false,
     icon: FileCheck2,
   },
   {
     type: "business_address_proof",
     field: "businessAddressDocument",
-    description: "Proof of the business address when the business address differs from the residential address.",
+    description: "Proof of business address, if different from your home address.",
     required: false,
     icon: MapPin,
   },
@@ -224,7 +224,7 @@ export function ClientKycReplacementUpload({ error, submission }: {
       <Card>
         <CardHeader>
           <CardTitle>Documents received</CardTitle>
-          <CardDescription>The latest version received for each KYC requirement.</CardDescription>
+          <CardDescription>The latest file we received for each item.</CardDescription>
         </CardHeader>
         <CardContent className="divide-y divide-border p-0">
           {latestDocuments.length ? latestDocuments.map(({ field, document }) => (
@@ -248,7 +248,7 @@ export function ClientKycReplacementUpload({ error, submission }: {
           )) : (
             <div className="p-6 text-center">
               <CheckCircle2 aria-hidden="true" className="mx-auto h-7 w-7 text-muted-foreground" />
-              <p className="mt-2 text-sm text-muted-foreground">No KYC documents have been received yet.</p>
+              <p className="mt-2 text-sm text-muted-foreground">No documents received yet.</p>
             </div>
           )}
         </CardContent>

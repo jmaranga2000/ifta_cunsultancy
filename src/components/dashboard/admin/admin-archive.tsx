@@ -25,7 +25,7 @@ const archiveBuckets = [
   {
     label: "Archived staff",
     value: "0",
-    helper: "Former staff retained for audit and reporting.",
+    helper: "Former staff kept for audit and reports.",
   },
 ];
 
@@ -94,7 +94,7 @@ export async function AdminArchive() {
       <Card>
         <CardHeader>
           <CardTitle>Archived accounts</CardTitle>
-          <CardDescription>Read-only records retained for audit and restoration review.</CardDescription>
+          <CardDescription>Read-only records kept for audit and restoring.</CardDescription>
         </CardHeader>
         <CardContent>
           {archivedUsers.length > 0 ? (

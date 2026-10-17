@@ -25,7 +25,7 @@ export default async function AuditDetailPage({ params }: { params: Promise<{ au
   return (
     <AdminPageSurface
       actions={<Link className={buttonClassName({ variant: "secondary" })} href="/admin/audit"><ArrowLeft aria-hidden="true" className="h-4 w-4" />Back to activity</Link>}
-      description="A read-only record of this action, preserved for accountability and review."
+      description="A read-only record of this action."
       icon={Activity}
       summary={[
         { label: "Person", value: record.actorEmail ?? "System", helper: record.actorRoles.join(", ") || "Automated action", icon: UserRound },

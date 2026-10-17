@@ -18,7 +18,7 @@ export default async function AdminKycExpiringDocumentsPage() {
         "replacementStatus",
         "riskLevel",
       ]}
-      description="Track KYC documents that are expired or approaching expiry and request refreshes."
+      description="Track KYC documents that have expired or will soon, and ask for new ones."
       eyebrow="KYC expiry"
       rows={rows}
       title="Expiring documents"

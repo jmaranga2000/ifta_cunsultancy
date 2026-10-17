@@ -14,9 +14,9 @@ const currentYear = new Date().getFullYear();
 
 const footerGroups = [
   {
-    title: "Expertise",
+    title: "Services",
     links: [
-      { label: "Tax advisory", href: "/services#tax-advisory" },
+      { label: "Tax advice", href: "/services#tax-advisory" },
       {
         label: "Financial reporting",
         href: "/services#financial-reporting",
@@ -29,9 +29,9 @@ const footerGroups = [
     ],
   },
   {
-    title: "Client access",
+    title: "Your account",
     links: [
-      { label: "Client portal", href: "/client-portal" },
+      { label: "About your account", href: "/client-portal" },
       { label: "Sign in", href: "/sign-in" },
       { label: "Create account", href: "/sign-up" },
       { label: "AI research", href: "/ai-research" },
@@ -43,7 +43,7 @@ const footerGroups = [
       { label: "About us", href: "/about" },
       { label: "Contact", href: "/contact" },
       { label: "Privacy policy", href: "/privacy" },
-      { label: "Terms of service", href: "/terms" },
+      { label: "Terms", href: "/terms" },
       { label: "Cookie policy", href: "/cookies" },
     ],
   },
@@ -83,20 +83,15 @@ export function PublicFooter() {
       >
         <div className="mx-auto flex max-w-7xl flex-col gap-6 px-5 py-10 sm:px-6 md:flex-row md:items-center md:justify-between lg:px-8">
           <div>
-            <p className="text-xs font-bold uppercase tracking-wider">
-              Start with the right scope
-            </p>
-
             <h2
               id="footer-cta-heading"
-              className="mt-2 max-w-2xl text-2xl font-bold leading-tight md:text-3xl"
+              className="max-w-2xl text-2xl font-bold leading-tight md:text-3xl"
             >
-              Bring us the question. We will help define the engagement.
+              Not sure where to start?
             </h2>
 
-            <p className="mt-3 max-w-xl text-sm leading-6 text-brand-deep/75">
-              Speak with our team about your tax, finance, reporting, or
-              advisory requirements.
+            <p className="mt-2 max-w-xl text-base leading-7 text-brand-deep/80">
+              Tell us what you need and we will point you in the right direction.
             </p>
           </div>
 
@@ -139,10 +134,8 @@ export function PublicFooter() {
               </div>
             </div>
 
-            <p className="mt-5 text-sm leading-6 text-white/70">
-              Structured tax and financial consulting engagements supported by
-              secure client workflows, document exchange, and professional
-              review.
+            <p className="mt-5 text-base leading-7 text-white/80">
+              Tax, accounting and finance help for businesses in Kenya.
             </p>
 
             <div className="mt-5 flex items-start gap-2 rounded-lg border border-white/10 bg-white/5 p-3">
@@ -151,9 +144,8 @@ export function PublicFooter() {
                 className="mt-0.5 h-4 w-4 shrink-0 text-brand-mist"
               />
 
-              <p className="text-xs leading-5 text-white/70">
-                Client documents and engagement records are handled through
-                controlled, authenticated workflows.
+              <p className="text-sm leading-6 text-white/80">
+                Your documents are private and only open to you and your IFTA team.
               </p>
             </div>
 

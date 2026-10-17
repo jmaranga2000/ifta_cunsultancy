@@ -48,7 +48,7 @@ export function KycReviewerAssignment({
       }
       description={submission
         ? `Choose a reviewer for ${submission.reference}. Reviewers with the lightest live KYC workload are shown first.`
-        : "Live reviewer accounts and their current KYC workload. Open a KYC record and choose Assign to make an assignment."}
+        : "Reviewers and how many reviews each has. Open a record and press Assign."}
       icon={UserRoundCheck}
       summary={[
         { label: "Reviewers", value: reviewers.length, helper: "Active reviewer accounts", icon: Users },
@@ -126,7 +126,7 @@ export function KycReviewerAssignment({
           <Users aria-hidden="true" className="h-8 w-8 text-muted-foreground" />
           <div>
             <p className="font-semibold text-foreground">No active reviewers</p>
-            <p className="mt-1 text-sm text-muted-foreground">Create a staff account with the Reviewer role first.</p>
+            <p className="mt-1 text-sm text-muted-foreground">First create a staff account with the Reviewer role.</p>
           </div>
           <Link className={buttonClassName()} href="/admin/staff/new">Create reviewer</Link>
         </div>

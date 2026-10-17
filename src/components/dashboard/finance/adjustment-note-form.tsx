@@ -22,7 +22,7 @@ export function AdjustmentNoteForm({ invoice }: { invoice: FiscalInvoiceRecord }
         <CardHeader className="border-b border-border">
           <div className="flex items-start gap-3">
             <span className="grid h-10 w-10 shrink-0 place-items-center rounded-md bg-brand-soft text-primary"><FileMinus2 className="h-5 w-5" /></span>
-            <div><CardTitle>Create an adjustment note</CardTitle><CardDescription>Correct or increase an accepted KRA eTIMS invoice. Only one accepted adjustment is allowed.</CardDescription></div>
+            <div><CardTitle>Create an adjustment note</CardTitle><CardDescription>Correct or increase an invoice KRA has accepted. Only one adjustment is allowed.</CardDescription></div>
           </div>
         </CardHeader>
         <CardContent className="grid gap-6 p-5">
@@ -32,19 +32,19 @@ export function AdjustmentNoteForm({ invoice }: { invoice: FiscalInvoiceRecord }
           </div>
           <div className="flex gap-3 rounded-md border border-warning/30 bg-warning-soft p-4 text-sm text-foreground">
             <ShieldAlert className="mt-0.5 h-5 w-5 shrink-0 text-warning" />
-            <p>After you save the draft, a second confirmation requires your password and the exact confirmation phrase. Debit notes cannot enter production until the approved KRA or integrator mapping is recorded.</p>
+            <p>After saving the draft you confirm with your password and the exact phrase. Debit notes cannot go live until the approved KRA mapping is recorded.</p>
           </div>
           <form action={createAdjustmentNoteAction} className="grid gap-6">
             <input name="originalInvoiceId" type="hidden" value={invoice.id} />
             <div className="grid gap-4 md:grid-cols-2">
               <div><Label htmlFor="note-type">Adjustment type</Label><Select className="mt-2" defaultValue="CREDIT_NOTE" id="note-type" name="type"><option value="CREDIT_NOTE">Credit note · reduce the invoice</option><option value="DEBIT_NOTE">Debit note · increase the invoice</option></Select></div>
               <div><Label htmlFor="reason-code">Reason</Label><Select className="mt-2" defaultValue="PRICE_CORRECTION" id="reason-code" name="reasonCode"><option value="PRICE_CORRECTION">Price correction</option><option value="SERVICE_CHANGE">Service changed</option><option value="QUANTITY_CORRECTION">Quantity correction</option><option value="CANCELLATION">Service cancelled</option><option value="OTHER">Other documented reason</option></Select></div>
-              <div className="md:col-span-2"><Label htmlFor="reason-description">Client-facing explanation</Label><Textarea className="mt-2" id="reason-description" maxLength={500} name="reasonDescription" placeholder="Explain clearly why this adjustment is being made" required /></div>
-              <div className="md:col-span-2"><Label htmlFor="internal-explanation">Internal approval note</Label><Textarea className="mt-2" id="internal-explanation" maxLength={1000} name="internalExplanation" placeholder="Record the business evidence and approval context" required /></div>
+              <div className="md:col-span-2"><Label htmlFor="reason-description">Client-facing explanation</Label><Textarea className="mt-2" id="reason-description" maxLength={500} name="reasonDescription" placeholder="Say clearly why you are making this adjustment" required /></div>
+              <div className="md:col-span-2"><Label htmlFor="internal-explanation">Internal approval note</Label><Textarea className="mt-2" id="internal-explanation" maxLength={1000} name="internalExplanation" placeholder="Note the evidence and who approved it" required /></div>
             </div>
             <div>
               <h2 className="font-semibold text-foreground">Amounts to adjust</h2>
-              <p className="mt-1 text-sm text-muted-foreground">Enter the quantity and unit price affected on each line. Leave both as zero for lines that do not change.</p>
+              <p className="mt-1 text-sm text-muted-foreground">Enter the quantity and price that change on each line. Leave zero where nothing changes.</p>
               <div className="mt-4 grid gap-3">
                 {invoice.lines.map((line) => (
                   <div className="grid gap-3 rounded-md border border-border p-4 md:grid-cols-[minmax(0,1fr)_150px_180px]" key={line.lineId}>

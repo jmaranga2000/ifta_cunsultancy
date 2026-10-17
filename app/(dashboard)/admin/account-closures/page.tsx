@@ -38,7 +38,7 @@ export default async function AdminAccountClosuresPage() {
           </span>
           <div>
             <h1 className="text-xl font-bold text-foreground">Account closures</h1>
-            <p className="mt-1 text-sm text-muted-foreground">Review client requests, disable access when approved, then complete the closure after the required records are handled.</p>
+            <p className="mt-1 text-sm text-muted-foreground">Review client requests, turn off access when approved, then finish the closure once records are handled.</p>
           </div>
         </div>
         <Link className={buttonClassName({ variant: "secondary", size: "sm" })} href="/admin/clients">Open clients</Link>
@@ -52,7 +52,7 @@ export default async function AdminAccountClosuresPage() {
       <Card className="shadow-none">
         <CardHeader>
           <CardTitle>Closure requests</CardTitle>
-          <CardDescription>Open a client record to approve, reject, or complete the closure with an auditable note.</CardDescription>
+          <CardDescription>Open a client record to approve, reject or complete the closure with a note.</CardDescription>
         </CardHeader>
         <CardContent className="grid gap-3">
           {requests.map((request) => (
@@ -74,7 +74,7 @@ export default async function AdminAccountClosuresPage() {
           {requests.length === 0 ? (
             <div className="rounded-md border border-dashed border-border p-8 text-center">
               <p className="font-semibold text-foreground">No account closure requests</p>
-              <p className="mt-1 text-sm text-muted-foreground">New client requests will appear here automatically.</p>
+              <p className="mt-1 text-sm text-muted-foreground">New client requests show here automatically.</p>
             </div>
           ) : null}
         </CardContent>

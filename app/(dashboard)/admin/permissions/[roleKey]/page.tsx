@@ -52,7 +52,7 @@ export default async function RoleAccessDetailPage({ params, searchParams }: {
   return (
     <AdminPageSurface
       actions={<Link className={buttonClassName({ variant: "secondary" })} href="/admin/permissions"><ArrowLeft aria-hidden="true" className="h-4 w-4" />Back to roles</Link>}
-      description="Choose exactly what this role can view or change. Every saved change applies to all assigned accounts."
+      description="Choose what this role can see or change. Every saved change applies to all accounts with this role."
       icon={ShieldCheck}
       summary={[
         { label: "Allowed", value: data.role.permissions.length, helper: "Current Yes decisions", icon: ShieldCheck },
@@ -63,7 +63,7 @@ export default async function RoleAccessDetailPage({ params, searchParams }: {
     >
       {query.saved ? <p className="border-b border-emerald-200 bg-emerald-50 px-5 py-3 text-sm font-semibold text-emerald-800">Role access was saved successfully.</p> : null}
       {query.error ? <p className="border-b border-red-200 bg-red-50 px-5 py-3 text-sm font-semibold text-red-800">Check the role name and description, then save again.</p> : null}
-      {locked ? <p className="border-b border-amber-200 bg-amber-50 px-5 py-3 text-sm text-amber-900">The super administrator always keeps every permission so the portal cannot be locked accidentally.</p> : null}
+      {locked ? <p className="border-b border-amber-200 bg-amber-50 px-5 py-3 text-sm text-amber-900">The super administrator always keeps every permission so the portal cannot be locked by mistake.</p> : null}
       <form action={updateRoleAccessAction} className="grid gap-0">
         <input name="roleKey" type="hidden" value={data.role.key} />
         <section className="grid gap-4 border-b border-border p-5 lg:grid-cols-2">

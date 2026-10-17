@@ -84,7 +84,7 @@ export function EtimsOperationsConsole({
           <Link className={buttonClassName({ variant: "secondary", size: "sm" })} href="/admin/finance/etims/configuration"><Settings2 className="h-4 w-4" />Connection setup</Link>
         </>
       )}
-      description="Follow fiscal submissions and client delivery. Uncertain KRA requests are checked before any retry is allowed."
+      description="Follow fiscal submissions and delivery to clients. Unclear KRA requests are checked before any retry."
       icon={Activity}
       summary={[
         { label: "Transactions", value: data.summary.total, helper: "Latest fiscal records", icon: Activity },
@@ -96,8 +96,8 @@ export function EtimsOperationsConsole({
     >
       <div className="grid gap-4">
         {query.saved ? <p className="rounded-md border border-success/30 bg-success-soft px-4 py-3 text-sm font-semibold text-success">The requested operation was saved.</p> : null}
-        {query.error ? <p className="rounded-md border border-danger/30 bg-danger-soft px-4 py-3 text-sm font-semibold text-danger">The operation could not be completed. Refresh the record and review its current status.</p> : null}
-        {data.records.length === 0 ? <EmptyState title="No eTIMS activity yet" description="Approved invoices and confirmed adjustment notes will appear here." /> : (
+        {query.error ? <p className="rounded-md border border-danger/30 bg-danger-soft px-4 py-3 text-sm font-semibold text-danger">That did not work. Refresh the record and check its status.</p> : null}
+        {data.records.length === 0 ? <EmptyState title="No eTIMS activity yet" description="Approved invoices and confirmed corrections will show here." /> : (
           <>
             <div className="grid gap-3 md:hidden">
               {data.records.map((record) => (

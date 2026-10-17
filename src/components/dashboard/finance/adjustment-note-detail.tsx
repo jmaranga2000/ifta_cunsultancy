@@ -39,7 +39,7 @@ export function AdjustmentNoteDetail({
         {note.finalPdfAvailable ? <Link className={buttonClassName({ variant: "secondary", size: "sm" })} href={`/api/finance/adjustments/${note.id}/pdf`}><Download className="h-4 w-4" />Download PDF</Link> : null}
       </div>
       {query.saved ? <p className="rounded-md border border-success/30 bg-success-soft px-4 py-3 text-sm font-semibold text-success">Adjustment note updated successfully.</p> : null}
-      {query.error ? <p className="rounded-md border border-danger/30 bg-danger-soft px-4 py-3 text-sm font-semibold text-danger">The action could not be completed. Check your password, confirmation phrase, note status, and production mapping.</p> : null}
+      {query.error ? <p className="rounded-md border border-danger/30 bg-danger-soft px-4 py-3 text-sm font-semibold text-danger">That did not work. Check your password, the confirmation phrase, the note status and the production mapping.</p> : null}
       <Card>
         <CardHeader className="flex flex-col justify-between gap-4 border-b border-border md:flex-row md:items-start">
           <div><div className="flex flex-wrap gap-2"><Badge tone="teal">{note.type === "CREDIT_NOTE" ? "Credit note" : "Debit note"}</Badge><Badge tone={fiscalTone(note.status)}>{fiscalStatus(note.status)}</Badge></div><CardTitle className="mt-3">{note.noteNumber}</CardTitle><CardDescription>Adjustment to {note.originalInternalInvoiceNumber} for {note.clientName}</CardDescription></div>
@@ -61,7 +61,7 @@ export function AdjustmentNoteDetail({
       </Card>
       {note.status === "DRAFT" && canConfirm ? (
         <Card>
-          <CardHeader><CardTitle>Confirm fiscal submission</CardTitle><CardDescription>This is a high-impact Admin action. The note becomes immutable and enters the eTIMS queue.</CardDescription></CardHeader>
+          <CardHeader><CardTitle>Confirm fiscal submission</CardTitle><CardDescription>This is a big action. The note becomes final and goes to the eTIMS queue.</CardDescription></CardHeader>
           <CardContent className="grid gap-5 lg:grid-cols-2">
             <form action={confirmAdjustmentNoteAction} className="grid gap-4 rounded-md border border-warning/30 p-4">
               <input name="noteId" type="hidden" value={note.id} />
@@ -73,7 +73,7 @@ export function AdjustmentNoteDetail({
             <form action={cancelAdjustmentNoteAction} className="grid content-start gap-4 rounded-md border border-danger/30 p-4">
               <input name="noteId" type="hidden" value={note.id} />
               <XCircle className="h-5 w-5 text-danger" />
-              <div><Label htmlFor="cancel-reason">Cancel draft and release invoice</Label><Textarea className="mt-2" id="cancel-reason" name="reason" placeholder="Record why this adjustment is being cancelled" required /></div>
+              <div><Label htmlFor="cancel-reason">Cancel draft and release invoice</Label><Textarea className="mt-2" id="cancel-reason" name="reason" placeholder="Say why this adjustment is being cancelled" required /></div>
               <SubmitButton pendingText="Cancelling..." variant="destructive">Cancel adjustment draft</SubmitButton>
             </form>
           </CardContent>

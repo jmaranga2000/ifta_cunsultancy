@@ -103,7 +103,7 @@ export function KycReviewWorkspace({
           <CheckCircle2 aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0" />
           <div>
             <p className="text-sm font-semibold">KYC approved and engagement letter generated</p>
-            <p className="mt-1 text-xs">The client has been notified and can review the letter in Documents.</p>
+            <p className="mt-1 text-xs">The client has been told and can read the letter under Documents.</p>
           </div>
         </div>
       ) : null}
@@ -112,7 +112,7 @@ export function KycReviewWorkspace({
           <UserPlus aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0" />
           <div>
             <p className="text-sm font-semibold">Reviewer assigned</p>
-            <p className="mt-1 text-xs">The reviewer was notified and can open this KYC record from the staff portal.</p>
+            <p className="mt-1 text-xs">The reviewer has been told and can open this record in the staff portal.</p>
           </div>
         </div>
       ) : null}
@@ -272,7 +272,7 @@ export function KycReviewWorkspace({
           <Card>
             <CardHeader>
               <CardTitle>Questionnaire answers</CardTitle>
-              <CardDescription>All information submitted by the client, in questionnaire order.</CardDescription>
+              <CardDescription>Everything the client sent, in the order of the form.</CardDescription>
             </CardHeader>
             <CardContent className="divide-y divide-border p-0">
               {submission.requirements.map((requirement, index) => (
@@ -350,7 +350,7 @@ export function KycReviewWorkspace({
                       <div className="grid max-w-sm place-items-center gap-3 text-center">
                         <FileText aria-hidden="true" className="h-14 w-14 text-muted-foreground" />
                         <p className="font-semibold text-foreground">No document uploaded</p>
-                        <p className="text-sm leading-6 text-muted-foreground">The client has not submitted evidence for this KYC record.</p>
+                        <p className="text-sm leading-6 text-muted-foreground">The client has not uploaded any documents yet.</p>
                       </div>
                     </div>
                   )}
@@ -485,7 +485,7 @@ export function KycReviewWorkspace({
           <Card>
             <CardHeader>
               <CardTitle>Final approval checklist</CardTitle>
-              <CardDescription>Full KYC approval remains locked until required checks pass.</CardDescription>
+              <CardDescription>Final approval stays locked until the required checks pass.</CardDescription>
             </CardHeader>
             <CardContent className="grid gap-2">
               {submission.finalChecklist.map((item) => (

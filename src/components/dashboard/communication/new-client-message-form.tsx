@@ -60,7 +60,7 @@ export function NewClientMessageForm({
             id="body"
             maxLength={6000}
             name="body"
-            placeholder="Write a clear message explaining what the client needs to know or do."
+            placeholder="Write what the client needs to know or do."
             required
           />
           <p className="text-xs leading-5 text-muted-foreground">

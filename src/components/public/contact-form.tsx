@@ -14,7 +14,7 @@ export function ContactForm() {
       <div className="grid gap-5 sm:grid-cols-2">
         <div className="grid gap-2">
           <Label htmlFor="name">Name</Label>
-          <Input autoComplete="name" id="name" name="name" placeholder="Your full name" required />
+          <Input autoComplete="name" id="name" name="name" placeholder="Your name" required />
         </div>
         <div className="grid gap-2">
           <Label htmlFor="email">Email</Label>
@@ -23,27 +23,27 @@ export function ContactForm() {
       </div>
       <div className="grid gap-5 sm:grid-cols-2">
         <div className="grid gap-2">
-          <Label htmlFor="company">Organization</Label>
-          <Input autoComplete="organization" id="company" name="company" placeholder="Organization name" />
+          <Label htmlFor="company">Company (optional)</Label>
+          <Input autoComplete="organization" id="company" name="company" placeholder="Company name" />
         </div>
         <div className="grid gap-2">
-          <Label htmlFor="service">Service area</Label>
+          <Label htmlFor="service">What do you need?</Label>
           <Select id="service" name="service" required>
-            <option value="">Select a service</option>
-            <option>Tax advisory and compliance</option>
-            <option>Financial reporting and analysis</option>
-            <option>Finance process consulting</option>
-            <option>Managed engagement workspace</option>
+            <option value="">Choose one</option>
+            <option>Tax advice</option>
+            <option>Accounts and reports</option>
+            <option>Finance help for my business</option>
+            <option>Something else</option>
           </Select>
         </div>
       </div>
       <div className="grid gap-2">
-        <Label htmlFor="message">What do you need help with?</Label>
-        <Textarea id="message" name="message" placeholder="Describe the decision, issue, deadline and desired outcome." required />
-        <p className="text-xs leading-5 text-muted-foreground">Do not include passwords, identity documents or confidential evidence.</p>
+        <Label htmlFor="message">Your message</Label>
+        <Textarea id="message" name="message" placeholder="Tell us what you need and any deadline." required />
+        <p className="text-sm leading-6 text-muted-foreground">Please do not include passwords or ID documents.</p>
       </div>
-      <SubmitButton className="w-full sm:w-auto" pendingText="Sending request...">
-        Send consultation request
+      <SubmitButton className="w-full sm:w-auto" pendingText="Sending...">
+        Send message
         <Send aria-hidden="true" className="h-4 w-4" />
       </SubmitButton>
     </form>

@@ -49,7 +49,7 @@ export function ClientMessages() {
         <Card>
           <CardHeader>
             <CardTitle>{pageModule.title} services</CardTitle>
-            <CardDescription>Available tools and information for this area.</CardDescription>
+            <CardDescription>What you can do here.</CardDescription>
           </CardHeader>
           <CardContent className="grid gap-3">
             {pageModule.services.map((service) => (
@@ -63,7 +63,7 @@ export function ClientMessages() {
         <Card>
           <CardHeader>
             <CardTitle>{pageModule.title} actions</CardTitle>
-            <CardDescription>Actions available for the current portal role.</CardDescription>
+            <CardDescription>Your options.</CardDescription>
           </CardHeader>
           <CardContent className="grid gap-2">
             {pageModule.actions.map((action, index) => (

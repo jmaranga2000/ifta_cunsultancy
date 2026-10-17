@@ -79,7 +79,7 @@ export function ClientAccountClosureRequest({
                 id="reason"
                 name="reason"
                 onChange={(event) => setReason(event.target.value)}
-                placeholder="Explain your reason clearly so the admin team can review it."
+                placeholder="Tell us why, so our team can review your request."
                 required
                 value={reason}
               />

@@ -67,7 +67,7 @@ export function AdminActiveEngagements({
           View requests
         </Link>
       }
-      description="Open active client work, complete team assignment and follow delivery progress."
+      description="Open active client work, set up the team and follow progress."
       icon={BriefcaseBusiness}
       summary={[
         { label: "Active engagements", value: allActiveEngagements.length, helper: "Client work underway", icon: BriefcaseBusiness },
@@ -161,7 +161,7 @@ export function AdminActiveEngagements({
             {activeEngagements.length === 0 ? (
               <TableRow>
                 <TableCell className="py-10 text-center text-sm text-muted-foreground" colSpan={10}>
-                  {healthStatus ? "No active engagements match this health filter." : "Active engagements will appear here automatically after a client signs the engagement letter."}
+                  {healthStatus ? "No active engagements match this filter." : "Active engagements show here automatically once a client signs the letter."}
                 </TableCell>
               </TableRow>
             ) : null}

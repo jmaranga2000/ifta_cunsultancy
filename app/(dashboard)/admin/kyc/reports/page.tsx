@@ -7,7 +7,7 @@ export default async function AdminKycReportsPage() {
   return (
     <KycSimpleTablePage
       columns={["name", "metric", "href"]}
-      description="KYC operational reports for pending reviews, approvals, SLA, risk and workload."
+      description="KYC reports on pending reviews, approvals, response times, risk and workload."
       eyebrow="KYC reports"
       rows={rows}
       title="KYC reports"

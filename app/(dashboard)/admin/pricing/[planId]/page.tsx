@@ -52,7 +52,7 @@ export default async function AdminPricingDetailPage({
           </Link>
         </>
       }
-      description="Review this pricing record and update the information shown to clients."
+      description="Check this price and update what clients see."
       icon={BadgeDollarSign}
       title={plan.name}
     >

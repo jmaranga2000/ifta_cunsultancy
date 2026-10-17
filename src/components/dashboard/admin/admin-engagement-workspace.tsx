@@ -65,11 +65,11 @@ function TeamMemberDetails({
 }
 
 function noticeForError(error?: string) {
-  if (error === "duplicate") return "Choose a different person for each team role.";
-  if (error === "role") return "One selected staff member does not have the required role.";
-  if (error === "not_found") return "The engagement or selected staff account is no longer available.";
+  if (error === "duplicate") return "Choose a different person for each role.";
+  if (error === "role") return "One chosen person does not have the right role.";
+  if (error === "not_found") return "The engagement or a chosen person is no longer available.";
   if (error === "note") return "Enter a note before saving.";
-  if (error) return "The change could not be saved. Check the selections and try again.";
+  if (error) return "We could not save the change. Check your choices and try again.";
   return null;
 }
 
@@ -123,7 +123,7 @@ export function AdminEngagementWorkspace({
       </Card>
 
       {error ? <div className="rounded-md border border-danger/30 bg-danger-soft px-4 py-3 text-sm font-semibold text-danger">{error}</div> : null}
-      {query.team === "saved" ? <div className="rounded-md border border-success/30 bg-success-soft px-4 py-3 text-sm font-semibold text-success">The engagement team was saved and each staff member was notified.</div> : null}
+      {query.team === "saved" ? <div className="rounded-md border border-success/30 bg-success-soft px-4 py-3 text-sm font-semibold text-success">The team was saved and each person was told.</div> : null}
       {query.note === "saved" ? <div className="rounded-md border border-success/30 bg-success-soft px-4 py-3 text-sm font-semibold text-success">Internal note saved.</div> : null}
 
       <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4" aria-label="Engagement overview">
@@ -148,7 +148,7 @@ export function AdminEngagementWorkspace({
       <Card className="shadow-none" id="team">
         <CardHeader>
           <CardTitle>Assigned team</CardTitle>
-          <CardDescription>The people responsible for delivering, reviewing and approving finance work.</CardDescription>
+          <CardDescription>The people who deliver, review and approve this work.</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid gap-3 md:hidden">
@@ -182,7 +182,7 @@ export function AdminEngagementWorkspace({
       <Card className="scroll-mt-24 shadow-none" id="team-assignment">
         <CardHeader>
           <CardTitle>{completeTeam ? "Update team assignment" : "Assign the engagement team"}</CardTitle>
-          <CardDescription>Select one active staff member for each role. Workload warnings help prevent over-assignment.</CardDescription>
+          <CardDescription>Choose one active person for each role. Workload warnings help avoid overloading anyone.</CardDescription>
         </CardHeader>
         <CardContent>
           <EngagementTeamAssignmentForm candidates={candidates} initialSelection={initialSelection} workflowId={workflow.id} />
@@ -193,7 +193,7 @@ export function AdminEngagementWorkspace({
         <Card className="shadow-none" id="timeline">
           <CardHeader>
             <CardTitle>Engagement timeline</CardTitle>
-            <CardDescription>Events are added automatically in chronological order.</CardDescription>
+            <CardDescription>Events are added automatically, oldest first.</CardDescription>
           </CardHeader>
           <CardContent>
             <ol className="grid gap-0">
@@ -210,7 +210,7 @@ export function AdminEngagementWorkspace({
         <Card className="shadow-none" id="notes">
           <CardHeader>
             <CardTitle>Internal notes</CardTitle>
-            <CardDescription>Only administrators and internal staff with engagement access can see these notes.</CardDescription>
+            <CardDescription>Only administrators and staff on this engagement can see these notes.</CardDescription>
           </CardHeader>
           <CardContent className="grid gap-4">
             <form action={addEngagementInternalNoteAction} className="grid gap-3">

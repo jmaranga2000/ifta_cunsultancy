@@ -27,8 +27,8 @@ export default async function NewAdminPricingPage({
         </Link>
       }
       description={query.fromService === "1"
-        ? "Add the client-facing price for this service before you publish it."
-        : "Add a client-facing pricing option and publish it when the wording is ready."}
+        ? "Add the price clients will see before you publish this service."
+        : "Add a price option for clients and publish it when the wording is ready."}
       icon={BadgeDollarSign}
       title="New pricing option"
     >

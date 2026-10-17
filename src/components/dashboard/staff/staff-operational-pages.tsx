@@ -20,7 +20,7 @@ import type { WorkflowInstanceRecord } from "@/repositories/workflow-repository"
 export function StaffRequests({ requests }: { requests: StaffAssignedRequest[] }) {
   return (
     <AdminPageSurface
-      description="Client requests currently assigned to you for review or follow-up."
+      description="Client requests assigned to you for review or follow-up."
       icon={ClipboardList}
       summary={[
         { label: "Assigned", value: requests.length, helper: "Requests in your queue", icon: ClipboardList },
@@ -29,7 +29,7 @@ export function StaffRequests({ requests }: { requests: StaffAssignedRequest[] }
       title="Engagement requests"
     >
       {requests.length === 0 ? (
-        <StaffEmptyState description="Requests assigned by an administrator will appear here." title="No assigned requests" />
+        <StaffEmptyState description="Requests assigned by an administrator show here." title="No assigned requests" />
       ) : (
         <div className="divide-y divide-border">
           {requests.map((request) => (
@@ -86,10 +86,10 @@ export function StaffFinance({
       title={heading}
     >
       {updated ? <div className="border-b border-emerald-200 bg-emerald-50 px-5 py-3 text-sm font-semibold text-emerald-900">Finance record updated successfully.</div> : null}
-      {error ? <div className="border-b border-red-200 bg-red-50 px-5 py-3 text-sm font-semibold text-red-900">The finance action could not be completed. Check the record and try again.</div> : null}
+      {error ? <div className="border-b border-red-200 bg-red-50 px-5 py-3 text-sm font-semibold text-red-900">That finance action did not work. Check the record and try again.</div> : null}
       {mode === "invoices" ? (
         workflows.length === 0 ? (
-          <StaffEmptyState description="Invoice work appears here when an engagement reaches finance or is assigned to the finance role." title="No invoice work" />
+          <StaffEmptyState description="Invoice work shows here when an engagement reaches finance or is assigned to you." title="No invoice work" />
         ) : (
           <div className="divide-y divide-border">
             {workflows.map((workflow) => {
@@ -116,7 +116,7 @@ export function StaffFinance({
           </div>
         )
       ) : payments.length === 0 ? (
-        <StaffEmptyState description="Client payment submissions will appear here for verification." title="No payment submissions" />
+        <StaffEmptyState description="Client payments to check show here." title="No payment submissions" />
       ) : (
         <div className="divide-y divide-border">
           {payments.map((payment) => (
@@ -151,7 +151,7 @@ export function StaffFinanceReports({ workflows, payments }: { workflows: Workfl
     ["Payments awaiting review", pendingPayments, "Client submissions requiring a decision", "/staff/payments"],
     ["Verified payment value", verifiedPayments.toLocaleString("en-KE"), "Payments confirmed by finance", "/staff/payments"],
   ] as const;
-  return <AdminPageSurface description="Live invoice and payment totals calculated from the finance records you can access." icon={BarChart3} title="Finance reports"><div className="divide-y divide-border">{rows.map(([label, value, helper, href]) => <Link className="flex min-w-0 items-center justify-between gap-4 p-5 hover:bg-muted/30" href={href} key={label}><div className="min-w-0"><p className="font-semibold text-foreground">{label}</p><p className="mt-1 text-sm text-muted-foreground">{helper}</p></div><div className="flex shrink-0 items-center gap-2"><p className="text-xl font-bold text-primary">{value}</p><ArrowRight aria-hidden="true" className="h-4 w-4 text-muted-foreground" /></div></Link>)}</div></AdminPageSurface>;
+  return <AdminPageSurface description="Invoice and payment totals from the records you can access." icon={BarChart3} title="Finance reports"><div className="divide-y divide-border">{rows.map(([label, value, helper, href]) => <Link className="flex min-w-0 items-center justify-between gap-4 p-5 hover:bg-muted/30" href={href} key={label}><div className="min-w-0"><p className="font-semibold text-foreground">{label}</p><p className="mt-1 text-sm text-muted-foreground">{helper}</p></div><div className="flex shrink-0 items-center gap-2"><p className="text-xl font-bold text-primary">{value}</p><ArrowRight aria-hidden="true" className="h-4 w-4 text-muted-foreground" /></div></Link>)}</div></AdminPageSurface>;
 }
 
 export function StaffReports({ data }: { data: StaffWorkData }) {
@@ -169,7 +169,7 @@ export function StaffReports({ data }: { data: StaffWorkData }) {
   ] as const;
 
   return (
-    <AdminPageSurface description="A straightforward summary calculated from your current assigned work." icon={BarChart3} title="Reports">
+    <AdminPageSurface description="A simple summary of your current work." icon={BarChart3} title="Reports">
       <div className="divide-y divide-border">
         {rows.map(([label, value, helper]) => (
           <div className="flex items-center justify-between gap-4 p-5" key={label}>
@@ -186,13 +186,13 @@ export function StaffArchive({ workflows }: { workflows: WorkflowInstanceRecord[
   const records = workflows.filter((workflow) => workflow.status === "archived" || workflow.status === "read_only" || workflow.archive.status !== "not_ready");
   return (
     <AdminPageSurface
-      description="Completed and retained engagement records available to your role."
+      description="Finished and kept engagement records for your role."
       icon={Archive}
       summary={[{ label: "Retained records", value: records.length, helper: "Read-only or archived work", icon: Archive }]}
       title="Archive"
     >
       {records.length === 0 ? (
-        <StaffEmptyState description="Completed work will appear here when its retention period begins." title="No archived work" />
+        <StaffEmptyState description="Finished work shows here when its keeping period starts." title="No archived work" />
       ) : (
         <div className="divide-y divide-border">
           {records.map((workflow) => (
@@ -211,7 +211,7 @@ export function StaffTemplates({ templates }: { templates: TemplateRecord[] }) {
   const published = templates.filter((template) => template.status === "published").length;
   return (
     <AdminPageSurface
-      description="Approved and in-progress templates available to your role."
+      description="Approved and in-progress templates for your role."
       icon={FileText}
       summary={[
         { label: "Templates", value: templates.length, helper: "Visible to your role", icon: FileText },
@@ -220,7 +220,7 @@ export function StaffTemplates({ templates }: { templates: TemplateRecord[] }) {
       title="Templates"
     >
       {templates.length === 0 ? (
-        <StaffEmptyState description="Templates will appear when an administrator publishes one for your role." title="No templates available" />
+        <StaffEmptyState description="Templates show here once an administrator publishes one for you." title="No templates available" />
       ) : (
         <div className="divide-y divide-border">
           {templates.map((template) => (
@@ -239,7 +239,7 @@ export function StaffTemplates({ templates }: { templates: TemplateRecord[] }) {
 export function StaffTeamWorkload({ members }: { members: StaffWorkloadRecord[] }) {
   return (
     <AdminPageSurface
-      description="Current staff availability based on active engagements and request assignments."
+      description="Who is free, based on active engagements and request assignments."
       icon={UsersRound}
       summary={[
         { label: "Available", value: members.filter((member) => member.available).length, helper: "No active assigned work", icon: CheckCircle2 },
@@ -258,7 +258,7 @@ export function StaffTeamWorkload({ members }: { members: StaffWorkloadRecord[] 
 
 export function StaffAudit({ records }: { records: StaffAuditRecord[] }) {
   return (
-    <AdminPageSurface description="Recent system and account changes. This view is read-only." icon={History} title="Activity history">
+    <AdminPageSurface description="Recent system and account changes. View only." icon={History} title="Activity history">
       {records.length === 0 ? <StaffEmptyState description="Recorded system changes will appear here." title="No activity recorded" /> : <div className="overflow-x-auto"><Table className="min-w-[760px]"><TableHeader><TableRow><TableHead>Action</TableHead><TableHead>Record</TableHead><TableHead>Actor</TableHead><TableHead>Reason</TableHead><TableHead>Date</TableHead></TableRow></TableHeader><TableBody>{records.map((record) => <TableRow key={record.id}><TableCell className="font-semibold text-foreground">{staffStatusLabel(record.action)}</TableCell><TableCell>{record.resourceType}{record.resourceId ? ` / ${record.resourceId}` : ""}</TableCell><TableCell>{record.actorEmail ?? "System"}</TableCell><TableCell>{record.reason ?? "Not provided"}</TableCell><TableCell>{staffDate(record.createdAt)}</TableCell></TableRow>)}</TableBody></Table></div>}
     </AdminPageSurface>
   );
@@ -266,8 +266,8 @@ export function StaffAudit({ records }: { records: StaffAuditRecord[] }) {
 
 export function StaffAiWorkspace({ workflows }: { workflows: WorkflowInstanceRecord[] }) {
   return (
-    <AdminPageSurface description="Choose an assigned engagement before using AI-assisted drafting and review tools." icon={Bot} title="AI workspace">
-      {workflows.length === 0 ? <StaffEmptyState description="AI tools become available in the context of assigned client work." title="No engagement available" /> : <div className="divide-y divide-border">{workflows.map((workflow) => <div className="flex flex-col justify-between gap-3 p-5 sm:flex-row sm:items-center" key={workflow.id}><div><p className="font-semibold text-foreground">{workflow.reference} / {workflow.clientName}</p><p className="mt-1 text-sm text-muted-foreground">{workflow.serviceName}; {workflow.currentStageName}</p></div><Link className={buttonClassName({ variant: "secondary", size: "sm" })} href={`/staff/engagements/${workflow.id}`}>Open engagement<ArrowRight aria-hidden="true" className="h-4 w-4" /></Link></div>)}</div>}
+    <AdminPageSurface description="Choose an assigned engagement before using AI drafting and review tools." icon={Bot} title="AI workspace">
+      {workflows.length === 0 ? <StaffEmptyState description="AI tools open from within your assigned client work." title="No engagement available" /> : <div className="divide-y divide-border">{workflows.map((workflow) => <div className="flex flex-col justify-between gap-3 p-5 sm:flex-row sm:items-center" key={workflow.id}><div><p className="font-semibold text-foreground">{workflow.reference} / {workflow.clientName}</p><p className="mt-1 text-sm text-muted-foreground">{workflow.serviceName}; {workflow.currentStageName}</p></div><Link className={buttonClassName({ variant: "secondary", size: "sm" })} href={`/staff/engagements/${workflow.id}`}>Open engagement<ArrowRight aria-hidden="true" className="h-4 w-4" /></Link></div>)}</div>}
     </AdminPageSurface>
   );
 }

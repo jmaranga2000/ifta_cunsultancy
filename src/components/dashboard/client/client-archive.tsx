@@ -30,7 +30,7 @@ export function ClientArchive({ workflows }: { workflows: WorkflowInstanceRecord
         <CardContent className="grid gap-2">
           {workflows.length === 0 ? (
             <EmptyState
-              description="Completed engagements will move here according to IFTA's retention policy."
+              description="Finished work moves here after it is closed."
               title="No archived engagements"
             />
           ) : workflows.map((workflow) => (

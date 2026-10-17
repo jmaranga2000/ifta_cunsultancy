@@ -7,7 +7,7 @@ export default async function AdminKycTemplatesPage() {
   return (
     <KycSimpleTablePage
       columns={["name", "clientType", "requirements", "mandatory", "status", "owner"]}
-      description="Maintain service-specific KYC templates, requirement groups and mandatory controls."
+      description="Manage KYC templates for each service and their required items."
       eyebrow="KYC settings"
       rows={rows}
       title="KYC templates"

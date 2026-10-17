@@ -54,7 +54,7 @@ export function AdminPricingCatalog({ plans }: { plans: PricingPlanRecord[] }) {
           </Link>
         </>
       }
-      description="Manage the pricing options and fee descriptions shown to prospective clients."
+      description="Manage the prices and descriptions shown to visitors."
       icon={BadgeDollarSign}
       summary={[
         { label: "All options", value: plans.length, helper: "Total pricing records", icon: BadgeDollarSign },

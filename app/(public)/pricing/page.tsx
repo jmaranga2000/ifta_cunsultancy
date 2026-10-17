@@ -1,70 +1,46 @@
 import Link from "next/link";
-import { ArrowRight, Check, Clock3, FileSearch, Gauge, Layers3 } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 import { PublicPageIntro } from "@/components/public/public-page-intro";
 import { buttonClassName } from "@/components/ui/button";
 import { listPricingPlans } from "@/repositories/service-catalog-repository";
 
 export const dynamic = "force-dynamic";
 
-const feeFactors = [
-  { icon: FileSearch, label: "Review depth", copy: "The volume and complexity of evidence that must be assessed." },
-  { icon: Clock3, label: "Timeline", copy: "The urgency, external deadlines and review availability required." },
-  { icon: Gauge, label: "Risk", copy: "The tax, compliance or financial consequence of the decision." },
-  { icon: Layers3, label: "Delivery model", copy: "A focused opinion, managed engagement or recurring advisory workspace." },
+const priceFactors = ["How much work is involved", "How soon you need it", "How complex your situation is"] as const;
+
+const questions = [
+  { q: "Is the price fixed?", a: "For clear, small jobs, yes. We tell you the price before any work starts." },
+  { q: "When do I pay?", a: "After you accept our price. The payment dates are written in your engagement letter." },
+  { q: "What if the work changes?", a: "We agree any change with you first, before the price or deadline moves." },
 ] as const;
 
 export default async function PricingPage() {
-  const pricingOptions = await listPricingPlans({ publishedOnly: true });
+  const plans = await listPricingPlans({ publishedOnly: true });
 
   return (
     <main>
-      <PublicPageIntro
-        aside={<p>Every fee is confirmed through a quotation or engagement letter before chargeable work begins.</p>}
-        description="Fees reflect scope, urgency, professional risk and the level of evidence required. We use the simplest engagement model that can responsibly answer the question."
-        eyebrow="Pricing approach"
-        title="Transparent scope before professional work begins."
-      />
+      <PublicPageIntro description="You always see the price before work starts." title="Simple, honest pricing" />
 
-      <section className="mx-auto max-w-7xl px-5 py-12 md:py-16">
-        <div className="grid gap-5 lg:grid-cols-3">
-          {pricingOptions.map((option) => (
+      <section className="mx-auto max-w-6xl px-5 py-12 sm:px-6 md:py-16 lg:px-8">
+        <div className="grid gap-6 lg:grid-cols-3">
+          {plans.map((plan) => (
             <article
-              className={
-                option.featured
-                  ? "relative rounded-md border border-primary bg-brand-deep p-6 text-white shadow-xl"
-                  : "rounded-md border border-border bg-card p-6 text-card-foreground shadow-sm"
-              }
-              key={option.id}
+              className={plan.featured ? "rounded-xl border-2 border-primary bg-brand-deep p-7 text-white" : "rounded-xl border border-border bg-card p-7"}
+              key={plan.id}
             >
-              {option.featured ? (
-                <span className="absolute right-5 top-5 rounded-full bg-brand-mist px-2.5 py-1 text-xs font-bold text-brand-deep">
-                  Most flexible
-                </span>
-              ) : null}
-              <p className={option.featured ? "text-xs font-bold uppercase text-brand-mist" : "text-xs font-bold uppercase text-muted-foreground"}>
-                {option.cadence}
-              </p>
-              <h2 className="mt-5 text-xl font-bold">{option.name}</h2>
-              <p className="mt-3 text-3xl font-bold">{option.priceLabel}</p>
-              <p className={option.featured ? "mt-4 min-h-20 text-sm leading-6 text-white/70" : "mt-4 min-h-20 text-sm leading-6 text-muted-foreground"}>
-                {option.description}
-              </p>
-              <div className={option.featured ? "mt-6 grid gap-3 border-t border-white/15 pt-5" : "mt-6 grid gap-3 border-t border-border pt-5"}>
-                {option.features.map((feature) => (
-                  <p className="flex items-center gap-2 text-sm font-semibold" key={feature}>
-                    <Check aria-hidden="true" className={option.featured ? "h-4 w-4 text-brand-mist" : "h-4 w-4 text-primary"} />
+              <h2 className="text-2xl font-bold">{plan.name}</h2>
+              <p className="mt-3 text-3xl font-bold">{plan.priceLabel}</p>
+              <p className={plan.featured ? "mt-3 text-base leading-7 text-white/85" : "mt-3 text-base leading-7 text-muted-foreground"}>{plan.description}</p>
+              <ul className="mt-5 grid gap-2">
+                {plan.features.map((feature) => (
+                  <li className="flex items-start gap-2 text-base font-medium" key={feature}>
+                    <Check aria-hidden="true" className={plan.featured ? "mt-1 h-4 w-4 shrink-0 text-brand-mist" : "mt-1 h-4 w-4 shrink-0 text-primary"} />
                     {feature}
-                  </p>
+                  </li>
                 ))}
-              </div>
-              <Link
-                className={buttonClassName({
-                  className: option.featured ? "mt-7 w-full" : "mt-7 w-full",
-                  variant: option.featured ? "accent" : "primary",
-                })}
-                href="/contact"
-              >
-                Discuss scope
+              </ul>
+              <Link className={buttonClassName({ className: "mt-7 w-full", variant: plan.featured ? "accent" : "primary" })} href="/contact">
+                Get a quote
                 <ArrowRight aria-hidden="true" className="h-4 w-4" />
               </Link>
             </article>
@@ -72,44 +48,27 @@ export default async function PricingPage() {
         </div>
       </section>
 
-      <section className="border-y border-border bg-card">
-        <div className="mx-auto max-w-7xl px-5 py-14">
-          <div className="max-w-2xl">
-            <p className="text-xs font-bold uppercase text-primary">What shapes the fee</p>
-            <h2 className="mt-3 text-3xl font-bold text-foreground">Pricing follows the work required.</h2>
+      <section className="bg-surface-subtle px-5 py-14 sm:px-6 lg:px-8">
+        <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-2">
+          <div>
+            <h2 className="text-2xl font-bold text-foreground">What decides the price?</h2>
+            <ul className="mt-4 grid gap-3">
+              {priceFactors.map((factor) => (
+                <li className="flex items-start gap-2 text-lg text-foreground" key={factor}>
+                  <Check aria-hidden="true" className="mt-1.5 h-4 w-4 shrink-0 text-primary" />
+                  {factor}
+                </li>
+              ))}
+            </ul>
           </div>
-          <div className="mt-9 grid divide-y divide-border md:grid-cols-2 md:divide-x md:divide-y-0 lg:grid-cols-4">
-            {feeFactors.map((factor) => {
-              const Icon = factor.icon;
-              return (
-                <div className="py-6 md:px-6 md:first:pl-0 md:last:pr-0" key={factor.label}>
-                  <Icon aria-hidden="true" className="h-5 w-5 text-primary" />
-                  <h3 className="mt-4 font-bold text-foreground">{factor.label}</h3>
-                  <p className="mt-2 text-sm leading-6 text-muted-foreground">{factor.copy}</p>
-                </div>
-              );
-            })}
+          <div className="grid gap-4">
+            {questions.map((item) => (
+              <div key={item.q}>
+                <h3 className="text-lg font-bold text-foreground">{item.q}</h3>
+                <p className="mt-1 text-base leading-7 text-muted-foreground">{item.a}</p>
+              </div>
+            ))}
           </div>
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-4xl px-5 py-14 md:py-16">
-        <p className="text-xs font-bold uppercase text-primary">Common questions</p>
-        <h2 className="mt-3 text-3xl font-bold text-foreground">Before you request a quotation.</h2>
-        <div className="mt-7 divide-y divide-border border-y border-border">
-          {[
-            ["Can I receive a fixed fee?", "Yes. Focused work can be quoted as a fixed fee when the question, evidence and deliverable are sufficiently defined."],
-            ["When is payment required?", "Payment timing is stated in the approved quotation or engagement letter and may vary by engagement model."],
-            ["Can the scope change?", "Yes. Material changes are documented and agreed before they alter the fee, timeline or professional responsibility."],
-          ].map(([question, answer]) => (
-            <details className="group py-5" key={question}>
-              <summary className="flex list-none items-center justify-between gap-4 font-bold text-foreground">
-                {question}
-                <span className="text-xl font-normal text-primary group-open:rotate-45">+</span>
-              </summary>
-              <p className="mt-3 max-w-3xl text-sm leading-6 text-muted-foreground">{answer}</p>
-            </details>
-          ))}
         </div>
       </section>
     </main>

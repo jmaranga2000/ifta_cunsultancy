@@ -5,7 +5,7 @@ export const adminPortalSections = {
     eyebrow: "Pricing",
     title: "Service pricing",
     description:
-      "Review service prices, how clients are charged and which prices are ready to use.",
+      "Check service prices, how clients are charged and which are ready.",
     code: "PRICING",
     metrics: [
       { label: "Price options", value: "4", helper: "Prices currently listed for review." },
@@ -14,7 +14,7 @@ export const adminPortalSections = {
     ],
     table: {
       title: "Service prices",
-      description: "Compare each service price, status and person responsible.",
+      description: "Compare each service's price, status and owner.",
       columns: ["Service", "Model", "Status", "Owner"],
       rows: [
         ["Tax advisory", "Fixed scope", "Published", "Finance officer"],
@@ -25,7 +25,7 @@ export const adminPortalSections = {
     },
     panel: {
       title: "Pricing controls",
-      description: "Expected actions before a price goes live.",
+      description: "What to do before a price goes live.",
       items: ["Choose how to charge", "Check tax details", "Confirm what clients can see", "Save the approved price"],
     },
     workflow: ["Prepare price", "Check details", "Approve", "Make available"],
@@ -34,16 +34,16 @@ export const adminPortalSections = {
     eyebrow: "Admin engagements",
     title: "Active engagements",
     description:
-      "Monitor live client engagements, assigned staff, current stage, blockers and completion readiness.",
+      "Follow live engagements, staff, stage, blockers and readiness to finish.",
     code: "ACTIVE-WORK",
     metrics: [
-      { label: "Active workspaces", value: "0", helper: "Live engagements once request conversion is wired." },
-      { label: "Blocked", value: "0", helper: "Engagements waiting on client or staff action." },
+      { label: "Active workspaces", value: "0", helper: "Live engagements show here once requests are converted." },
+      { label: "Blocked", value: "0", helper: "Engagements waiting on the client or staff." },
       { label: "Due this week", value: "0", helper: "Milestones requiring admin attention." },
     ],
     table: {
       title: "Engagement register",
-      description: "Current stage, owner and next action for active engagements.",
+      description: "Stage, owner and next step for each active engagement.",
       columns: ["Engagement", "Client", "Stage", "Owner"],
       rows: [
         ["Corporate tax planning", "Pending client", "KYC", "Engagement manager"],
@@ -62,7 +62,7 @@ export const adminPortalSections = {
     eyebrow: "Admin workflows",
     title: "Workflow templates",
     description:
-      "Manage reusable workflow templates that define stages, tasks, dependencies and client timeline labels.",
+      "Manage workflow templates that set stages, tasks, dependencies and client labels.",
     code: "WORKFLOW-TEMPLATES",
     metrics: [
       { label: "Templates", value: "4", helper: "Workflow patterns available to engagements." },
@@ -82,7 +82,7 @@ export const adminPortalSections = {
     },
     panel: {
       title: "Template structure",
-      description: "Core areas each workflow template should define.",
+      description: "What each workflow template should cover.",
       items: ["Stages", "Task dependencies", "Client-visible labels", "Archive criteria"],
     },
     workflow: ["Draft", "Review dependencies", "Approve", "Publish"],
@@ -91,11 +91,11 @@ export const adminPortalSections = {
     eyebrow: "Admin tasks",
     title: "Task management",
     description:
-      "Track task queues across staff assignments, due dates, blockers and engagement workflow stages.",
+      "Follow task queues by person, due date, blocker and stage.",
     code: "TASKS",
     metrics: [
       { label: "Open tasks", value: "0", helper: "Tasks pending staff or admin action." },
-      { label: "Blocked", value: "0", helper: "Tasks waiting on client input or dependency clearance." },
+      { label: "Blocked", value: "0", helper: "Tasks waiting on the client or another task." },
       { label: "Overdue", value: "0", helper: "Tasks past target completion date." },
     ],
     table: {
@@ -120,7 +120,7 @@ export const adminPortalSections = {
     eyebrow: "Documents",
     title: "Client and engagement documents",
     description:
-      "See uploaded files, check what needs review, request replacements and control who can view each file.",
+      "See uploaded files, check what needs review, ask for replacements and control who can view each file.",
     code: "DOCUMENTS",
     metrics: [
       { label: "All documents", value: "0", helper: "Files currently held in the portal." },
@@ -129,7 +129,7 @@ export const adminPortalSections = {
     ],
     table: {
       title: "Document queue",
-      description: "See each document, its current status and who is responsible.",
+      description: "Each document, its status and who is responsible.",
       columns: ["Document", "Category", "Status", "Owner"],
       rows: [
         ["Client KYC file", "KYC", "Review", "Reviewer"],
@@ -140,7 +140,7 @@ export const adminPortalSections = {
     },
     panel: {
       title: "Document controls",
-      description: "Admin actions expected on the document page.",
+      description: "What admins can do on the document page.",
       items: ["Open and review a file", "Ask the client for a replacement", "Choose who can view it", "Move completed files to archive"],
     },
     workflow: ["File received", "Category chosen", "Reviewed", "Approved"],
@@ -149,7 +149,7 @@ export const adminPortalSections = {
     eyebrow: "Admin messages",
     title: "Message oversight",
     description:
-      "Monitor client and staff communication threads linked to engagements, actions and audit history.",
+      "Follow client and staff conversations linked to engagements and actions.",
     code: "MESSAGES",
     metrics: [
       { label: "Open threads", value: "0", helper: "Unresolved client or staff conversations." },
@@ -178,7 +178,7 @@ export const adminPortalSections = {
     eyebrow: "Admin letters",
     title: "Letter templates",
     description:
-      "Maintain reusable client letters, engagement letters, approval notices and closeout communications.",
+      "Manage ready-made client letters, engagement letters, approval notices and closing messages.",
     code: "LETTER-TEMPLATES",
     metrics: [
       { label: "Letters", value: "4", helper: "Reusable letter templates available to staff." },
@@ -207,7 +207,7 @@ export const adminPortalSections = {
     eyebrow: "Admin invoices",
     title: "Invoice templates",
     description:
-      "Configure invoice layouts, line item groups, payment instructions and approval notes.",
+      "Set up invoice layouts, line groups, payment instructions and approval notes.",
     code: "INVOICE-TEMPLATES",
     metrics: [
       { label: "Templates", value: "3", helper: "Invoice layouts available to finance users." },
@@ -235,7 +235,7 @@ export const adminPortalSections = {
     eyebrow: "Payments",
     title: "Client payments",
     description:
-      "Check incoming payments, match them to invoices and follow up on anything that does not match.",
+      "Check incoming payments, match them to invoices and follow up on mismatches.",
     code: "PAYMENTS",
     metrics: [
       { label: "Needs review", value: "0", helper: "Payments waiting for finance to check." },
@@ -244,7 +244,7 @@ export const adminPortalSections = {
     ],
     table: {
       title: "Payment queue",
-      description: "See each payment, the related invoice and who is checking it.",
+      description: "Each payment, its invoice and who is checking it.",
       columns: ["Payment", "Invoice", "Status", "Owner"],
       rows: [
         ["Bank transfer", "INV-001", "Pending review", "Finance officer"],
@@ -263,16 +263,16 @@ export const adminPortalSections = {
     eyebrow: "AI activity",
     title: "AI activity and review",
     description:
-      "See how AI is being used, review saved instructions and check answers before they are shared with clients.",
+      "See how AI is used, review saved instructions and check answers before clients see them.",
     code: "AI-USAGE",
     metrics: [
       { label: "AI actions", value: "0", helper: "AI activity recorded for this period." },
       { label: "Saved instructions", value: "0", helper: "Reusable questions managed by administrators." },
-      { label: "Needs review", value: "0", helper: "Answers that need a person to check them." },
+      { label: "Needs review", value: "0", helper: "Answers waiting for a person to check." },
     ],
     table: {
       title: "Recent AI activity",
-      description: "See where AI is used, its status and the person responsible.",
+      description: "Where AI is used, its status and who is responsible.",
       columns: ["Area", "How it is used", "Status", "Responsible person"],
       rows: [
         ["Client summaries", "Read-only summary", "Allowed", "Admin"],
@@ -292,7 +292,7 @@ export const adminPortalSections = {
     eyebrow: "Admin notifications",
     title: "Notifications",
     description:
-      "Manage portal notification rules for KYC, documents, tasks, invoices, messages and workflow updates.",
+      "Manage alert rules for KYC, documents, tasks, invoices, messages and workflow updates.",
     code: "NOTIFICATIONS",
     metrics: [
       { label: "Rules", value: "6", helper: "Notification rules configured for portal events." },
@@ -312,7 +312,7 @@ export const adminPortalSections = {
     },
     panel: {
       title: "Notification controls",
-      description: "Settings that keep notifications useful and auditable.",
+      description: "Settings that keep alerts useful and traceable.",
       items: ["Choose channel", "Set recipient role", "Define trigger", "Review delivery log"],
     },
     workflow: ["Draft rule", "Test", "Approve", "Enable"],
@@ -321,7 +321,7 @@ export const adminPortalSections = {
     eyebrow: "Connected services",
     title: "Connected services",
     description:
-      "See whether email, payments, AI and other services are working or still need setup.",
+      "See if email, payments, AI and other services work or still need setup.",
     code: "INTEGRATIONS",
     metrics: [
       { label: "Working", value: "1", helper: "Services that are ready to use." },
@@ -330,7 +330,7 @@ export const adminPortalSections = {
     ],
     table: {
       title: "Service connections",
-      description: "See what each connection does and whether it is ready.",
+      description: "What each connection does and whether it is ready.",
       columns: ["Service", "What it does", "Status", "Responsible person"],
       rows: [
         ["MongoDB", "Application database", "Connected", "Admin"],

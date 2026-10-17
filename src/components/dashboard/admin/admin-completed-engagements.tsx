@@ -18,7 +18,7 @@ export function AdminCompletedEngagements({ workflows }: { workflows: WorkflowIn
   return (
     <AdminPageSurface
       actions={<Link className={buttonClassName({ variant: "secondary" })} href="/admin/archive"><Archive className="h-4 w-4" />Open archive</Link>}
-      description="Review completed client work, download its closure summary, then package the complete record into the archive."
+      description="Review finished work, download the closing summary, then archive the full record."
       icon={CheckCircle2}
       summary={[
         { label: "Completed", value: completed.length, helper: "Ready for final archive review", icon: CheckCircle2 },
@@ -57,7 +57,7 @@ export function AdminCompletedEngagements({ workflows }: { workflows: WorkflowIn
                 <TableCell className="text-right"><Link className={buttonClassName({ size: "sm", variant: "secondary" })} href={`/admin/active-engagements/${workflow.id}?tab=completion`}>Review and archive<ArrowRight className="h-4 w-4" /></Link></TableCell>
               </TableRow>
             ))}
-            {completed.length === 0 ? <TableRow><TableCell className="py-12 text-center text-sm text-muted-foreground" colSpan={6}>Completed engagements will appear here after all completion checks pass.</TableCell></TableRow> : null}
+            {completed.length === 0 ? <TableRow><TableCell className="py-12 text-center text-sm text-muted-foreground" colSpan={6}>Finished engagements will show here once all checks pass.</TableCell></TableRow> : null}
           </TableBody>
         </Table>
       </div>

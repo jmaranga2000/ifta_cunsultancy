@@ -75,7 +75,7 @@ export function ClientWorkflowProgress({
                     <div className="min-w-0 rounded-md bg-muted/45 px-3 py-2.5">
                       <p className="text-xs font-semibold text-muted-foreground">What happens next</p>
                       <p className="mt-1 break-words text-sm font-semibold text-foreground">
-                        {action?.title ?? workflow.nextAction ?? "Your team will share the next update here."}
+                        {action?.title ?? workflow.nextAction ?? "Your team will post the next update here."}
                       </p>
                     </div>
                   </div>

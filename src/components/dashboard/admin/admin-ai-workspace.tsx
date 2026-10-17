@@ -36,10 +36,10 @@ const workspaceIcons = {
 } satisfies Record<AiWorkspaceKey, typeof Search>;
 
 const errorMessages: Record<string, string> = {
-  invalid: "Add at least ten characters and choose the correct assistant before sending.",
+  invalid: "Type at least ten characters and choose the right assistant.",
   "not-configured": "OpenAI is not connected yet. Add the API key, then test the connection.",
-  conversation: "That conversation is no longer available or belongs to another administrator.",
-  provider: "The AI provider could not complete that message. Your question is saved, so you can try again.",
+  conversation: "That conversation is gone or belongs to another administrator.",
+  provider: "The AI could not finish. Your question is saved, so you can try again.",
 };
 
 function formatDate(value: string) {
@@ -106,7 +106,7 @@ function NewConversationForm({ configured }: { configured: boolean }) {
             maxLength={12000}
             minLength={10}
             name="message"
-            placeholder="Include the client context, relevant dates, amounts, documents available, and the outcome you need."
+            placeholder="Add who it is for, dates, amounts, available documents and the result you need."
             required
           />
         </div>
@@ -226,7 +226,7 @@ function ConversationView({
                 maxLength={12000}
                 minLength={10}
                 name="message"
-                placeholder="Add facts, ask for revisions, or request the next draft."
+                placeholder="Add facts, ask for changes or ask for the next draft."
                 required
               />
             </div>
@@ -270,7 +270,7 @@ export function AdminAiWorkspace({
           New conversation
         </Link>
       )}
-      description="Use focused professional assistants, review their sources, and retain a clear record of every AI-assisted task."
+      description="Use focused assistants, check their sources and keep a record of every AI task."
       icon={Sparkles}
       summary={[
         { label: "Conversations", value: summary.conversations, helper: "Active work", icon: MessageSquareText },
@@ -284,7 +284,7 @@ export function AdminAiWorkspace({
         <div className="flex flex-col justify-between gap-3 border-b border-amber-300 bg-amber-50 px-5 py-4 text-amber-950 dark:border-amber-800 dark:bg-amber-950/30 dark:text-amber-100 sm:flex-row sm:items-center">
           <div>
             <p className="font-semibold">OpenAI connection required</p>
-            <p className="text-sm opacity-80">Connect and test OpenAI before starting a conversation.</p>
+            <p className="text-sm opacity-80">Connect and test OpenAI before you start.</p>
           </div>
           <Link className={buttonClassName({ size: "sm", variant: "secondary" })} href="/admin/integrations/openai">
             Manage connection

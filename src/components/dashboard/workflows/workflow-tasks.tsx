@@ -126,7 +126,7 @@ export function WorkflowTasks({
         <Card className="w-full min-w-0 max-w-full overflow-hidden">
           <CardHeader>
             <CardTitle>Task queue</CardTitle>
-            <CardDescription>Your assigned work, due dates and next actions.</CardDescription>
+            <CardDescription>Your tasks, due dates and next steps.</CardDescription>
           </CardHeader>
           <CardContent className="w-full min-w-0 max-w-full p-0">
             {tasks.length === 0 ? (

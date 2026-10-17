@@ -55,7 +55,7 @@ export function WorkflowMessageDialog({
               <div className="min-w-0">
                 <p className="text-xs font-semibold text-brand-mist">{reference}</p>
                 <h2 className="mt-1 text-lg font-bold" id="workflow-message-title">Message {clientName}</h2>
-                <p className="mt-1 text-xs leading-5 text-white/75">The client receives this in the portal and by email.</p>
+                <p className="mt-1 text-xs leading-5 text-white/75">The client gets this in the portal and by email.</p>
               </div>
               <button
                 aria-label="Close message form"
@@ -99,7 +99,7 @@ export function WorkflowMessageDialog({
                       id={`workflow-message-body-${workflowId}`}
                       maxLength={6000}
                       name="body"
-                      placeholder="Write the update, question, or action the client needs to take."
+                      placeholder="Write the update, question or task for the client."
                       required
                     />
                   </div>

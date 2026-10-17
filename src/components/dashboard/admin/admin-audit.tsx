@@ -27,7 +27,7 @@ export function AdminAudit({ data, current }: {
 }) {
   return (
     <AdminPageSurface
-      description="Trace important changes across clients, staff, access, workflows, finance, communications, and system settings."
+      description="Trace important changes to clients, staff, access, workflows, payments, messages and settings."
       icon={Activity}
       summary={[
         { label: "Events", value: data.summary.total, helper: "Recorded activity", icon: Activity },

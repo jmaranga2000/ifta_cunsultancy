@@ -65,7 +65,7 @@ export function AdminEngagementDashboardSection({
       <CardHeader className="flex flex-col justify-between gap-3 border-b border-border md:flex-row md:items-start">
         <div>
           <CardTitle>Engagement delivery</CardTitle>
-          <CardDescription className="mt-1">Current work, decisions, client actions, and finance status.</CardDescription>
+          <CardDescription className="mt-1">Current work, decisions, client tasks and payments.</CardDescription>
         </div>
         <Link className={buttonClassName({ variant: "secondary", size: "sm" })} href="/admin/active-engagements">View all engagements</Link>
       </CardHeader>

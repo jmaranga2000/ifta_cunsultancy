@@ -25,7 +25,7 @@ export default async function NewAdminNotificationPage({
           Back to notifications
         </Link>
       }
-      description="Write the message, choose clients or staff, and send it to their portal inboxes."
+      description="Write the message, choose clients or staff and send it to their inboxes."
       icon={BellRing}
       title="New notification"
     >

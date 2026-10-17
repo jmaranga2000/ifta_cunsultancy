@@ -55,7 +55,7 @@ export function AdminNotificationManager({
           New notification
         </Link>
       }
-      description="Create one notification, choose its audience, and track delivery across staff and client inboxes."
+      description="Write one notification, choose who gets it and see if it was delivered."
       icon={BellRing}
       summary={[
         {

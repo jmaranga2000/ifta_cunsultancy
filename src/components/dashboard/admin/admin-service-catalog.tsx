@@ -56,7 +56,7 @@ export function AdminServiceCatalog({ services }: { services: ServiceCatalogReco
           </Link>
         </>
       }
-      description="Create and maintain the services clients can browse on the public website."
+      description="Create and edit the services shown on the public website."
       icon={ListChecks}
       summary={[
         { label: "All services", value: services.length, helper: "Total catalog records", icon: ListChecks },

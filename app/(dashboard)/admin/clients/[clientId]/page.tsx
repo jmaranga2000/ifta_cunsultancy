@@ -108,7 +108,7 @@ export default async function AdminClientDetailPage({
       label: "Email address verified",
       detail: client.emailVerifiedAt
         ? `Verified ${dateLabel(client.emailVerifiedAt)}`
-        : "Client still needs to verify their email",
+        : "Client has not verified their email yet",
     },
     {
       complete: client.status === "active",
@@ -300,7 +300,7 @@ export default async function AdminClientDetailPage({
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <CardTitle>Account readiness</CardTitle>
-                  <CardDescription>What is complete and what still needs attention.</CardDescription>
+                  <CardDescription>What is done and what needs attention.</CardDescription>
                 </div>
                 <Badge tone={readinessComplete === readiness.length ? "green" : "gold"}>
                   {readinessComplete}/{readiness.length}

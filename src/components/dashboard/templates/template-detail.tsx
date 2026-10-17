@@ -101,7 +101,7 @@ export function TemplateDetail({ data }: { data: TemplateDetailData }) {
         <Card className="min-w-0 shadow-none">
           <CardHeader>
             <CardTitle>What this template is for</CardTitle>
-            <CardDescription>Plain-language guidance for choosing the correct template.</CardDescription>
+            <CardDescription>Guidance on picking the right template.</CardDescription>
           </CardHeader>
           <CardContent className="grid gap-4 sm:grid-cols-2">
             <div className="sm:col-span-2"><p className="text-xs font-semibold text-muted-foreground">PURPOSE</p><p className="mt-1 text-sm leading-6 text-foreground">{template.purpose || category.description}</p></div>
@@ -113,7 +113,7 @@ export function TemplateDetail({ data }: { data: TemplateDetailData }) {
         </Card>
 
         <Card className="shadow-none">
-          <CardHeader><CardTitle>Ready to use?</CardTitle><CardDescription>The system checks required wording and information.</CardDescription></CardHeader>
+          <CardHeader><CardTitle>Ready to use?</CardTitle><CardDescription>The system checks the required wording and details.</CardDescription></CardHeader>
           <CardContent>
             <div className="flex items-start gap-3">
               {currentVersion?.validation.publishReady ? <CheckCircle2 className="h-5 w-5 shrink-0 text-success" /> : <AlertCircle className="h-5 w-5 shrink-0 text-warning" />}
@@ -125,13 +125,13 @@ export function TemplateDetail({ data }: { data: TemplateDetailData }) {
       </section>
 
       <Card className="min-w-0 shadow-none">
-        <CardHeader><CardTitle>Sample preview</CardTitle><CardDescription>This is how the template reads after example client details are filled in.</CardDescription></CardHeader>
+        <CardHeader><CardTitle>Sample preview</CardTitle><CardDescription>How the template reads with sample client details filled in.</CardDescription></CardHeader>
         <CardContent><div className="max-h-[34rem] overflow-auto whitespace-pre-wrap rounded-md border border-border bg-background p-4 text-sm leading-7 text-foreground">{currentVersion?.renderedPreview || "No preview is available yet."}</div></CardContent>
       </Card>
 
       <section className="grid gap-4 xl:grid-cols-2">
         <Card className="min-w-0 shadow-none">
-          <CardHeader><CardTitle>Information filled automatically</CardTitle><CardDescription>Staff do not type these items into the finished document each time.</CardDescription></CardHeader>
+          <CardHeader><CardTitle>Information filled automatically</CardTitle><CardDescription>Staff do not type these into the document each time.</CardDescription></CardHeader>
           <CardContent className="grid gap-2">
             {variableCatalogue.map((variable) => (
               <div className="flex min-w-0 items-start justify-between gap-4 border-b border-border py-3 last:border-0" key={variable.key}>
@@ -143,7 +143,7 @@ export function TemplateDetail({ data }: { data: TemplateDetailData }) {
         </Card>
 
         <Card className="min-w-0 shadow-none">
-          <CardHeader><CardTitle>Version history</CardTitle><CardDescription>Older published wording remains available for record keeping.</CardDescription></CardHeader>
+          <CardHeader><CardTitle>Version history</CardTitle><CardDescription>Older versions stay available for records.</CardDescription></CardHeader>
           <CardContent className="grid gap-2">
             {versions.map((version) => (
               <div className="flex flex-col justify-between gap-3 border-b border-border py-3 last:border-0 sm:flex-row sm:items-center" key={version.id}>
@@ -157,7 +157,7 @@ export function TemplateDetail({ data }: { data: TemplateDetailData }) {
 
       <section className="grid gap-4 xl:grid-cols-2">
         <Card className="min-w-0 shadow-none">
-          <CardHeader><CardTitle>Recent use</CardTitle><CardDescription>Client records most recently created from this template.</CardDescription></CardHeader>
+          <CardHeader><CardTitle>Recent use</CardTitle><CardDescription>Client records most recently made from this template.</CardDescription></CardHeader>
           <CardContent className="grid gap-2">
             {usage.slice(0, 8).map((item) => <div className="flex flex-col justify-between gap-2 border-b border-border py-3 last:border-0 sm:flex-row sm:items-center" key={item.id}><div><p className="font-semibold text-foreground">{item.clientName || "Client not recorded"}</p><p className="mt-1 text-sm text-muted-foreground">{item.engagementReference || friendlyAction(item.generatedRecordType)}</p></div><span className="text-xs text-muted-foreground">{formatDate(item.usedAt)}</span></div>)}
             {usage.length === 0 ? <p className="py-5 text-sm text-muted-foreground">This template has not been used yet.</p> : null}
@@ -165,7 +165,7 @@ export function TemplateDetail({ data }: { data: TemplateDetailData }) {
         </Card>
 
         <Card className="min-w-0 shadow-none">
-          <CardHeader><CardTitle>Recent activity</CardTitle><CardDescription>A simple history of approvals, publishing and changes.</CardDescription></CardHeader>
+          <CardHeader><CardTitle>Recent activity</CardTitle><CardDescription>History of approvals, publishing and changes.</CardDescription></CardHeader>
           <CardContent className="grid gap-2">
             {audit.slice(0, 8).map((item) => <div className="border-b border-border py-3 last:border-0" key={item.id}><p className="font-semibold text-foreground">{friendlyAction(item.action)}</p><p className="mt-1 text-sm text-muted-foreground">{item.actorEmail || "System"} / {formatDate(item.createdAt)}</p>{item.reason ? <p className="mt-1 text-sm text-muted-foreground">{item.reason}</p> : null}</div>)}
             {audit.length === 0 ? <p className="py-5 text-sm text-muted-foreground">No activity has been recorded yet.</p> : null}
@@ -175,7 +175,7 @@ export function TemplateDetail({ data }: { data: TemplateDetailData }) {
 
       {capabilities.archive && template.status !== "archived" ? (
         <details className="group rounded-md border border-border bg-card">
-          <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-5 py-4"><div><p className="font-semibold text-foreground">Retire this template</p><p className="mt-1 text-sm text-muted-foreground">Archived templates remain in history but cannot be selected for new work.</p></div><Archive className="h-5 w-5 shrink-0 text-muted-foreground" /></summary>
+          <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-5 py-4"><div><p className="font-semibold text-foreground">Retire this template</p><p className="mt-1 text-sm text-muted-foreground">Archived templates stay in history but cannot be used for new work.</p></div><Archive className="h-5 w-5 shrink-0 text-muted-foreground" /></summary>
           <form action={archiveTemplateAction} className="flex flex-col gap-3 border-t border-border p-5 sm:flex-row sm:items-end">
             <input name="templateId" type="hidden" value={template.id} />
             <label className="grid min-w-0 flex-1 gap-2 text-sm font-semibold text-foreground">Reason<input className="h-10 rounded-md border border-border bg-background px-3 font-normal" defaultValue="This template is no longer used." name="reason" required /></label>

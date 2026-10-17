@@ -21,7 +21,7 @@ export function EtimsServiceMappings({
   return (
     <AdminPageSurface
       actions={<Link className={buttonClassName({ variant: "secondary", size: "sm" })} href="/admin/finance/etims"><ArrowLeft className="h-4 w-4" />eTIMS activity</Link>}
-      description="Connect every consulting service to the item, classification, unit, and tax codes supplied by KRA or the certified integrator."
+      description="Link each service to the item, class, unit and tax codes from KRA or your integrator."
       icon={Tags}
       summary={[
         { label: "Services", value: mappings.length, helper: "Current catalogue", icon: Tags },
@@ -32,8 +32,8 @@ export function EtimsServiceMappings({
     >
       <div className="grid gap-4">
         {query.saved ? <p className="rounded-md border border-success/30 bg-success-soft px-4 py-3 text-sm font-semibold text-success">Service mapping saved.</p> : null}
-        {query.error ? <p className="rounded-md border border-danger/30 bg-danger-soft px-4 py-3 text-sm font-semibold text-danger">The mapping was not saved. Complete every required connector code.</p> : null}
-        <p className="rounded-md border border-warning/30 bg-warning-soft p-4 text-sm text-foreground">Do not guess these codes. Copy them from approved KRA reference data or your certified integrator. An active mapping is required before Admin can approve an invoice.</p>
+        {query.error ? <p className="rounded-md border border-danger/30 bg-danger-soft px-4 py-3 text-sm font-semibold text-danger">The mapping was not saved. Fill in every required code.</p> : null}
+        <p className="rounded-md border border-warning/30 bg-warning-soft p-4 text-sm text-foreground">Do not guess these codes. Copy them from KRA or your integrator. An active mapping is needed before an invoice can be approved.</p>
         {mappings.map((mapping) => (
           <details className="group rounded-md border border-border bg-card" key={mapping.serviceId} open={!mapping.mapped}>
             <summary className="flex cursor-pointer list-none items-center justify-between gap-3 p-4">

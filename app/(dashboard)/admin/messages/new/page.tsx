@@ -26,7 +26,7 @@ export default async function NewClientMessagePage({
           Back to messages
         </Link>
       }
-      description="Start a secure portal conversation. The client also receives a branded email alert."
+      description="Start a private conversation. The client also gets an email alert."
       icon={MessageSquareText}
       title="New client message"
     >

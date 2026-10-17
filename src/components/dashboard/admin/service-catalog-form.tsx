@@ -67,7 +67,7 @@ export function ServiceCatalogForm({
                 id="summary"
                 maxLength={1200}
                 name="summary"
-                placeholder="Explain what the service helps clients achieve."
+                placeholder="Say what this service helps clients achieve."
                 required
               />
             </div>
@@ -76,7 +76,7 @@ export function ServiceCatalogForm({
           <section className="grid gap-4 border-t border-border pt-6">
             <div>
               <h2 className="text-base font-bold text-foreground">Service image</h2>
-              <p className="mt-1 text-sm text-muted-foreground">Add a clear image that represents the service on the website and client portal.</p>
+              <p className="mt-1 text-sm text-muted-foreground">Add a clear image for this service.</p>
             </div>
             <div className="grid gap-4 md:grid-cols-[220px_minmax(0,1fr)] md:items-start">
               <div className="relative aspect-[4/3] overflow-hidden rounded-md border border-border bg-muted/30">
@@ -90,12 +90,12 @@ export function ServiceCatalogForm({
                 <div className="grid gap-2">
                   <Label htmlFor="serviceImage">Upload image</Label>
                   <Input accept="image/jpeg,image/png,image/webp" id="serviceImage" name="serviceImage" type="file" />
-                  <p className="flex items-center gap-2 text-xs text-muted-foreground"><Upload aria-hidden="true" className="h-3.5 w-3.5" />JPG, PNG or WebP, up to 8 MB. Uploading a new image replaces the current one.</p>
+                  <p className="flex items-center gap-2 text-xs text-muted-foreground"><Upload aria-hidden="true" className="h-3.5 w-3.5" />JPG, PNG or WebP, up to 8 MB. A new image replaces the old one.</p>
                 </div>
                 <div className="grid gap-2">
                   <Label htmlFor="imageAlt">Image description</Label>
                   <Input defaultValue={service?.imageAlt} id="imageAlt" maxLength={180} name="imageAlt" placeholder="Consultant reviewing financial reports with a client" />
-                  <p className="text-xs text-muted-foreground">Describe the image briefly for people using screen readers.</p>
+                  <p className="text-xs text-muted-foreground">Describe the image in a few words for screen readers.</p>
                 </div>
               </div>
             </div>
@@ -128,7 +128,7 @@ export function ServiceCatalogForm({
                   id="bestFor"
                   maxLength={800}
                   name="bestFor"
-                  placeholder="Describe the clients or situations this service suits."
+                  placeholder="Say which clients or situations this suits."
                   required
                 />
               </div>
@@ -139,7 +139,7 @@ export function ServiceCatalogForm({
                   id="outcome"
                   maxLength={800}
                   name="outcome"
-                  placeholder="Describe the result the client should expect."
+                  placeholder="Say what result the client can expect."
                   required
                 />
               </div>
@@ -152,8 +152,8 @@ export function ServiceCatalogForm({
             <h2 className="text-base font-bold text-foreground">Publishing</h2>
             <p className="mt-1 text-sm text-muted-foreground">
               {service
-                ? "Control when this service appears on the public website."
-                : "The service starts as a draft. You will add its price next."}
+                ? "Choose when this service shows on the website."
+                : "The service starts as a draft. You add its price next."}
             </p>
           </div>
 

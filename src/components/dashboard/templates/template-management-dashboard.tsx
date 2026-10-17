@@ -55,7 +55,7 @@ function pageCopy(data: TemplateManagementData) {
   if (!data.activeCategory) {
     return {
       title: "Document templates",
-      description: "Reusable letters, invoices and client documents prepared for consistent day-to-day work.",
+      description: "Ready-made letters, invoices and documents for everyday use.",
     };
   }
   const category = TEMPLATE_CATEGORY_META[data.activeCategory];
@@ -104,7 +104,7 @@ export function TemplateManagementDashboard({
 
       {data.capabilities.create ? <details className="group rounded-md border border-border bg-card" id="new-template">
         <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-5 py-4">
-          <div><p className="font-semibold text-foreground">Create a new template</p><p className="mt-1 text-sm text-muted-foreground">Start with a name, purpose and where it will be used.</p></div>
+          <div><p className="font-semibold text-foreground">Create a new template</p><p className="mt-1 text-sm text-muted-foreground">Start with a name, a purpose and where it is used.</p></div>
           <Plus className="h-5 w-5 shrink-0 text-primary transition-transform group-open:rotate-45" />
         </summary>
         <form action={createTemplateDraftAction} className="grid gap-4 border-t border-border p-5 md:grid-cols-2">
@@ -114,7 +114,7 @@ export function TemplateManagementDashboard({
           <label className="grid gap-2 text-sm font-semibold text-foreground">Template name<input className="h-10 rounded-md border border-border bg-background px-3 font-normal" name="name" placeholder="Example: Standard engagement letter" required /></label>
           <label className="grid gap-2 text-sm font-semibold text-foreground">Service<select className="h-10 rounded-md border border-border bg-background px-3 font-normal" defaultValue={filters.service ?? ""} name="service"><option value="">All services</option>{data.filterOptions.services.map((service) => <option key={service} value={service}>{service}</option>)}</select></label>
           <label className="grid gap-2 text-sm font-semibold text-foreground">Client type<select className="h-10 rounded-md border border-border bg-background px-3 font-normal" defaultValue={filters.clientType ?? ""} name="clientType"><option value="">All clients</option>{data.filterOptions.clientTypes.map((clientType) => <option key={clientType} value={clientType}>{clientType}</option>)}</select></label>
-          <label className="grid gap-2 text-sm font-semibold text-foreground md:col-span-2">Purpose<textarea className="min-h-24 rounded-md border border-border bg-background px-3 py-2 font-normal" name="description" placeholder="Describe when staff should use this template." required /></label>
+          <label className="grid gap-2 text-sm font-semibold text-foreground md:col-span-2">Purpose<textarea className="min-h-24 rounded-md border border-border bg-background px-3 py-2 font-normal" name="description" placeholder="Say when staff should use this template." required /></label>
           <button className={buttonClassName({ className: "md:col-span-2 md:justify-self-end" })} type="submit"><Plus className="h-4 w-4" />Save as draft</button>
         </form>
       </details> : null}

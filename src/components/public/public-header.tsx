@@ -18,8 +18,8 @@ const mainNav = [
 ] as const;
 
 const resourceNav = [
-  { label: "AI research", href: "/ai-research", description: "Governed advisory research support" },
-  { label: "Client portal", href: "/client-portal", description: "How the secure workspace operates" },
+  { label: "AI research", href: "/ai-research", description: "How we use AI" },
+  { label: "My account", href: "/client-portal", description: "Sign in or sign up" },
 ] as const;
 
 export function PublicHeader() {
