@@ -48,7 +48,7 @@ export default async function PublicHomePage() {
 
   return (
     <main>
-      <section className="relative isolate overflow-hidden bg-brand-deep text-white">
+      <section className="relative isolate flex min-h-[80svh] items-center overflow-hidden bg-brand-deep text-white sm:min-h-[72svh] lg:min-h-[42rem]">
         <Image
           alt="IFTA Consulting advisers at work"
           className="object-cover object-[70%_center]"
@@ -59,7 +59,7 @@ export default async function PublicHomePage() {
           src="/images/ifta-consulting-team.png"
         />
         <div className="absolute inset-0 bg-brand-deep/85 lg:bg-gradient-to-r lg:from-brand-deep lg:via-brand-deep/90 lg:to-brand-deep/30" />
-        <div className="relative mx-auto max-w-6xl px-5 py-20 sm:px-6 sm:py-28 lg:px-8">
+        <div className="relative mx-auto w-full max-w-6xl px-5 py-20 sm:px-6 sm:py-28 lg:px-8">
           <h1 className="max-w-2xl text-4xl font-bold leading-tight tracking-tight sm:text-5xl">
             Tax and finance help, made simple.
           </h1>

@@ -1,4 +1,4 @@
-const CACHE_VERSION = "ifta-pwa-v2";
+const CACHE_VERSION = "ifta-pwa-v3";
 const SHELL_CACHE = `${CACHE_VERSION}-shell`;
 const ASSET_CACHE = `${CACHE_VERSION}-assets`;
 const APP_SHELL = [
