@@ -28,7 +28,7 @@ async function sendPasswordResetEmail(email: string, resetUrl: string) {
         <div style="font-family: Arial, sans-serif; line-height: 1.6;">
           <h1>Reset your password</h1>
           <p>Use the button below to choose a new password for your IFTA Consulting portal account.</p>
-          <p><a href="${resetUrl}" style="display:inline-block;background:#03363D;color:#fff;padding:12px 16px;border-radius:6px;text-decoration:none;">Reset password</a></p>
+          <p><a href="${resetUrl}" style="display:inline-block;background:#123B6D;color:#fff;padding:12px 16px;border-radius:6px;text-decoration:none;">Reset password</a></p>
           <p>This link expires in one hour. If you did not request it, you can safely ignore this email.</p>
         </div>
       `,

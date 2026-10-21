@@ -24,9 +24,9 @@ import {
 import { getSignatureDisplayState } from "@/features/engagement-letters/signature-state";
 import type { EngagementLetterRecord } from "@/repositories/engagement-letter-repository";
 
-const BRAND_DEEP = "03363D";
-const BRAND_MIST = "BDD9D7";
-const MUTED = "52666A";
+const BRAND_DEEP = "123B6D";
+const BRAND_MIST = "C7D9F2";
+const MUTED = "52657D";
 
 type LetterBlock =
   | { type: "title" | "heading" | "paragraph"; text: string }
@@ -57,11 +57,11 @@ function signerStatus(letter: EngagementLetterRecord, role: "ifta" | "client") {
 }
 
 const pdfStyles = StyleSheet.create({
-  page: { backgroundColor: "#FFFFFF", color: "#172B2E", fontFamily: "Helvetica", fontSize: 9.5, lineHeight: 1.55, paddingBottom: 64 },
+  page: { backgroundColor: "#FFFFFF", color: "#14243A", fontFamily: "Helvetica", fontSize: 9.5, lineHeight: 1.55, paddingBottom: 64 },
   topBand: { backgroundColor: `#${BRAND_DEEP}`, color: "#FFFFFF", paddingHorizontal: 40, paddingTop: 30, paddingBottom: 26 },
   brand: { fontSize: 20, fontFamily: "Helvetica-Bold" },
   brandLine: { color: `#${BRAND_MIST}`, fontSize: 8, marginTop: 4 },
-  companyLine: { color: "#D9E8E7", fontSize: 7.5, marginTop: 3 },
+  companyLine: { color: "#DAE5F2", fontSize: 7.5, marginTop: 3 },
   referenceBand: { backgroundColor: `#${BRAND_MIST}`, color: `#${BRAND_DEEP}`, flexDirection: "row", justifyContent: "space-between", paddingHorizontal: 40, paddingVertical: 13 },
   metaLabel: { fontFamily: "Helvetica-Bold", fontSize: 7, textTransform: "uppercase" },
   metaValue: { fontSize: 9, marginTop: 3 },

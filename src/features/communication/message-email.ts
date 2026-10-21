@@ -31,14 +31,14 @@ export async function sendNewPortalMessageEmail(input: {
     html: `
         <!doctype html>
         <html>
-          <body style="margin:0;background:#f4f7f7;color:#03363D;font-family:Arial,sans-serif;">
+          <body style="margin:0;background:#f4f7f7;color:#123B6D;font-family:Arial,sans-serif;">
             <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#f4f7f7;padding:32px 16px;">
               <tr>
                 <td align="center">
                   <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:620px;background:#ffffff;border:1px solid #d7e3e2;border-radius:8px;overflow:hidden;">
                     <tr>
-                      <td style="background:#03363D;padding:24px 28px;color:#ffffff;">
-                        <p style="margin:0;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#BDD9D7;">IFTA Consulting</p>
+                      <td style="background:#123B6D;padding:24px 28px;color:#ffffff;">
+                        <p style="margin:0;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#C7D9F2;">IFTA Consulting</p>
                         <h1 style="margin:10px 0 0;font-size:24px;line-height:1.3;">You have a new portal message</h1>
                       </td>
                     </tr>
@@ -46,12 +46,12 @@ export async function sendNewPortalMessageEmail(input: {
                       <td style="padding:28px;">
                         <p style="margin:0 0 18px;font-size:16px;line-height:1.6;">Hello ${recipientName},</p>
                         <p style="margin:0 0 20px;font-size:15px;line-height:1.7;color:#38585c;">An IFTA Consulting team member sent you a message in your secure client portal.</p>
-                        <div style="border-left:4px solid #BDD9D7;background:#f5f9f9;padding:16px 18px;">
-                          <p style="margin:0 0 8px;font-size:13px;font-weight:700;color:#03363D;">${subject}</p>
+                        <div style="border-left:4px solid #C7D9F2;background:#f5f9f9;padding:16px 18px;">
+                          <p style="margin:0 0 8px;font-size:13px;font-weight:700;color:#123B6D;">${subject}</p>
                           <p style="margin:0;font-size:14px;line-height:1.7;color:#4b6568;">${preview}</p>
                         </div>
                         <p style="margin:24px 0;">
-                          <a href="${portalUrl}" style="display:inline-block;background:#03363D;color:#ffffff;padding:12px 18px;border-radius:6px;text-decoration:none;font-size:14px;font-weight:700;">Open client portal</a>
+                          <a href="${portalUrl}" style="display:inline-block;background:#123B6D;color:#ffffff;padding:12px 18px;border-radius:6px;text-decoration:none;font-size:14px;font-weight:700;">Open client portal</a>
                         </p>
                         <p style="margin:0;font-size:13px;line-height:1.6;color:#6b7f81;">For privacy, reply inside the portal. Do not send sensitive documents by email.</p>
                       </td>
