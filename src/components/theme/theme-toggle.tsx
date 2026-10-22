@@ -59,9 +59,11 @@ function setTheme(theme: ThemeMode) {
 export function ThemeToggle({
   className,
   variant = "default",
+  appearance = "light",
 }: {
   className?: string;
   variant?: "default" | "navbar";
+  appearance?: "light" | "dark";
 }) {
   const theme = useSyncExternalStore(
     subscribeToTheme,
@@ -78,11 +80,16 @@ export function ThemeToggle({
   }
 
   if (variant === "navbar") {
+    const isDarkAppearance = appearance === "dark";
+
     return (
       <div
         aria-label="Color theme"
         className={cn(
-          "inline-flex h-10 items-center rounded-full border border-white/15 bg-white/[0.06] p-1 font-sans",
+          "inline-flex h-10 items-center rounded-full border p-1 font-sans",
+          isDarkAppearance
+            ? "border-white/15 bg-white/[0.06]"
+            : "border-border bg-background",
           className,
         )}
         role="group"
@@ -92,7 +99,11 @@ export function ThemeToggle({
           aria-pressed={theme === "light"}
           className={cn(
             "grid h-8 w-8 place-items-center rounded-full transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-gold",
-            theme === "light" ? "bg-brand-gold text-[#10243b] shadow-sm" : "text-white/70 hover:bg-white/10 hover:text-white",
+            theme === "light"
+              ? "bg-brand-gold text-[#10243b] shadow-sm"
+              : isDarkAppearance
+                ? "text-white/70 hover:bg-white/10 hover:text-white"
+                : "text-muted-foreground hover:bg-muted hover:text-foreground",
           )}
           onClick={() => selectTheme("light")}
           title="Light theme"
@@ -105,7 +116,11 @@ export function ThemeToggle({
           aria-pressed={theme === "dark"}
           className={cn(
             "grid h-8 w-8 place-items-center rounded-full transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-gold",
-            theme === "dark" ? "bg-brand-gold text-[#10243b] shadow-sm" : "text-white/70 hover:bg-white/10 hover:text-white",
+            theme === "dark"
+              ? "bg-brand-gold text-[#10243b] shadow-sm"
+              : isDarkAppearance
+                ? "text-white/70 hover:bg-white/10 hover:text-white"
+                : "text-muted-foreground hover:bg-muted hover:text-foreground",
           )}
           onClick={() => selectTheme("dark")}
           title="Dark theme"

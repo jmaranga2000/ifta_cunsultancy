@@ -19,7 +19,7 @@ export default function AuthLayout({
               <span className="block text-xs font-medium text-muted-foreground">Secure access</span>
             </span>
           </Link>
-          <ThemeToggle />
+          <ThemeToggle variant="navbar" />
         </div>
         {children}
       </div>

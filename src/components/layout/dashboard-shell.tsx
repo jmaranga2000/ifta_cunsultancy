@@ -245,7 +245,7 @@ export function DashboardShell({
     .join("")
     .toUpperCase() || "U";
   const shellStyle = {
-    "--dashboard-sidebar-width": collapsed ? "84px" : "288px",
+    "--dashboard-sidebar-width": collapsed ? "0px" : "288px",
   } as CSSProperties;
   const RoleIcon = portal === "admin" ? ShieldCheck : portal === "staff" ? UserCog : CircleUserRound;
 
@@ -379,7 +379,7 @@ export function DashboardShell({
 
   return (
     <div className="dashboard-shell bg-background text-foreground" style={shellStyle}>
-      <aside className="dashboard-sidebar hidden border-r transition-[width] duration-200 lg:sticky lg:top-0 lg:block lg:h-dvh">
+      <aside className={cn("dashboard-sidebar hidden border-r transition-[width] duration-200 lg:sticky lg:top-0 lg:block lg:h-dvh", collapsed && "invisible overflow-hidden border-0")}>
         <div className="flex h-dvh min-w-0 flex-col">
           <div className="border-b border-white/10 p-4">
             {collapsed ? (
@@ -434,6 +434,17 @@ export function DashboardShell({
       <div className="dashboard-shell-main min-w-0 max-w-full">
         <header className="dashboard-topbar sticky top-0 z-50 border-b border-border bg-card/95 backdrop-blur-md">
           <div className="flex min-h-[68px] min-w-0 max-w-full items-center justify-between gap-3 px-4 lg:px-6">
+            {collapsed ? (
+              <button
+                aria-label="Show sidebar"
+                className="hidden h-10 w-10 shrink-0 items-center justify-center rounded-md border border-border bg-background text-foreground hover:bg-muted lg:flex"
+                onClick={() => setCollapsed(false)}
+                title="Show sidebar"
+                type="button"
+              >
+                <PanelLeftOpen aria-hidden="true" className="h-4 w-4" />
+              </button>
+            ) : null}
             <button
               aria-label="Open navigation"
               className="flex h-10 w-10 items-center justify-center rounded-md border border-border bg-background text-foreground hover:bg-muted lg:hidden"
@@ -559,7 +570,7 @@ export function DashboardShell({
                 ) : null}
               </div>
 
-              <ThemeToggle className="inline-flex" />
+              <ThemeToggle className="inline-flex" variant="navbar" />
               <LiveNotificationBell notificationsHref={notificationsHref} />
             </div>
           </div>
@@ -600,7 +611,7 @@ export function DashboardShell({
               </div>
               <div className="min-h-0 flex-1 overflow-y-auto p-3">{renderNav(navItems, true)}</div>
               <div className="grid gap-2 border-t border-white/10 p-3">
-                <ThemeToggle className="w-full justify-center" />
+                <ThemeToggle className="w-full justify-center" variant="navbar" />
                 {renderSignOut(false)}
               </div>
             </div>
