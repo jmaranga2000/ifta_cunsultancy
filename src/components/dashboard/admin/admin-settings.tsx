@@ -10,6 +10,7 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import { AdminPageSurface } from "@/components/dashboard/admin/admin-page-surface";
+import { FontSizeControl } from "@/components/theme/font-size-control";
 import { SubmitButton } from "@/components/ui/submit-button";
 import { buttonClassName } from "@/components/ui/button";
 import { updatePlatformSettingsAction } from "@/features/settings/actions";
@@ -168,7 +169,7 @@ export function AdminSettings({ settings, saved, error }: {
 
         <form action={updatePlatformSettingsAction}>
           <input name="section" type="hidden" value="portal" />
-          <SectionHeader description="Set contact details and signature alerts." icon={Bell} title="Portal and notifications" />
+          <SectionHeader description="Set contact details, signature alerts and display preferences." icon={Bell} title="Portal and notifications" />
           <div className="grid gap-5 p-5 lg:grid-cols-[minmax(0,1fr)_360px]">
             <div className="grid gap-4 md:grid-cols-2">
               <Field defaultValue={settings.portal.timezone} label="Timezone" name="timezone" required />
@@ -181,6 +182,7 @@ export function AdminSettings({ settings, saved, error }: {
             <div className="grid content-start gap-3">
               <Toggle defaultChecked={settings.portal.notifyClientOnLetterReady} description="Send an alert when a letter is ready for the client." label="Notify clients about letters" name="notifyClientOnLetterReady" />
               <Toggle defaultChecked={settings.portal.notifyAdminOnClientSignature} description="Record an alert when the client signs." label="Notify team after client signing" name="notifyAdminOnClientSignature" />
+              <FontSizeControl />
             </div>
           </div>
           <div className="flex justify-end border-t border-border bg-muted/15 px-5 py-4">

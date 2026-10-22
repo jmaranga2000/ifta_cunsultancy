@@ -69,7 +69,7 @@ export default function RootLayout({
       <head>
         <script
           dangerouslySetInnerHTML={{
-            __html: `try{var s=localStorage.getItem("ifta-theme");var t=(s==="light"||s==="dark")?s:((window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)?"dark":"light");var r=document.documentElement;r.classList.remove("light","dark");r.classList.add(t);r.dataset.theme=t;r.style.colorScheme=t;}catch(e){document.documentElement.classList.add("light");document.documentElement.dataset.theme="light";document.documentElement.style.colorScheme="light";}`,
+            __html: `var r=document.documentElement;try{var s=localStorage.getItem("ifta-theme");var t=(s==="light"||s==="dark")?s:((window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)?"dark":"light");r.classList.remove("light","dark");r.classList.add(t);r.dataset.theme=t;r.style.colorScheme=t;var f=localStorage.getItem("ifta-font-size");if(f==="small"||f==="medium"||f==="large")r.dataset.fontSize=f;}catch(e){r.classList.add("light");r.dataset.theme="light";r.style.colorScheme="light";}`,
           }}
         />
       </head>

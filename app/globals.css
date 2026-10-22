@@ -216,6 +216,18 @@ html {
   text-rendering: optimizeLegibility;
 }
 
+html[data-font-size="small"] {
+  font-size: 93.75%;
+}
+
+html[data-font-size="medium"] {
+  font-size: 100%;
+}
+
+html[data-font-size="large"] {
+  font-size: 112.5%;
+}
+
 body {
   min-width: 320px;
   min-height: 100vh;
