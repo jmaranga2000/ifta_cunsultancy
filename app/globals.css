@@ -275,6 +275,17 @@ summary {
   background-color: var(--brand-mist-strong) !important;
 }
 
+.ifta-button-gold {
+  border-color: #f2bf68 !important;
+  background-color: #f2bf68 !important;
+  color: #10243b !important;
+}
+
+.ifta-button-gold:hover:not(:disabled) {
+  border-color: #ffd486 !important;
+  background-color: #ffd486 !important;
+}
+
 /* Shared badge tones keep their contrast in both themes. */
 .ifta-badge-neutral {
   border-color: var(--border-strong);

@@ -1,26 +1,34 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChevronDown, Landmark, Menu, ShoppingCart, X } from "lucide-react";
-import { AuthNavLink } from "@/components/layout/auth-nav-link";
+import { ArrowRight, CalendarDays, ChevronDown, Menu, ShoppingCart, X } from "lucide-react";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { buttonClassName } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const mainNav = [
   { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
+  { label: "About us", href: "/about" },
   { label: "Services", href: "/services" },
+  { label: "Client portal", href: "/client-portal" },
   { label: "Pricing", href: "/pricing" },
   { label: "Contact", href: "/contact" },
 ] as const;
 
 const resourceNav = [
   { label: "AI research", href: "/ai-research", description: "How we use AI" },
-  { label: "My account", href: "/client-portal", description: "Sign in or sign up" },
+  { label: "Sign in", href: "/sign-in", description: "Access your secure account" },
 ] as const;
+
+const consultationButtonClass = buttonClassName({
+  className:
+    "ifta-button-gold h-10 rounded-lg px-4 text-sm",
+  size: "sm",
+  variant: "accent",
+});
 
 export function PublicHeader() {
   const pathname = usePathname();
@@ -31,40 +39,32 @@ export function PublicHeader() {
   }
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-card/95 backdrop-blur-md">
-      <div className="hidden bg-brand-deep text-white sm:block">
-        <div className="mx-auto flex h-9 max-w-7xl items-center justify-between px-5 text-xs font-medium">
-          <p>Tax and financial consulting</p>
-          <div className="flex items-center gap-5 text-white/75">
-            <span>Nairobi, Kenya</span>
-            <Link className="hover:text-white" href="/contact">
-              Request a consultation
-            </Link>
-          </div>
-        </div>
-      </div>
-
-      <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between gap-4 px-5">
-        <Link aria-label="IFTA Consulting home" className="flex min-w-0 items-center gap-3" href="/">
-          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-md bg-primary text-primary-foreground shadow-sm">
-            <Landmark aria-hidden="true" className="h-5 w-5" />
-          </span>
-          <span className="min-w-0 leading-tight">
-            <span className="block truncate text-sm font-bold text-foreground">IFTA Consulting</span>
-            <span className="block truncate text-[11px] font-semibold uppercase text-muted-foreground">
-              Advisory &amp; client services
-            </span>
+    <header className="sticky top-0 z-50 border-b border-white/15 bg-[#071b30] text-white shadow-lg shadow-black/10">
+      <div className="mx-auto flex h-[4.5rem] max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+        <Link aria-label="IFTA Consulting home" className="flex shrink-0 items-center gap-2.5" href="/">
+          <Image
+            alt=""
+            className="h-10 w-10 rounded-md object-cover"
+            height={192}
+            priority
+            src="/icons/icon-192.png"
+            width={192}
+          />
+          <span className="leading-none">
+            <span className="block font-serif text-2xl font-semibold tracking-[0.16em] text-white">IFTA</span>
+            <span className="mt-1 block text-[9px] font-semibold uppercase tracking-[0.32em] text-white/65">Consulting</span>
           </span>
         </Link>
 
-        <nav aria-label="Primary navigation" className="hidden items-center gap-1 xl:flex">
-          {mainNav.slice(0, 4).map((item) => (
+        <nav aria-label="Primary navigation" className="hidden items-center gap-0.5 xl:flex">
+          {mainNav.map((item) => (
             <Link
+              aria-current={isActive(item.href) ? "page" : undefined}
               className={cn(
-                "rounded-md px-3 py-2 text-sm font-semibold transition-colors",
+                "relative rounded-md px-2.5 py-2 text-[13px] font-medium transition-colors",
                 isActive(item.href)
-                  ? "bg-brand-soft text-brand-deep"
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                  ? "text-white after:absolute after:inset-x-2.5 after:-bottom-1 after:h-0.5 after:bg-[#f2bf68]"
+                  : "text-white/75 hover:text-white",
               )}
               href={item.href}
               key={item.href}
@@ -74,63 +74,41 @@ export function PublicHeader() {
           ))}
 
           <details className="group relative">
-            <summary
-              className={cn(
-                "flex list-none items-center gap-1 rounded-md px-3 py-2 text-sm font-semibold transition-colors",
-                resourceNav.some((item) => isActive(item.href))
-                  ? "bg-brand-soft text-brand-deep"
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground",
-              )}
-            >
+            <summary className="flex list-none items-center gap-1 rounded-md px-2.5 py-2 text-[13px] font-medium text-white/75 transition-colors hover:text-white">
               Resources
-              <ChevronDown aria-hidden="true" className="h-4 w-4 transition-transform group-open:rotate-180" />
+              <ChevronDown aria-hidden="true" className="h-3.5 w-3.5 transition-transform group-open:rotate-180" />
             </summary>
-            <div className="absolute left-0 top-12 w-72 rounded-md border border-border bg-card p-2 shadow-xl">
+            <div className="absolute right-0 top-11 w-64 rounded-lg border border-white/15 bg-[#0b2540] p-2 shadow-xl">
               {resourceNav.map((item) => (
-                <Link className="block rounded-md px-3 py-3 hover:bg-muted" href={item.href} key={item.href}>
-                  <span className="block text-sm font-semibold text-foreground">{item.label}</span>
-                  <span className="mt-1 block text-xs leading-5 text-muted-foreground">{item.description}</span>
+                <Link className="block rounded-md px-3 py-3 transition-colors hover:bg-white/10" href={item.href} key={item.href}>
+                  <span className="block text-sm font-semibold text-white">{item.label}</span>
+                  <span className="mt-1 block text-xs leading-5 text-white/60">{item.description}</span>
                 </Link>
               ))}
             </div>
           </details>
-
-          <Link
-            className={cn(
-              "rounded-md px-3 py-2 text-sm font-semibold transition-colors",
-              isActive("/contact")
-                ? "bg-brand-soft text-brand-deep"
-                : "text-muted-foreground hover:bg-muted hover:text-foreground",
-            )}
-            href="/contact"
-          >
-            Contact
-          </Link>
         </nav>
 
-        <div className="hidden shrink-0 items-center gap-2 md:flex">
-          <ThemeToggle />
+        <div className="hidden shrink-0 items-center gap-2 xl:flex">
+          <ThemeToggle className="border-white/20 text-white hover:bg-white/10" />
           <Link
             aria-label="Open service cart"
-            className={buttonClassName({ size: "sm", variant: "secondary" })}
+            className="grid h-10 w-10 place-items-center rounded-md text-white/80 transition-colors hover:bg-white/10 hover:text-white"
             href="/cart"
             title="Service cart"
           >
             <ShoppingCart aria-hidden="true" className="h-5 w-5" />
-            <span>Cart</span>
           </Link>
-          <AuthNavLink className={buttonClassName({ variant: "secondary", size: "sm" })} href="/sign-in">
-            Sign in
-          </AuthNavLink>
-          <Link className={buttonClassName({ size: "sm" })} href="/client">
-            Open portal
+          <Link className={consultationButtonClass} href="/contact">
+            <CalendarDays aria-hidden="true" className="h-4 w-4" />
+            Book a consultation
           </Link>
         </div>
 
         <button
           aria-expanded={mobileOpen}
           aria-label={mobileOpen ? "Close navigation" : "Open navigation"}
-          className="grid h-10 w-10 place-items-center rounded-md border border-border bg-secondary text-secondary-foreground xl:hidden"
+          className="grid h-10 w-10 place-items-center rounded-md border border-white/20 text-white transition-colors hover:bg-white/10 xl:hidden"
           onClick={() => setMobileOpen((current) => !current)}
           type="button"
         >
@@ -139,13 +117,14 @@ export function PublicHeader() {
       </div>
 
       {mobileOpen ? (
-        <div className="border-t border-border bg-card px-5 py-4 xl:hidden">
+        <div className="border-t border-white/15 bg-[#071b30] px-4 py-4 sm:px-6 xl:hidden">
           <nav aria-label="Mobile navigation" className="mx-auto grid max-w-7xl gap-1">
             {[...mainNav, ...resourceNav].map((item) => (
               <Link
+                aria-current={isActive(item.href) ? "page" : undefined}
                 className={cn(
-                  "rounded-md px-3 py-2.5 text-sm font-semibold",
-                  isActive(item.href) ? "bg-brand-soft text-brand-deep" : "text-foreground hover:bg-muted",
+                  "rounded-md px-3 py-2.5 text-sm font-medium transition-colors",
+                  isActive(item.href) ? "bg-white/10 text-[#f2bf68]" : "text-white/80 hover:bg-white/10 hover:text-white",
                 )}
                 href={item.href}
                 key={item.href}
@@ -154,17 +133,15 @@ export function PublicHeader() {
                 {item.label}
               </Link>
             ))}
-            <div className="mt-3 grid grid-cols-2 gap-2 border-t border-border pt-4 md:hidden">
-              <ThemeToggle className="w-full justify-center" />
-              <AuthNavLink className={buttonClassName({ variant: "secondary", size: "sm" })} href="/sign-in" onClick={() => setMobileOpen(false)}>
-                Sign in
-              </AuthNavLink>
-              <Link className={buttonClassName({ className: "col-span-2", size: "sm" })} href="/client" onClick={() => setMobileOpen(false)}>
-                Open client portal
-              </Link>
-              <Link className={buttonClassName({ className: "col-span-2", size: "md", variant: "secondary" })} href="/cart" onClick={() => setMobileOpen(false)}>
-                <ShoppingCart aria-hidden="true" className="h-5 w-5" />
+            <div className="mt-3 grid grid-cols-2 gap-2 border-t border-white/15 pt-4">
+              <ThemeToggle className="w-full justify-center border-white/20 text-white" />
+              <Link className="inline-flex h-10 items-center justify-center gap-2 rounded-md border border-white/20 text-sm font-medium text-white" href="/cart" onClick={() => setMobileOpen(false)}>
+                <ShoppingCart aria-hidden="true" className="h-4 w-4" />
                 Service cart
+              </Link>
+              <Link className={cn(consultationButtonClass, "col-span-2")} href="/contact" onClick={() => setMobileOpen(false)}>
+                Book a consultation
+                <ArrowRight aria-hidden="true" className="h-4 w-4" />
               </Link>
             </div>
           </nav>
