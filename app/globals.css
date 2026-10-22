@@ -112,6 +112,56 @@ body[data-theme="dark"] {
   --shadow-color: 0 0 0;
 }
 
+:is(html.dark, html[data-theme="dark"], body[data-theme="dark"]) .homepage-service-card {
+  background-color: var(--homepage-service-card-bg) !important;
+  border-color: var(--homepage-service-card-border) !important;
+}
+
+:is(html.dark, html[data-theme="dark"], body[data-theme="dark"]) .homepage-service-icon {
+  background-color: var(--homepage-service-icon-bg) !important;
+  color: var(--homepage-service-icon-color) !important;
+}
+
+:is(html.dark, html[data-theme="dark"], body[data-theme="dark"]) .homepage-service-card-tax-advisory {
+  --homepage-service-card-bg: #142b45;
+  --homepage-service-card-border: #2c496c;
+}
+
+:is(html.dark, html[data-theme="dark"], body[data-theme="dark"]) .homepage-service-icon-tax-advisory {
+  --homepage-service-icon-bg: #1c3b60;
+  --homepage-service-icon-color: #8dbcf2;
+}
+
+:is(html.dark, html[data-theme="dark"], body[data-theme="dark"]) .homepage-service-card-accounting-services {
+  --homepage-service-card-bg: #142e29;
+  --homepage-service-card-border: #315c49;
+}
+
+:is(html.dark, html[data-theme="dark"], body[data-theme="dark"]) .homepage-service-icon-accounting-services {
+  --homepage-service-icon-bg: #1c4435;
+  --homepage-service-icon-color: #86d6ae;
+}
+
+:is(html.dark, html[data-theme="dark"], body[data-theme="dark"]) .homepage-service-card-financial-consulting {
+  --homepage-service-card-bg: #332a1a;
+  --homepage-service-card-border: #66512e;
+}
+
+:is(html.dark, html[data-theme="dark"], body[data-theme="dark"]) .homepage-service-icon-financial-consulting {
+  --homepage-service-icon-bg: #514022;
+  --homepage-service-icon-color: #f0c16f;
+}
+
+:is(html.dark, html[data-theme="dark"], body[data-theme="dark"]) .homepage-service-card-legal-regulatory {
+  --homepage-service-card-bg: #252642;
+  --homepage-service-card-border: #494d78;
+}
+
+:is(html.dark, html[data-theme="dark"], body[data-theme="dark"]) .homepage-service-icon-legal-regulatory {
+  --homepage-service-icon-bg: #393d69;
+  --homepage-service-icon-color: #b3b9f4;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

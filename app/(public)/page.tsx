@@ -192,15 +192,15 @@ export default function PublicHomePage() {
       </section>
 
       <Reveal>
-        <section className="bg-[#fbfaf7] px-5 py-12 sm:px-6 sm:py-14 lg:px-8">
+        <section className="homepage-services bg-background px-5 py-12 sm:px-6 sm:py-14 lg:px-8">
           <div className="mx-auto max-w-6xl">
             <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
               <div className="max-w-lg">
-                <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-deep/70">Our services</p>
-                <h2 className="mt-2 text-4xl font-semibold leading-tight text-[#0c2340] sm:text-5xl">
+                <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">Our services</p>
+                <h2 className="mt-2 text-4xl font-semibold leading-tight text-foreground sm:text-5xl">
                   Comprehensive financial solutions
                 </h2>
-                <p className="mt-3 text-base leading-6 text-[#3a4d62]">
+                <p className="mt-3 text-base leading-6 text-muted-foreground">
                   We offer a full range of professional services tailored to your unique needs.
                 </p>
                 <Link
@@ -213,15 +213,15 @@ export default function PublicHomePage() {
               <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
                 {serviceHighlights.map(({ id, icon: Icon, title, detail, cardClassName, iconClassName, arrowClassName }) => (
                   <Link
-                    className={`group flex min-h-48 flex-col rounded-2xl border p-4 shadow-[0_8px_24px_rgba(18,59,109,0.04)] transition duration-200 hover:-translate-y-1 hover:shadow-md ${cardClassName}`}
+                    className={`homepage-service-card homepage-service-card-${id} group flex min-h-48 flex-col rounded-2xl border p-4 shadow-[0_8px_24px_rgba(18,59,109,0.04)] transition duration-200 hover:-translate-y-1 hover:shadow-md ${cardClassName}`}
                     href="/services"
                     key={id}
                   >
-                    <div className={`mb-4 flex h-11 w-11 items-center justify-center rounded-xl ${iconClassName}`}>
+                    <div className={`homepage-service-icon homepage-service-icon-${id} mb-4 flex h-11 w-11 items-center justify-center rounded-xl ${iconClassName}`}>
                       <Icon aria-hidden="true" className="h-6 w-6" strokeWidth={1.8} />
                     </div>
-                    <h3 className="font-sans text-base font-semibold leading-snug text-[#112a46]">{title}</h3>
-                    <p className="mt-2 font-sans text-xs leading-5 text-[#55657d]">{detail}</p>
+                    <h3 className="font-sans text-base font-semibold leading-snug text-foreground">{title}</h3>
+                    <p className="mt-2 font-sans text-xs leading-5 text-muted-foreground">{detail}</p>
                     <span className={`mt-auto ml-auto grid h-7 w-7 place-items-center rounded-full ${arrowClassName}`}>
                       <ArrowRight aria-hidden="true" className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                     </span>
@@ -234,14 +234,14 @@ export default function PublicHomePage() {
       </Reveal>
 
       <Reveal>
-        <section className="bg-white px-5 py-12 sm:px-6 sm:py-14 lg:px-8">
+        <section className="homepage-how-it-works bg-background px-5 py-12 sm:px-6 sm:py-14 lg:px-8">
           <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[0.82fr_1.18fr] lg:items-center">
             <div className="max-w-md">
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-deep/70">How it works</p>
-              <h2 className="mt-2 text-4xl font-semibold leading-tight text-[#0c2340] sm:text-5xl">
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">How it works</p>
+              <h2 className="mt-2 text-4xl font-semibold leading-tight text-foreground sm:text-5xl">
                 Getting started is simple
               </h2>
-              <p className="mt-3 text-base leading-6 text-[#3a4d62]">
+              <p className="mt-3 text-base leading-6 text-muted-foreground">
                 From your first consultation to the completion of your request, we make the process easy and transparent.
               </p>
               <Link className={buttonClassName({ className: "mt-5 rounded-lg", size: "sm", variant: "primary" })} href="/contact">
@@ -251,16 +251,16 @@ export default function PublicHomePage() {
             <ol className="grid gap-x-4 gap-y-7 sm:grid-cols-2 xl:grid-cols-4">
               {steps.map(({ id, icon: Icon, title, detail }, index) => (
                 <li className="relative flex flex-col items-start" key={id}>
-                  <div className="relative mb-4 grid h-14 w-14 place-items-center rounded-full bg-[#f0f4fa] text-brand-deep">
+                  <div className="relative mb-4 grid h-14 w-14 place-items-center rounded-full bg-muted text-primary">
                     <Icon aria-hidden="true" className="h-7 w-7" strokeWidth={1.8} />
                     <span className="absolute -left-2 bottom-0 grid h-5 w-5 place-items-center rounded-full border-2 border-white bg-[#092b4d] text-[10px] font-bold text-white">
                       {index + 1}
                     </span>
                   </div>
-                  <h3 className="font-sans text-sm font-semibold text-[#112a46]">{title}</h3>
-                  <p className="mt-1.5 font-sans text-xs leading-5 text-[#55657d]">{detail}</p>
+                  <h3 className="font-sans text-sm font-semibold text-foreground">{title}</h3>
+                  <p className="mt-1.5 font-sans text-xs leading-5 text-muted-foreground">{detail}</p>
                   {index < steps.length - 1 ? (
-                    <ArrowRight aria-hidden="true" className="absolute right-1 top-5 hidden h-4 w-4 text-brand-deep/75 xl:block" />
+                    <ArrowRight aria-hidden="true" className="absolute right-1 top-5 hidden h-4 w-4 text-primary xl:block" />
                   ) : null}
                 </li>
               ))}
