@@ -13,7 +13,6 @@ import {
   Headset,
   LockKeyhole,
   MessageSquareText,
-  Scale,
   ShieldCheck,
   TrendingUp,
   UsersRound,
@@ -139,7 +138,7 @@ export default function PublicHomePage() {
               <span>Accounting</span><span aria-hidden="true">|</span>
               <span>Financial consulting</span><span aria-hidden="true">|</span>
             </p>
-            <h1 className="mt-5 max-w-3xl font-serif text-[2.65rem] font-semibold leading-[1.04] tracking-[-0.045em] sm:text-6xl lg:text-7xl">
+            <h1 className="mt-5 max-w-3xl font-heading text-[2.65rem] font-semibold leading-[1.04] tracking-[-0.045em] sm:text-6xl lg:text-7xl">
               Smarter financial decisions for a{" "}
               <span className="text-brand-gold">stronger tomorrow.</span>
             </h1>

@@ -148,6 +148,7 @@ body[data-theme="dark"] {
   --color-info: var(--info);
   --color-info-soft: var(--info-soft);
   --font-sans: var(--font-inter);
+  --font-heading: var(--font-plus-jakarta-sans);
   --font-mono: var(--font-geist-mono);
 }
 
@@ -184,7 +185,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: var(--font-playfair-display), Georgia, serif;
+  font-family: var(--font-plus-jakarta-sans), Arial, Helvetica, sans-serif;
 }
 
 ::selection {

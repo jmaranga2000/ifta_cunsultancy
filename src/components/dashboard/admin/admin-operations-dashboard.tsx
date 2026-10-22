@@ -18,7 +18,6 @@ import type {
   OperationsDashboardData,
   StaffWorkload,
 } from "@/features/admin/operations-dashboard-data";
-import { cn } from "@/lib/utils";
 
 const kpiIcons = {
   "Pending engagement requests": Inbox,
@@ -124,12 +123,14 @@ export function AdminOperationsDashboard({ data }: { data: OperationsDashboardDa
 
   return (
     <div className="grid min-w-0 gap-6">
-      <section className={cn("rounded-xl border-2 p-6", waiting > 0 ? "border-primary bg-brand-soft" : "border-emerald-200 bg-emerald-50")}>
-        <p className="text-sm font-semibold text-muted-foreground">{dateLabel(data.generatedAt)}</p>
-        <h1 className="mt-1 text-2xl font-bold text-foreground md:text-3xl">
+      <section className="relative isolate overflow-hidden rounded-2xl border border-[#315783] bg-gradient-to-br from-[#071b30] via-[#0b2b4c] to-[#123b6d] p-5 text-white shadow-lg shadow-[#071b30]/15 sm:p-7">
+        <div aria-hidden="true" className="pointer-events-none absolute -right-20 -top-24 h-64 w-64 rounded-full bg-brand-gold/10 blur-3xl" />
+        <div className="relative">
+        <p className="text-sm font-semibold text-brand-gold">{dateLabel(data.generatedAt)}</p>
+        <h1 className="mt-1 text-2xl font-bold text-white md:text-3xl">
           {waiting > 0 ? `${waiting} ${waiting === 1 ? "thing needs" : "things need"} you` : "You are all caught up"}
         </h1>
-        <p className="mt-2 text-base text-muted-foreground">
+        <p className="mt-2 text-base text-white/80">
           {waiting > 0 ? "Start at the top. Each button opens the record." : "Nothing is waiting for your decision."}
         </p>
 
@@ -170,6 +171,7 @@ export function AdminOperationsDashboard({ data }: { data: OperationsDashboardDa
             </ul>
           </details>
         ) : null}
+        </div>
       </section>
 
       <section aria-label="Key numbers" className="grid grid-cols-2 gap-3 xl:grid-cols-3">

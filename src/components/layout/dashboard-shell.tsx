@@ -318,8 +318,7 @@ export function DashboardShell({
                   title={!showLabel ? item.label : undefined}
                   type="button"
                 >
-                  <span className="flex min-w-0 items-center gap-3">
-                    <NavigationIcon active={childActive} item={item} />
+                  <span className="flex min-w-0 items-center">
                     {showLabel ? <span className="truncate">{item.label}</span> : null}
                   </span>
                   {showLabel ? (
@@ -330,7 +329,7 @@ export function DashboardShell({
                   ) : null}
                 </button>
                 {groupOpen ? (
-                  <div className={cn("grid gap-1 py-1", showLabel && "ml-4 border-l border-white/15 pl-2")}>
+                  <div className={cn("grid gap-1 py-1", showLabel && "ml-4")}>
                     {renderNav(item.children, mobile, depth + 1)}
                   </div>
                 ) : null}
