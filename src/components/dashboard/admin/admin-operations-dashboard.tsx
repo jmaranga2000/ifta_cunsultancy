@@ -28,6 +28,33 @@ const kpiIcons = {
   "Client actions required": Users,
 };
 
+const kpiTones = {
+  "Pending engagement requests": {
+    icon: "bg-[#e8f0fc] text-[#285f9d]",
+    accent: "bg-[#4d81c4]",
+  },
+  "Active engagements": {
+    icon: "bg-[#e5f5ef] text-[#27815e]",
+    accent: "bg-[#39a879]",
+  },
+  "Pending KYC reviews": {
+    icon: "bg-[#f2ebff] text-[#7450aa]",
+    accent: "bg-[#8b68c5]",
+  },
+  "Outstanding invoices": {
+    icon: "bg-[#fff3df] text-[#ae7417]",
+    accent: "bg-[#d49a3e]",
+  },
+  "Overdue tasks": {
+    icon: "bg-[#ffebea] text-[#b94b48]",
+    accent: "bg-[#d46a62]",
+  },
+  "Client actions required": {
+    icon: "bg-[#e5f3f5] text-[#267783]",
+    accent: "bg-[#3c9aa6]",
+  },
+} as const;
+
 function dateLabel(value: string) {
   return new Intl.DateTimeFormat("en", {
     weekday: "long",
@@ -177,13 +204,28 @@ export function AdminOperationsDashboard({ data }: { data: OperationsDashboardDa
       <section aria-label="Key numbers" className="grid grid-cols-2 gap-3 xl:grid-cols-3">
         {data.kpis.map((kpi) => {
           const Icon = kpiIcons[kpi.label as keyof typeof kpiIcons] ?? Activity;
+          const tone = kpiTones[kpi.label as keyof typeof kpiTones] ?? {
+            icon: "bg-[#e8f0fc] text-[#285f9d]",
+            accent: "bg-[#4d81c4]",
+          };
           return (
-            <Link className="rounded-xl border border-border bg-card p-4 transition-colors hover:border-primary" href={kpi.href} key={kpi.label}>
-              <div className="flex items-center justify-between gap-2">
-                <span className="text-base font-semibold text-foreground">{kpi.label}</span>
-                <Icon aria-hidden="true" className="h-5 w-5 shrink-0 text-primary" />
+            <Link
+              className="group relative isolate overflow-hidden rounded-2xl border border-border bg-card p-4 shadow-sm transition duration-200 hover:-translate-y-0.5 hover:border-border-strong hover:shadow-md sm:p-5"
+              href={kpi.href}
+              key={kpi.label}
+            >
+              <span aria-hidden="true" className={`absolute inset-x-0 top-0 h-1 ${tone.accent}`} />
+              <div className="flex items-start justify-between gap-3">
+                <span className={`grid h-11 w-11 shrink-0 place-items-center rounded-xl ${tone.icon}`}>
+                  <Icon aria-hidden="true" className="h-5 w-5" strokeWidth={1.9} />
+                </span>
+                <ArrowUpRight
+                  aria-hidden="true"
+                  className="h-4 w-4 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                />
               </div>
-              <p className="mt-2 text-3xl font-bold text-foreground">{kpi.value}</p>
+              <p className="mt-5 text-sm font-medium leading-5 text-muted-foreground">{kpi.label}</p>
+              <p className="mt-1 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">{kpi.value}</p>
             </Link>
           );
         })}
