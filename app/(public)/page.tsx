@@ -64,15 +64,7 @@ const serviceHighlights = [
     iconClassName: "bg-[#f8ead1] text-[#c18425]",
     arrowClassName: "bg-[#d59a3d] text-white",
   },
-  {
-    id: "legal-regulatory",
-    icon: Scale,
-    title: "Legal & Regulatory Support",
-    detail: "Stay compliant. Reduce risk.",
-    cardClassName: "border-[#e2e3f2] bg-[#f0f1fa]",
-    iconClassName: "bg-[#e2e4f5] text-[#4e5ca8]",
-    arrowClassName: "bg-[#5967b8] text-white",
-  },
+ 
 ] as const;
 
 const steps = [
