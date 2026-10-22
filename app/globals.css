@@ -368,6 +368,17 @@ summary {
   background-color: #922f38 !important;
 }
 
+.ifta-button-success {
+  border-color: #167657 !important;
+  background-color: #167657 !important;
+  color: #ffffff !important;
+}
+
+.ifta-button-success:hover:not(:disabled) {
+  border-color: #125d45 !important;
+  background-color: #125d45 !important;
+}
+
 /* Shared badge tones keep their contrast in both themes. */
 .ifta-badge-neutral {
   border-color: var(--border-strong);

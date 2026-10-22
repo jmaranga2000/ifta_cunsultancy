@@ -154,7 +154,7 @@ export function ArchiveDetail({ data }: { data: ArchiveDetailData }) {
             </a>
             {record.archivePackageFileName ? (
               <a
-                className={buttonClassName()}
+                className={buttonClassName({ className: "ifta-button-success" })}
                 download={record.archivePackageFileName}
                 href={`/api/admin/archive/${record.id}/package`}
               >
