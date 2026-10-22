@@ -1,5 +1,6 @@
 import Link from "next/link";
 import {
+  ArrowUpRight,
   CalendarClock,
   ClipboardCheck,
   RefreshCw,
@@ -40,12 +41,12 @@ const summaryIcons = {
 } as const;
 
 const cardToneClasses: Record<KycDashboardData["summaryCards"][number]["tone"], string> = {
-  blue: "border-sky-200 bg-sky-50 text-sky-900",
-  amber: "border-amber-200 bg-amber-50 text-amber-900",
-  red: "border-red-200 bg-red-50 text-red-900",
-  purple: "border-purple-200 bg-purple-50 text-purple-900",
-  green: "border-emerald-200 bg-emerald-50 text-emerald-900",
-  orange: "border-orange-200 bg-orange-50 text-orange-900",
+  blue: "border-l-sky-500 bg-sky-500/10 text-sky-700 dark:text-sky-300",
+  amber: "border-l-amber-500 bg-amber-500/10 text-amber-700 dark:text-amber-300",
+  red: "border-l-red-500 bg-red-500/10 text-red-700 dark:text-red-300",
+  purple: "border-l-purple-500 bg-purple-500/10 text-purple-700 dark:text-purple-300",
+  green: "border-l-emerald-500 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300",
+  orange: "border-l-orange-500 bg-orange-500/10 text-orange-700 dark:text-orange-300",
 };
 
 function initials(name: string) {
@@ -102,25 +103,29 @@ export function KycReviewCentre({ data }: { data: KycDashboardData }) {
         </div>
       </section>
 
-      <section className="grid gap-px overflow-hidden rounded-md border border-border bg-border md:grid-cols-2 2xl:grid-cols-6">
+      <section aria-label="KYC summary" className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-6">
         {data.summaryCards.map((card) => {
           const Icon = summaryIcons[card.key as keyof typeof summaryIcons] ?? ClipboardCheck;
 
           return (
             <Link
-              className="bg-card p-4 transition-colors hover:bg-muted/40"
+              className="group min-w-0 rounded-xl border border-border border-l-4 bg-card p-4 shadow-sm transition duration-200 hover:-translate-y-0.5 hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
               href={card.href}
               key={card.key}
             >
-              <div className="flex items-start justify-between gap-3">
-                <span className={`grid h-9 w-9 place-items-center rounded-md border ${cardToneClasses[card.tone]}`}>
+              <div className="flex items-center justify-between gap-3">
+                <span className={`grid h-10 w-10 shrink-0 place-items-center rounded-lg ${cardToneClasses[card.tone]}`}>
                   <Icon aria-hidden="true" className="h-4 w-4" />
                 </span>
-                <Badge tone="slate">Open</Badge>
+                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-border text-muted-foreground transition-colors group-hover:border-primary group-hover:bg-primary group-hover:text-primary-foreground">
+                  <ArrowUpRight aria-hidden="true" className="h-4 w-4" />
+                </span>
               </div>
-              <p className="mt-4 text-sm font-semibold text-muted-foreground">{card.label}</p>
-              <p className="mt-2 text-2xl font-bold text-foreground">{card.value}</p>
-              <p className="mt-2 text-xs font-semibold text-foreground">{card.supportingMetric}</p>
+              <p className="mt-4 text-sm font-semibold leading-5 text-muted-foreground">{card.label}</p>
+              <p className="mt-1 text-3xl font-bold tracking-tight text-foreground">{card.value}</p>
+              <p className="mt-3 border-t border-border pt-3 text-xs font-semibold leading-5 text-foreground">
+                {card.supportingMetric}
+              </p>
               <p className="mt-1 text-xs leading-5 text-muted-foreground">{card.statusLine}</p>
             </Link>
           );

@@ -149,7 +149,7 @@ export function ArchiveTable({
                         <form action={permanentlyDeleteArchiveAction}>
                           {hiddenArchiveId(record.id)}
                           <button
-                            className={buttonClassName({ variant: "ghost", size: "sm" })}
+                            className={buttonClassName({ variant: "destructive", size: "sm" })}
                             disabled={Boolean(record.legalHoldStatus && record.legalHoldStatus !== "released")}
                             type="submit"
                           >
