@@ -8,8 +8,8 @@ const variantClasses: Record<ButtonVariant, string> = {
   primary: "ifta-button-primary",
   secondary: "ifta-button-secondary border",
   accent: "ifta-button-accent",
-  ghost: "text-foreground hover:bg-muted",
-  destructive: "bg-red-600 text-white hover:bg-red-700",
+  ghost: "ifta-button-primary",
+  destructive: "ifta-button-primary",
 };
 
 const sizeClasses: Record<ButtonSize, string> = {

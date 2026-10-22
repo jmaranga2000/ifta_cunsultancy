@@ -272,16 +272,16 @@ summary {
 }
 
 .ifta-button-secondary {
-  border-color: var(--border-strong) !important;
-  background-color: var(--secondary) !important;
-  color: var(--secondary-foreground) !important;
-  box-shadow: 0 1px 2px rgb(var(--shadow-color) / 0.08);
+  border-color: var(--primary) !important;
+  background-color: var(--primary) !important;
+  color: var(--primary-foreground) !important;
+  box-shadow: 0 1px 2px rgb(var(--shadow-color) / 0.14);
 }
 
 .ifta-button-secondary:hover:not(:disabled) {
-  border-color: var(--primary) !important;
-  background-color: var(--secondary-hover) !important;
-  color: var(--secondary-foreground) !important;
+  border-color: var(--primary-hover) !important;
+  background-color: var(--primary-hover) !important;
+  color: var(--primary-foreground) !important;
 }
 
 .ifta-button-accent {
