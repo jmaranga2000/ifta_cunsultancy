@@ -38,7 +38,13 @@ function getInitialTheme(): ThemeMode {
   return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 }
 
-export function ThemeToggle({ className }: { className?: string }) {
+export function ThemeToggle({
+  className,
+  variant = "default",
+}: {
+  className?: string;
+  variant?: "default" | "navbar";
+}) {
   const [theme, setTheme] = useState<ThemeMode>("light");
 
   useEffect(() => {
@@ -82,6 +88,52 @@ export function ThemeToggle({ className }: { className?: string }) {
       window.dispatchEvent(new CustomEvent(THEME_CHANGE_EVENT, { detail: nextTheme }));
       return nextTheme;
     });
+  }
+
+  function selectTheme(nextTheme: ThemeMode) {
+    setTheme(nextTheme);
+    applyTheme(nextTheme);
+    window.dispatchEvent(new CustomEvent(THEME_CHANGE_EVENT, { detail: nextTheme }));
+  }
+
+  if (variant === "navbar") {
+    return (
+      <div
+        aria-label="Color theme"
+        className={cn(
+          "inline-flex h-10 items-center rounded-full border border-white/15 bg-white/[0.06] p-1 font-sans",
+          className,
+        )}
+        role="group"
+      >
+        <button
+          aria-label="Use light theme"
+          aria-pressed={theme === "light"}
+          className={cn(
+            "grid h-8 w-8 place-items-center rounded-full transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-gold",
+            theme === "light" ? "bg-brand-gold text-[#10243b] shadow-sm" : "text-white/70 hover:bg-white/10 hover:text-white",
+          )}
+          onClick={() => selectTheme("light")}
+          title="Light theme"
+          type="button"
+        >
+          <Sun aria-hidden="true" className="h-4 w-4" />
+        </button>
+        <button
+          aria-label="Use dark theme"
+          aria-pressed={theme === "dark"}
+          className={cn(
+            "grid h-8 w-8 place-items-center rounded-full transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-gold",
+            theme === "dark" ? "bg-brand-gold text-[#10243b] shadow-sm" : "text-white/70 hover:bg-white/10 hover:text-white",
+          )}
+          onClick={() => selectTheme("dark")}
+          title="Dark theme"
+          type="button"
+        >
+          <Moon aria-hidden="true" className="h-4 w-4" />
+        </button>
+      </div>
+    );
   }
 
   return (

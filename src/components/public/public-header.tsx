@@ -90,7 +90,7 @@ export function PublicHeader() {
         </nav>
 
         <div className="hidden shrink-0 items-center gap-2 xl:flex">
-          <ThemeToggle className="border-white/20 text-white hover:bg-white/10" />
+          <ThemeToggle variant="navbar" />
           <Link
             aria-label="Open service cart"
             className="grid h-10 w-10 place-items-center rounded-md text-white/80 transition-colors hover:bg-white/10 hover:text-white"
@@ -134,7 +134,7 @@ export function PublicHeader() {
               </Link>
             ))}
             <div className="mt-3 grid grid-cols-2 gap-2 border-t border-white/15 pt-4">
-              <ThemeToggle className="w-full justify-center border-white/20 text-white" />
+              <ThemeToggle className="w-full justify-center" variant="navbar" />
               <Link className="inline-flex h-10 items-center justify-center gap-2 rounded-md border border-white/20 text-sm font-medium text-white" href="/cart" onClick={() => setMobileOpen(false)}>
                 <ShoppingCart aria-hidden="true" className="h-4 w-4" />
                 Service cart
