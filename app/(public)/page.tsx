@@ -4,13 +4,17 @@ import Link from "next/link";
 import {
   ArrowRight,
   BadgeCheck,
+  BriefcaseBusiness,
+  Calculator,
   CalendarDays,
   Check,
   FileCheck2,
   Headset,
   LockKeyhole,
   MessageSquareText,
+  Scale,
   ShieldCheck,
+  TrendingUp,
   UsersRound,
 } from "lucide-react";
 
@@ -33,11 +37,26 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-dynamic";
 
-const steps = [
-  { id: "choose", title: "Choose a service", text: "Pick what you need and add it to your cart." },
-  { id: "send", title: "Send your request", text: "Create a free account. You pay nothing yet." },
-  { id: "agree", title: "Agree the details", text: "We reply with a price. You approve and sign online." },
-  { id: "track", title: "Follow the work", text: "Share files, chat and see progress in one place." },
+const serviceHighlights = [
+  {
+    id: "tax-advisory",
+    icon: Calculator,
+    title: "Tax Advisory",
+    detail: "Minimise liabilities, maximise returns.",
+  },
+  {
+    id: "accounting-services",
+    icon: BriefcaseBusiness,
+    title: "Accounting Services",
+    detail: "Accurate records. Better decisions.",
+  },
+  {
+    id: "financial-consulting",
+    icon: TrendingUp,
+    title: "Financial Consulting",
+    detail: "Plan growth. Track performance.",
+  },
+ 
 ] as const;
 
 const reasons = [
@@ -106,7 +125,6 @@ export default async function PublicHomePage() {
               <span>Tax</span><span aria-hidden="true">|</span>
               <span>Accounting</span><span aria-hidden="true">|</span>
               <span>Financial consulting</span><span aria-hidden="true">|</span>
-              <span>Legal &amp; regulatory support</span>
             </p>
             <h1 className="mt-5 max-w-3xl font-serif text-[2.65rem] font-semibold leading-[1.04] tracking-[-0.045em] sm:text-6xl lg:text-7xl">
               Smarter financial decisions for a{" "}
@@ -162,18 +180,38 @@ export default async function PublicHomePage() {
       </section>
 
       <Reveal>
-        <section className="bg-background px-5 py-16 sm:px-6 lg:px-8">
+        <section className="bg-[#f7f7f5] px-5 py-16 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-6xl">
-            <h2 className="text-3xl font-bold text-foreground">How it works</h2>
-            <ol className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {steps.map((step, index) => (
-                <li className="rounded-xl border border-border bg-card p-6" key={step.id}>
-                  <span className="grid h-10 w-10 place-items-center rounded-full bg-primary text-lg font-bold text-primary-foreground">{index + 1}</span>
-                  <h3 className="mt-4 text-lg font-bold text-foreground">{step.title}</h3>
-                  <p className="mt-2 text-base leading-7 text-muted-foreground">{step.text}</p>
-                </li>
+            <div className="mb-10 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-deep/70">Our services</p>
+                <h2 className="mt-2 max-w-xl text-4xl font-semibold leading-tight text-[#0c2340] sm:text-5xl">
+                  Comprehensive financial solutions
+                </h2>
+              </div>
+              <p className="max-w-xl text-base leading-7 text-[#3a4d62]">
+                We offer a full range of professional services tailored to your unique needs.
+              </p>
+            </div>
+
+            <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+              {serviceHighlights.map(({ id, icon: Icon, title, detail }) => (
+                <div
+                  className="group rounded-[20px] border border-[#dfe7f4] bg-white p-5 shadow-[0_8px_24px_rgba(18,59,109,0.04)] transition-transform duration-200 hover:-translate-y-1"
+                  key={id}
+                >
+                  <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-xl bg-[#edf4ff] text-[#123b6d] shadow-inner">
+                    <Icon aria-hidden="true" className="h-7 w-7" strokeWidth={1.8} />
+                  </div>
+                  <h3 className="text-[1.05rem] font-semibold text-[#112a46]">{title}</h3>
+                  <p className="mt-2 text-sm leading-6 text-[#55657d]">{detail}</p>
+                  <div className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-[#123b6d]">
+                    <span>Learn more</span>
+                    <span className="grid h-7 w-7 place-items-center rounded-full border border-[#dfe7f4] bg-[#f8fafc] text-base transition-transform group-hover:translate-x-1">→</span>
+                  </div>
+                </div>
               ))}
-            </ol>
+            </div>
           </div>
         </section>
       </Reveal>
