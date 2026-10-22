@@ -8,6 +8,10 @@
   --brand-mist: #c7d9f2;
   --brand-mist-strong: #a9c5e8;
   --brand-soft: #eaf1fb;
+  --brand-gold: #f2bf68;
+  --brand-gold-hover: #ffd486;
+  --brand-gold-deep: #9a6415;
+  --brand-gold-soft: #fff5df;
 
   /* Light theme surfaces and type */
   --background: #f6f8fc;
@@ -27,15 +31,15 @@
   --secondary: #ffffff;
   --secondary-hover: #eef3fa;
   --secondary-foreground: #123b6d;
-  --accent: #276bb0;
-  --accent-hover: #1d568f;
-  --accent-foreground: #ffffff;
+  --accent: #9a6415;
+  --accent-hover: #80520f;
+  --accent-foreground: #10243b;
 
   /* Borders, fields and focus */
   --border: #d6e0ed;
   --border-strong: #afc2dc;
   --input: #ffffff;
-  --ring: #276bb0;
+  --ring: #9a6415;
 
   /* Supporting semantic colors */
   --success: #167657;
@@ -51,7 +55,7 @@
   --sidebar-background: #123b6d;
   --sidebar-foreground: #f3f7ff;
   --sidebar-muted: #c7d9f2;
-  --sidebar-active: #c7d9f2;
+  --sidebar-active: #f2bf68;
   --sidebar-active-foreground: #123b6d;
   --sidebar-border: #315783;
 
@@ -71,6 +75,8 @@ body[data-theme="dark"] {
   --surface-raised: #17304f;
   --muted: #18314e;
   --muted-foreground: #b2c3da;
+  --brand-gold-deep: #f2bf68;
+  --brand-gold-soft: #3c301d;
 
   --primary: #c7d9f2;
   --primary-hover: #d9e6f8;
@@ -79,14 +85,14 @@ body[data-theme="dark"] {
   --secondary: #122945;
   --secondary-hover: #1a385d;
   --secondary-foreground: #edf3fc;
-  --accent: #9fc5f2;
-  --accent-hover: #bad5f5;
-  --accent-foreground: #123b6d;
+  --accent: #f2bf68;
+  --accent-hover: #ffd486;
+  --accent-foreground: #10243b;
 
   --border: #29415f;
   --border-strong: #3b5a7e;
   --input: #0d2038;
-  --ring: #9fc5f2;
+  --ring: #f2bf68;
 
   --success: #70d7ad;
   --success-soft: #103b31;
@@ -100,7 +106,7 @@ body[data-theme="dark"] {
   --sidebar-background: #0c2e59;
   --sidebar-foreground: #f3f7ff;
   --sidebar-muted: #c7d9f2;
-  --sidebar-active: #c7d9f2;
+  --sidebar-active: #f2bf68;
   --sidebar-active-foreground: #123b6d;
   --sidebar-border: #294a73;
   --shadow-color: 0 0 0;
@@ -129,6 +135,10 @@ body[data-theme="dark"] {
   --color-brand-mist: var(--brand-mist);
   --color-brand-mist-strong: var(--brand-mist-strong);
   --color-brand-soft: var(--brand-soft);
+  --color-brand-gold: var(--brand-gold);
+  --color-brand-gold-hover: var(--brand-gold-hover);
+  --color-brand-gold-deep: var(--brand-gold-deep);
+  --color-brand-gold-soft: var(--brand-gold-soft);
   --color-success: var(--success);
   --color-success-soft: var(--success-soft);
   --color-warning: var(--warning);
@@ -274,25 +284,25 @@ summary {
 }
 
 .ifta-button-accent {
-  border-color: var(--brand-mist) !important;
-  background-color: var(--brand-mist) !important;
-  color: var(--brand-deep) !important;
+  border-color: var(--brand-gold) !important;
+  background-color: var(--brand-gold) !important;
+  color: #10243b !important;
 }
 
 .ifta-button-accent:hover:not(:disabled) {
-  border-color: var(--brand-mist-strong) !important;
-  background-color: var(--brand-mist-strong) !important;
+  border-color: var(--brand-gold-hover) !important;
+  background-color: var(--brand-gold-hover) !important;
 }
 
 .ifta-button-gold {
-  border-color: #f2bf68 !important;
-  background-color: #f2bf68 !important;
+  border-color: var(--brand-gold) !important;
+  background-color: var(--brand-gold) !important;
   color: #10243b !important;
 }
 
 .ifta-button-gold:hover:not(:disabled) {
-  border-color: #ffd486 !important;
-  background-color: #ffd486 !important;
+  border-color: var(--brand-gold-hover) !important;
+  background-color: var(--brand-gold-hover) !important;
 }
 
 /* Shared badge tones keep their contrast in both themes. */
@@ -303,9 +313,9 @@ summary {
 }
 
 .ifta-badge-brand {
-  border-color: var(--brand-mist-strong);
-  background: var(--brand-soft);
-  color: var(--brand-deep);
+  border-color: var(--brand-gold);
+  background: var(--brand-gold-soft);
+  color: var(--brand-gold-deep);
 }
 
 .ifta-badge-success {

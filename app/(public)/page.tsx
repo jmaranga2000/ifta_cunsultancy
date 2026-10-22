@@ -98,11 +98,11 @@ export default async function PublicHomePage() {
         />
         <div className="absolute inset-0 bg-gradient-to-r from-[#06182b]/95 via-[#09223c]/90 via-55% to-[#09223c]/35" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#06182b]/80 via-transparent to-[#06182b]/15" />
-        <div aria-hidden="true" className="absolute inset-y-0 left-[58%] hidden w-px rotate-[29deg] bg-gradient-to-b from-transparent via-[#e9b65c]/80 to-transparent lg:block" />
+        <div aria-hidden="true" className="absolute inset-y-0 left-[58%] hidden w-px rotate-[29deg] bg-gradient-to-b from-transparent via-brand-gold/80 to-transparent lg:block" />
         <div className="relative mx-auto flex w-full max-w-7xl flex-1 flex-col justify-center px-5 pb-12 pt-16 sm:px-8 sm:pb-16 sm:pt-20 lg:px-10 lg:pb-14 lg:pt-20">
           <div className="max-w-3xl">
-            <p className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[11px] font-bold uppercase tracking-[0.12em] text-[#f2bf68] sm:text-xs sm:tracking-[0.16em]">
-              <span aria-hidden="true" className="h-px w-5 bg-[#f2bf68]" />
+            <p className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[11px] font-bold uppercase tracking-[0.12em] text-brand-gold sm:text-xs sm:tracking-[0.16em]">
+              <span aria-hidden="true" className="h-px w-5 bg-brand-gold" />
               <span>Tax</span><span aria-hidden="true">|</span>
               <span>Accounting</span><span aria-hidden="true">|</span>
               <span>Financial consulting</span><span aria-hidden="true">|</span>
@@ -110,7 +110,7 @@ export default async function PublicHomePage() {
             </p>
             <h1 className="mt-5 max-w-3xl font-serif text-[2.65rem] font-semibold leading-[1.04] tracking-[-0.045em] sm:text-6xl lg:text-7xl">
               Smarter financial decisions for a{" "}
-              <span className="text-[#f2bf68]">stronger tomorrow.</span>
+              <span className="text-brand-gold">stronger tomorrow.</span>
             </h1>
             <p className="mt-6 max-w-2xl text-base leading-7 text-white/85 sm:text-lg sm:leading-8">
               IFTA Consulting provides expert tax advisory, accounting and financial consulting to help
@@ -119,7 +119,7 @@ export default async function PublicHomePage() {
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link
                 className={buttonClassName({
-                  className: "ifta-button-gold h-13 rounded-xl px-6 shadow-[0_8px_24px_rgba(242,191,104,0.2)]",
+                  className: "h-13 rounded-xl px-6 shadow-[0_8px_24px_rgba(242,191,104,0.2)]",
                   size: "lg",
                   variant: "accent",
                 })}
@@ -150,7 +150,7 @@ export default async function PublicHomePage() {
                 className={`flex min-h-32 items-center gap-3 px-3 py-5 sm:gap-4 sm:px-5 sm:py-6 lg:min-h-28 ${index % 2 === 1 ? "border-l border-white/20" : ""} ${index > 1 ? "border-t border-white/20 lg:border-t-0" : ""} ${index > 0 && index % 2 === 0 ? "lg:border-l" : ""}`}
                 key={id}
               >
-                <Icon aria-hidden="true" className="h-8 w-8 shrink-0 text-[#f2bf68] sm:h-9 sm:w-9" strokeWidth={1.5} />
+                <Icon aria-hidden="true" className="h-8 w-8 shrink-0 text-brand-gold sm:h-9 sm:w-9" strokeWidth={1.5} />
                 <div>
                   <h2 className="text-sm font-semibold leading-snug text-white sm:text-base">{title}</h2>
                   <p className="mt-1.5 text-xs leading-5 text-white/65 sm:text-sm">{detail}</p>

@@ -100,7 +100,7 @@ export function PublicFooter() {
             className={buttonClassName({
               size: "lg",
               className:
-                "group shrink-0 self-start md:self-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-brand-deep",
+                "ifta-button-accent group shrink-0 self-start md:self-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-brand-deep",
             })}
           >
             Request a consultation

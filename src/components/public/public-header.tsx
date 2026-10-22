@@ -25,7 +25,7 @@ const resourceNav = [
 
 const consultationButtonClass = buttonClassName({
   className:
-    "ifta-button-gold h-10 rounded-lg px-4 text-sm",
+    "ifta-button-accent h-10 rounded-lg px-4 text-sm",
   size: "sm",
   variant: "accent",
 });
@@ -63,7 +63,7 @@ export function PublicHeader() {
               className={cn(
                 "relative rounded-md px-2.5 py-2 text-[13px] font-medium transition-colors",
                 isActive(item.href)
-                  ? "text-white after:absolute after:inset-x-2.5 after:-bottom-1 after:h-0.5 after:bg-[#f2bf68]"
+                  ? "text-white after:absolute after:inset-x-2.5 after:-bottom-1 after:h-0.5 after:bg-brand-gold"
                   : "text-white/75 hover:text-white",
               )}
               href={item.href}
@@ -124,7 +124,7 @@ export function PublicHeader() {
                 aria-current={isActive(item.href) ? "page" : undefined}
                 className={cn(
                   "rounded-md px-3 py-2.5 text-sm font-medium transition-colors",
-                  isActive(item.href) ? "bg-white/10 text-[#f2bf68]" : "text-white/80 hover:bg-white/10 hover:text-white",
+                  isActive(item.href) ? "bg-white/10 text-brand-gold" : "text-white/80 hover:bg-white/10 hover:text-white",
                 )}
                 href={item.href}
                 key={item.href}

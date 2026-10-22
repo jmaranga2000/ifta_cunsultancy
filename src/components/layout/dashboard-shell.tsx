@@ -158,7 +158,7 @@ function NavigationIcon({ item, active }: { item: DashboardNavItem; active: bool
     <span
       className={cn(
         "grid h-8 w-8 shrink-0 place-items-center rounded-md text-xs font-bold",
-        active ? "bg-brand-mist text-brand-deep" : "bg-white/10 text-brand-mist",
+        active ? "bg-brand-gold text-brand-deep" : "bg-white/10 text-brand-mist",
       )}
     >
       {Icon ? <Icon aria-hidden="true" className="h-4 w-4" /> : item.symbol}
@@ -344,7 +344,7 @@ export function DashboardShell({
                 "flex min-h-12 items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-base font-medium",
                 depth > 0 && showLabel && "pl-5",
                 active
-                  ? "bg-brand-mist text-brand-deep shadow-sm"
+                  ? "bg-brand-gold text-brand-deep shadow-sm"
                   : "text-white/72 hover:bg-white/10 hover:text-white",
               )}
               href={item.href ?? homeHref}
