@@ -52,31 +52,54 @@ export function AdminEngagementDashboardSection({
     )
     .slice(0, 8);
   const metrics = [
-    { label: "Active engagements", value: active.length, icon: BriefcaseBusiness, href: "/admin/active-engagements" },
-    { label: "Deliverables awaiting approval", value: enhancements.deliverablesAwaitingApproval, icon: ScanSearch, href: "/admin/active-engagements?health=waiting_for_review" },
-    { label: "Deliverables released today", value: enhancements.deliverablesReleasedToday, icon: CheckCircle2, href: "/admin/documents?kind=final_deliverable&status=released" },
-    { label: "Waiting for client", value: awaitingClient, icon: MessageSquareWarning, href: "/admin/active-engagements?health=waiting_for_client" },
-    { label: "Waiting for review", value: awaitingReview, icon: Clock3, href: "/admin/active-engagements?health=waiting_for_review" },
-    { label: "Overdue engagements", value: overdue, icon: CircleDollarSign, href: "/admin/active-engagements?health=overdue" },
-  ];
+    { label: "Active engagements", value: active.length, icon: BriefcaseBusiness, href: "/admin/active-engagements", tone: "blue" },
+    { label: "Deliverables awaiting approval", value: enhancements.deliverablesAwaitingApproval, icon: ScanSearch, href: "/admin/active-engagements?health=waiting_for_review", tone: "violet" },
+    { label: "Deliverables released today", value: enhancements.deliverablesReleasedToday, icon: CheckCircle2, href: "/admin/documents?kind=final_deliverable&status=released", tone: "green" },
+    { label: "Waiting for client", value: awaitingClient, icon: MessageSquareWarning, href: "/admin/active-engagements?health=waiting_for_client", tone: "amber" },
+    { label: "Waiting for review", value: awaitingReview, icon: Clock3, href: "/admin/active-engagements?health=waiting_for_review", tone: "cyan" },
+    { label: "Overdue engagements", value: overdue, icon: CircleDollarSign, href: "/admin/active-engagements?health=overdue", tone: "rose" },
+  ] as const;
+  const metricToneClasses = {
+    blue: "bg-[#eaf1fb] text-[#285f9d]",
+    violet: "bg-[#f1ebfa] text-[#7552a6]",
+    green: "bg-[#e8f5ee] text-[#27815e]",
+    amber: "bg-[#fff3df] text-[#ae7417]",
+    cyan: "bg-[#e7f4f5] text-[#267783]",
+    rose: "bg-[#fceceb] text-[#b94b48]",
+  } as const;
 
   return (
     <Card className="min-w-0 overflow-hidden shadow-none">
-      <CardHeader className="flex flex-col justify-between gap-3 border-b border-border md:flex-row md:items-start">
-        <div>
-          <CardTitle>Engagement delivery</CardTitle>
-          <CardDescription className="mt-1">Current work, decisions, client tasks and payments.</CardDescription>
+      <CardHeader className="relative isolate flex flex-col justify-between gap-4 overflow-hidden border-b border-[#315783] bg-gradient-to-br from-[#071b30] via-[#0b2b4c] to-[#123b6d] px-5 py-5 text-white sm:px-6 md:flex-row md:items-center">
+        <div aria-hidden="true" className="pointer-events-none absolute -right-12 -top-20 h-48 w-48 rounded-full bg-brand-gold/10 blur-3xl" />
+        <div className="relative">
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand-gold">Operations overview</p>
+          <CardTitle className="mt-1 text-xl text-white sm:text-2xl">Engagement delivery</CardTitle>
+          <CardDescription className="mt-1 text-sm text-white/75">Current work, decisions, client tasks and payments.</CardDescription>
         </div>
-        <Link className={buttonClassName({ variant: "secondary", size: "sm" })} href="/admin/active-engagements">View all engagements</Link>
+        <Link className={buttonClassName({ className: "relative border-brand-gold bg-brand-gold text-[#10243b] shadow-sm hover:border-brand-gold-hover hover:bg-brand-gold-hover", variant: "accent", size: "sm" })} href="/admin/active-engagements">
+          View all engagements
+          <ArrowUpRight aria-hidden="true" className="h-4 w-4" />
+        </Link>
       </CardHeader>
       <CardContent className="p-0">
-        <div className="grid border-b border-border sm:grid-cols-2 xl:grid-cols-6">
-          {metrics.map((item, index) => {
+        <div className="grid gap-3 border-b border-border bg-surface-subtle p-4 sm:grid-cols-2 xl:grid-cols-3 xl:p-5">
+          {metrics.map((item) => {
             const Icon = item.icon;
             return (
-              <Link className={`flex items-center gap-3 px-4 py-3 transition-colors hover:bg-muted/30 ${index > 0 ? "border-t border-border sm:border-l xl:border-t-0" : ""}`} href={item.href} key={item.label}>
-                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-md bg-brand-soft text-primary"><Icon aria-hidden="true" className="h-4 w-4" /></span>
-                <div className="min-w-0"><p className="text-xl font-bold text-foreground">{item.value}</p><p className="text-xs font-medium text-muted-foreground">{item.label}</p></div>
+              <Link
+                className="group flex min-h-24 items-center gap-3 rounded-xl border border-border bg-card p-4 shadow-sm transition duration-200 hover:-translate-y-0.5 hover:border-border-strong hover:shadow-md"
+                href={item.href}
+                key={item.label}
+              >
+                <span className={`grid h-11 w-11 shrink-0 place-items-center rounded-xl ${metricToneClasses[item.tone]}`}>
+                  <Icon aria-hidden="true" className="h-5 w-5" strokeWidth={1.9} />
+                </span>
+                <div className="min-w-0 flex-1">
+                  <p className="text-2xl font-bold leading-none tracking-tight text-foreground">{item.value}</p>
+                  <p className="mt-2 text-xs font-medium leading-4 text-muted-foreground">{item.label}</p>
+                </div>
+                <ArrowUpRight aria-hidden="true" className="h-4 w-4 shrink-0 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
               </Link>
             );
           })}
