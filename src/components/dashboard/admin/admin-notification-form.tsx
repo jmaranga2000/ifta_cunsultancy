@@ -27,16 +27,17 @@ export function AdminNotificationForm({
   submitLabel: string;
 }) {
   return (
-    <div>
+    <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
       <form action={action}>
         {notification ? (
           <input name="notificationId" type="hidden" value={notification.id} />
         ) : null}
 
-        <div className="grid gap-6 p-5 lg:grid-cols-[minmax(0,1fr)_320px]">
-          <section className="grid content-start gap-5">
-            <div>
-              <h2 className="text-base font-bold text-foreground">Message</h2>
+        <div className="grid gap-5 p-3 sm:gap-6 sm:p-6 lg:grid-cols-[minmax(0,1fr)_320px]">
+          <section className="grid content-start gap-5 rounded-xl border border-border bg-background p-4 sm:p-5">
+            <div className="border-b border-border pb-4">
+              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-primary">Notification content</p>
+              <h2 className="mt-1 text-lg font-bold text-foreground">Message</h2>
               <p className="mt-1 text-sm leading-6 text-muted-foreground">
                 Write one clear update. Recipients will see this in their notification inbox.
               </p>
@@ -100,8 +101,9 @@ export function AdminNotificationForm({
             </div>
           </section>
 
-          <aside className="grid content-start gap-5 rounded-md border border-border bg-muted/20 p-4">
+          <aside className="grid content-start gap-5 rounded-xl border border-border bg-surface-subtle p-4 sm:p-5">
             <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-primary">Audience &amp; delivery</p>
               <h2 className="text-base font-bold text-foreground">Delivery</h2>
               <p className="mt-1 text-sm leading-6 text-muted-foreground">
                 Choose who receives this notification and how it is presented.
@@ -187,7 +189,7 @@ export function AdminNotificationForm({
           </aside>
         </div>
 
-        <div className="flex flex-col-reverse gap-2 border-t border-border bg-muted/20 p-4 sm:flex-row sm:justify-end">
+        <div className="flex flex-col-reverse gap-2 border-t border-border bg-surface-subtle p-3 sm:flex-row sm:justify-end sm:p-4">
           <Link
             className={buttonClassName({
               className: "w-full sm:w-auto",
@@ -205,11 +207,11 @@ export function AdminNotificationForm({
       </form>
 
       {notification && archiveAction ? (
-        <div className="border-t border-border p-4">
+        <div className="border-t border-danger/30 bg-danger-soft/40 p-3 sm:p-4">
           <form action={archiveAction} className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
             <input name="notificationId" type="hidden" value={notification.id} />
             <div>
-              <p className="text-sm font-semibold text-foreground">Delete this notification</p>
+              <p className="text-sm font-semibold text-danger">Delete this notification</p>
               <p className="mt-1 text-xs leading-5 text-muted-foreground">
                 It will be removed from every client and staff inbox.
               </p>

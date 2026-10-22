@@ -105,9 +105,9 @@ export function AdminEngagementDashboardSection({
           })}
         </div>
 
-        <div className="grid gap-3 p-4 md:hidden">
+        <div className="grid w-full min-w-0 gap-3 p-1 sm:p-3 md:hidden">
           {recent.map((workflow) => (
-            <article className="rounded-md border border-border p-4" key={workflow.id}>
+            <article className="w-full min-w-0 rounded-xl border border-border bg-card p-3 shadow-sm sm:p-4" key={workflow.id}>
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0"><p className="font-mono text-xs font-semibold text-primary">{workflow.reference}</p><p className="mt-1 truncate font-semibold text-foreground">{workflow.clientName}</p><p className="mt-1 text-sm text-muted-foreground">{workflow.serviceName}</p></div>
                 <Badge tone={getEngagementHealth(workflow).tone}>{getEngagementHealth(workflow).label}</Badge>

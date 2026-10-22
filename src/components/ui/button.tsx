@@ -9,7 +9,7 @@ const variantClasses: Record<ButtonVariant, string> = {
   secondary: "ifta-button-secondary border",
   accent: "ifta-button-accent",
   ghost: "ifta-button-primary",
-  destructive: "ifta-button-primary",
+  destructive: "ifta-button-destructive",
 };
 
 const sizeClasses: Record<ButtonSize, string> = {
