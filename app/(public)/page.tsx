@@ -8,6 +8,7 @@ import {
   Calculator,
   CalendarDays,
   Check,
+  CircleCheck,
   FileCheck2,
   Headset,
   LockKeyhole,
@@ -20,8 +21,6 @@ import {
 
 import { buttonClassName } from "@/components/ui/button";
 import { Reveal } from "@/components/ui/reveal";
-import { serviceImageSource } from "@/features/services/presentation";
-import { listServices } from "@/repositories/service-catalog-repository";
 
 export const metadata: Metadata = {
   title: "Tax, Accounting and Finance Help | IFTA Consulting",
@@ -43,27 +42,51 @@ const serviceHighlights = [
     icon: Calculator,
     title: "Tax Advisory",
     detail: "Minimise liabilities, maximise returns.",
+    cardClassName: "border-[#dce8f5] bg-[#edf5fc]",
+    iconClassName: "bg-[#dceafa] text-[#16477c]",
+    arrowClassName: "bg-[#16477c] text-white",
   },
   {
     id: "accounting-services",
     icon: BriefcaseBusiness,
     title: "Accounting Services",
     detail: "Accurate records. Better decisions.",
+    cardClassName: "border-[#deebe2] bg-[#eff7f0]",
+    iconClassName: "bg-[#deeee0] text-[#4b8967]",
+    arrowClassName: "bg-[#4b8967] text-white",
   },
   {
     id: "financial-consulting",
     icon: TrendingUp,
     title: "Financial Consulting",
     detail: "Plan growth. Track performance.",
+    cardClassName: "border-[#f0e5d5] bg-[#fbf4e9]",
+    iconClassName: "bg-[#f8ead1] text-[#c18425]",
+    arrowClassName: "bg-[#d59a3d] text-white",
   },
- 
+  {
+    id: "legal-regulatory",
+    icon: Scale,
+    title: "Legal & Regulatory Support",
+    detail: "Stay compliant. Reduce risk.",
+    cardClassName: "border-[#e2e3f2] bg-[#f0f1fa]",
+    iconClassName: "bg-[#e2e4f5] text-[#4e5ca8]",
+    arrowClassName: "bg-[#5967b8] text-white",
+  },
+] as const;
+
+const steps = [
+  { id: "choose", icon: CalendarDays, title: "Select a Service", detail: "Choose the service that fits your needs." },
+  { id: "request", icon: FileCheck2, title: "Submit Request", detail: "Fill in the form and upload your documents." },
+  { id: "track", icon: MessageSquareText, title: "Track Progress", detail: "Stay updated through your client portal." },
+  { id: "results", icon: CircleCheck, title: "Get Results", detail: "We handle the rest and deliver with care." },
 ] as const;
 
 const reasons = [
-  { id: "clear", icon: FileCheck2, title: "Clear price and scope", text: "You know what you get before work starts." },
-  { id: "checked", icon: ShieldCheck, title: "Checked by experts", text: "Every piece of work is reviewed before you see it." },
-  { id: "safe", icon: LockKeyhole, title: "Your files stay private", text: "Only you and your IFTA team can open them." },
-  { id: "chat", icon: MessageSquareText, title: "Answers when you need them", text: "Message your team from the portal any time." },
+  { id: "expertise", icon: BadgeCheck, title: "Professional Expertise", text: "Skilled professionals with industry experience." },
+  { id: "transparency", icon: TrendingUp, title: "Transparency", text: "Clear communication. No hidden costs." },
+  { id: "confidentiality", icon: LockKeyhole, title: "Confidentiality", text: "Your information is always secure." },
+  { id: "support", icon: Headset, title: "Client Support", text: "Dedicated support when you need it." },
 ] as const;
 
 const faqs = [
@@ -100,9 +123,7 @@ const heroHighlights = [
   },
 ] as const;
 
-export default async function PublicHomePage() {
-  const services = (await listServices({ publishedOnly: true })).slice(0, 6);
-
+export default function PublicHomePage() {
   return (
     <main>
       <section className="relative isolate flex min-h-[calc(100svh-4.5rem)] flex-col overflow-hidden bg-[#071b30] text-white">
@@ -180,98 +201,123 @@ export default async function PublicHomePage() {
       </section>
 
       <Reveal>
-        <section className="bg-[#f7f7f5] px-5 py-16 sm:px-6 lg:px-8">
+        <section className="bg-[#fbfaf7] px-5 py-12 sm:px-6 sm:py-14 lg:px-8">
           <div className="mx-auto max-w-6xl">
-            <div className="mb-10 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-              <div>
+            <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
+              <div className="max-w-lg">
                 <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-deep/70">Our services</p>
-                <h2 className="mt-2 max-w-xl text-4xl font-semibold leading-tight text-[#0c2340] sm:text-5xl">
+                <h2 className="mt-2 text-4xl font-semibold leading-tight text-[#0c2340] sm:text-5xl">
                   Comprehensive financial solutions
                 </h2>
-              </div>
-              <p className="max-w-xl text-base leading-7 text-[#3a4d62]">
-                We offer a full range of professional services tailored to your unique needs.
-              </p>
-            </div>
-
-            <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-              {serviceHighlights.map(({ id, icon: Icon, title, detail }) => (
-                <div
-                  className="group rounded-[20px] border border-[#dfe7f4] bg-white p-5 shadow-[0_8px_24px_rgba(18,59,109,0.04)] transition-transform duration-200 hover:-translate-y-1"
-                  key={id}
+                <p className="mt-3 text-base leading-6 text-[#3a4d62]">
+                  We offer a full range of professional services tailored to your unique needs.
+                </p>
+                <Link
+                  className={buttonClassName({ className: "mt-5 rounded-lg border-brand-gold/70 text-brand-deep hover:bg-brand-gold-soft", size: "sm", variant: "outline" })}
+                  href="/services"
                 >
-                  <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-xl bg-[#edf4ff] text-[#123b6d] shadow-inner">
-                    <Icon aria-hidden="true" className="h-7 w-7" strokeWidth={1.8} />
-                  </div>
-                  <h3 className="text-[1.05rem] font-semibold text-[#112a46]">{title}</h3>
-                  <p className="mt-2 text-sm leading-6 text-[#55657d]">{detail}</p>
-                  <div className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-[#123b6d]">
-                    <span>Learn more</span>
-                    <span className="grid h-7 w-7 place-items-center rounded-full border border-[#dfe7f4] bg-[#f8fafc] text-base transition-transform group-hover:translate-x-1">→</span>
-                  </div>
-                </div>
-              ))}
+                  View all services <ArrowRight aria-hidden="true" className="h-4 w-4" />
+                </Link>
+              </div>
+              <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+                {serviceHighlights.map(({ id, icon: Icon, title, detail, cardClassName, iconClassName, arrowClassName }) => (
+                  <Link
+                    className={`group flex min-h-48 flex-col rounded-2xl border p-4 shadow-[0_8px_24px_rgba(18,59,109,0.04)] transition duration-200 hover:-translate-y-1 hover:shadow-md ${cardClassName}`}
+                    href="/services"
+                    key={id}
+                  >
+                    <div className={`mb-4 flex h-11 w-11 items-center justify-center rounded-xl ${iconClassName}`}>
+                      <Icon aria-hidden="true" className="h-6 w-6" strokeWidth={1.8} />
+                    </div>
+                    <h3 className="text-base font-semibold leading-snug text-[#112a46]">{title}</h3>
+                    <p className="mt-2 text-xs leading-5 text-[#55657d]">{detail}</p>
+                    <span className={`mt-auto ml-auto grid h-7 w-7 place-items-center rounded-full ${arrowClassName}`}>
+                      <ArrowRight aria-hidden="true" className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                    </span>
+                  </Link>
+                ))}
+              </div>
             </div>
           </div>
         </section>
       </Reveal>
 
-      {services.length > 0 ? (
-        <Reveal>
-          <section className="bg-surface-subtle px-5 py-16 sm:px-6 lg:px-8">
-            <div className="mx-auto max-w-6xl">
-              <div className="flex flex-wrap items-end justify-between gap-4">
-                <h2 className="text-3xl font-bold text-foreground">What we can do for you</h2>
-                <Link className="inline-flex items-center gap-2 font-bold text-primary hover:underline" href="/services">
-                  See all services <ArrowRight aria-hidden="true" className="h-4 w-4" />
-                </Link>
-              </div>
-              <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {services.map((service, index) => (
-                  <Link
-                    className="group overflow-hidden rounded-xl border border-border bg-card transition hover:-translate-y-1 hover:shadow-lg"
-                    href={`/services#${service.slug}`}
-                    key={service.id}
-                  >
-                    <div className="relative aspect-[16/9] bg-muted">
-                      <Image
-                        alt={service.imageAlt}
-                        className="object-cover"
-                        fill
-                        sizes="(min-width: 1024px) 33vw, 100vw"
-                        src={serviceImageSource(service, index)}
-                      />
-                    </div>
-                    <div className="p-5">
-                      <h3 className="text-xl font-bold text-foreground">{service.title}</h3>
-                      <p className="mt-2 text-base leading-7 text-muted-foreground">{service.summary}</p>
-                      <span className="mt-4 inline-flex items-center gap-2 font-bold text-primary">
-                        Learn more <ArrowRight aria-hidden="true" className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                      </span>
-                    </div>
-                  </Link>
-                ))}
-              </div>
+      <Reveal>
+        <section className="bg-white px-5 py-12 sm:px-6 sm:py-14 lg:px-8">
+          <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[0.82fr_1.18fr] lg:items-center">
+            <div className="max-w-md">
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-deep/70">How it works</p>
+              <h2 className="mt-2 text-4xl font-semibold leading-tight text-[#0c2340] sm:text-5xl">
+                Getting started is simple
+              </h2>
+              <p className="mt-3 text-base leading-6 text-[#3a4d62]">
+                From your first consultation to the completion of your request, we make the process easy and transparent.
+              </p>
+              <Link className={buttonClassName({ className: "mt-5 rounded-lg", size: "sm", variant: "primary" })} href="/contact">
+                Book a consultation <ArrowRight aria-hidden="true" className="h-4 w-4" />
+              </Link>
             </div>
-          </section>
-        </Reveal>
-      ) : null}
+            <ol className="grid gap-x-4 gap-y-7 sm:grid-cols-2 xl:grid-cols-4">
+              {steps.map(({ id, icon: Icon, title, detail }, index) => (
+                <li className="relative flex flex-col items-start" key={id}>
+                  <div className="relative mb-4 grid h-14 w-14 place-items-center rounded-full bg-[#f0f4fa] text-brand-deep">
+                    <Icon aria-hidden="true" className="h-7 w-7" strokeWidth={1.8} />
+                    <span className="absolute -left-2 bottom-0 grid h-5 w-5 place-items-center rounded-full border-2 border-white bg-[#092b4d] text-[10px] font-bold text-white">
+                      {index + 1}
+                    </span>
+                  </div>
+                  <h3 className="text-sm font-semibold text-[#112a46]">{title}</h3>
+                  <p className="mt-1.5 text-xs leading-5 text-[#55657d]">{detail}</p>
+                  {index < steps.length - 1 ? (
+                    <ArrowRight aria-hidden="true" className="absolute right-1 top-5 hidden h-4 w-4 text-brand-deep/75 xl:block" />
+                  ) : null}
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
+      </Reveal>
 
       <Reveal>
-        <section className="bg-background px-5 py-16 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-6xl">
-            <h2 className="text-3xl font-bold text-foreground">Why clients choose IFTA</h2>
-            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {reasons.map((reason) => {
-                const Icon = reason.icon;
+        <section className="relative isolate overflow-hidden bg-[#06213b] text-white">
+          <div className="mx-auto grid max-w-7xl lg:min-h-[24rem] lg:grid-cols-[0.9fr_1.3fr_0.8fr]">
+            <div className="px-5 py-12 sm:px-8 lg:flex lg:flex-col lg:justify-center lg:px-10">
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-gold">Why choose IFTA</p>
+              <h2 className="mt-2 text-4xl font-semibold leading-tight sm:text-5xl">Your trust, our priority</h2>
+              <p className="mt-3 max-w-md text-sm leading-6 text-white/80">
+                We go beyond numbers. Our commitment is to provide reliable, confidential and professional services that help you make informed financial decisions.
+              </p>
+              <Link className={buttonClassName({ className: "mt-5 w-fit rounded-lg", size: "sm", variant: "accent" })} href="/about">
+                Learn more about us <ArrowRight aria-hidden="true" className="h-4 w-4" />
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 gap-x-6 px-5 pb-10 sm:px-8 lg:content-center lg:px-8 lg:py-10">
+              {reasons.map(({ id, icon: Icon, title, text }) => {
                 return (
-                  <div className="rounded-xl border border-border bg-card p-6" key={reason.id}>
-                    <Icon aria-hidden="true" className="h-7 w-7 text-accent" />
-                    <h3 className="mt-4 text-lg font-bold text-foreground">{reason.title}</h3>
-                    <p className="mt-2 text-base leading-7 text-muted-foreground">{reason.text}</p>
+                  <div className="border-b border-white/15 py-4 last:border-b-0" key={id}>
+                    <div className="flex items-center gap-3">
+                      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-brand-gold/50 bg-white/5 text-brand-gold">
+                        <Icon aria-hidden="true" className="h-5 w-5" />
+                      </span>
+                      <h3 className="text-sm font-semibold text-white">{title}</h3>
+                    </div>
+                    <p className="mt-2 pl-[3.25rem] text-xs leading-5 text-white/70">{text}</p>
                   </div>
                 );
               })}
+            </div>
+            <div className="relative min-h-56 overflow-hidden lg:min-h-full">
+              <Image
+                alt="IFTA consultants advising a client"
+                className="object-cover"
+                fill
+                sizes="(min-width: 1024px) 25vw, 100vw"
+                src="/images/financial-consultation-cta.jpg"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#06213b]/35 to-transparent lg:from-[#06213b]/10" />
+              <p className="absolute bottom-6 right-5 max-w-56 rotate-[-4deg] font-serif text-lg italic leading-snug text-white drop-shadow-lg">
+                “Professional, reliable and always on my side.”
+              </p>
             </div>
           </div>
         </section>

@@ -51,7 +51,7 @@ export function PublicHeader() {
             width={192}
           />
           <span className="leading-none">
-            <span className="block font-serif text-2xl font-semibold tracking-[0.16em] text-white">IFTA</span>
+            <span className="block font-serif text-2xl font-semibold tracking-[0.16em] text-brand-gold">IFTA</span>
             <span className="mt-1 block text-[9px] font-semibold uppercase tracking-[0.32em] text-white/65">Consulting</span>
           </span>
         </Link>
