@@ -34,7 +34,7 @@ export function buttonClassName({
   size?: ButtonSize;
 } = {}) {
   return cn(
-    "inline-flex shrink-0 items-center justify-center gap-2 rounded-lg font-semibold transition-colors",
+    "inline-flex shrink-0 items-center justify-center gap-2 rounded-lg font-sans font-semibold transition-colors",
     "border px-4",
     "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
     "disabled:pointer-events-none disabled:opacity-50",

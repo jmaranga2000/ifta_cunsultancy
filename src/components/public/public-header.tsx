@@ -56,7 +56,7 @@ export function PublicHeader() {
           </span>
         </Link>
 
-        <nav aria-label="Primary navigation" className="hidden items-center gap-0.5 xl:flex">
+        <nav aria-label="Primary navigation" className="hidden items-center gap-0.5 font-sans xl:flex">
           {mainNav.map((item) => (
             <Link
               aria-current={isActive(item.href) ? "page" : undefined}
@@ -118,7 +118,7 @@ export function PublicHeader() {
 
       {mobileOpen ? (
         <div className="border-t border-white/15 bg-[#071b30] px-4 py-4 sm:px-6 xl:hidden">
-          <nav aria-label="Mobile navigation" className="mx-auto grid max-w-7xl gap-1">
+          <nav aria-label="Mobile navigation" className="mx-auto grid max-w-7xl gap-1 font-sans">
             {[...mainNav, ...resourceNav].map((item) => (
               <Link
                 aria-current={isActive(item.href) ? "page" : undefined}

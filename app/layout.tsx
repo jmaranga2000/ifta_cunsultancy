@@ -1,10 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
+import { Geist_Mono, Inter, Playfair_Display } from "next/font/google";
 import { PwaRegistration } from "@/components/pwa/pwa-registration";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
   display: "swap",
 });
@@ -63,7 +63,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${playfairDisplay.variable} h-full antialiased`}
+      className={`${inter.variable} ${geistMono.variable} ${playfairDisplay.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <head>
