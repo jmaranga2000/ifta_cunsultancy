@@ -168,6 +168,15 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-playfair-display), Georgia, serif;
+}
+
 ::selection {
   background: var(--brand-mist);
   color: var(--brand-deep);
