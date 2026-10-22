@@ -31,7 +31,7 @@ export function PortalShell({
   return (
     <main className="min-h-screen bg-background">
       <section className="border-b border-border bg-card">
-        <div className="mx-auto flex max-w-7xl flex-col gap-5 px-6 py-8">
+        <div className="mx-auto flex max-w-7xl flex-col gap-5 px-3 py-6 sm:px-6 sm:py-8">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <Link className="text-sm font-semibold text-muted-foreground" href="/">
               IFTA Consulting
@@ -45,7 +45,7 @@ export function PortalShell({
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-7xl gap-5 px-6 py-6 lg:grid-cols-[1fr_360px]">
+      <section className="mx-auto grid max-w-7xl gap-4 px-2 py-4 sm:gap-5 sm:px-6 sm:py-6 lg:grid-cols-[1fr_360px]">
         <div className="grid gap-4 sm:grid-cols-3">
           {metrics.map((metric) => (
             <Card key={metric.label}>

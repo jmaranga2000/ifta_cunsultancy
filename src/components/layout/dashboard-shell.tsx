@@ -432,7 +432,7 @@ export function DashboardShell({
 
       <div className="dashboard-shell-main min-w-0 max-w-full">
         <header className="dashboard-topbar sticky top-0 z-50 border-b border-border bg-card/95 backdrop-blur-md">
-          <div className="flex min-h-[68px] min-w-0 max-w-full items-center justify-between gap-3 px-4 lg:px-6">
+          <div className="flex min-h-[68px] min-w-0 max-w-full items-center justify-between gap-3 px-2.5 sm:px-4 lg:px-6">
             {collapsed ? (
               <button
                 aria-label="Show sidebar"
@@ -617,7 +617,7 @@ export function DashboardShell({
           </div>
         ) : null}
 
-        <main className="mx-auto w-full max-w-[1680px] min-w-0 overflow-x-hidden px-4 py-5 lg:px-6 lg:py-6">
+        <main className="mx-auto w-full max-w-[1680px] min-w-0 overflow-x-hidden px-2 py-4 sm:px-4 sm:py-5 lg:px-6 lg:py-6">
           {children}
         </main>
       </div>
